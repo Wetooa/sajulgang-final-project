@@ -9,6 +9,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.finalproject.game.MainGame;
+import com.finalproject.game.Storage;
+import com.finalproject.game.builder.EntityBuilder;
+import com.finalproject.game.entities.Entity;
+import com.finalproject.game.entities.enemies.Enemy;
+import com.finalproject.game.entities.enemies.Zombie;
 import com.finalproject.game.entities.player.Player;
 
 import java.util.ArrayList;
@@ -21,7 +26,6 @@ public class OverworldScreen implements Screen  {
 
     private Body groundBody;
 
-    private ArrayList<Player> players = new ArrayList<>();
 
 
     public OrthographicCamera getCamera() {
@@ -41,7 +45,6 @@ public class OverworldScreen implements Screen  {
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
 
-
         world = new World(new Vector2(0, 0), true);
         debugRenderer = new Box2DDebugRenderer();
 
@@ -55,7 +58,13 @@ public class OverworldScreen implements Screen  {
         groundBody.createFixture(groundBox, 0.0f);
         groundBox.dispose();
 
-        players.add(new Player());
+        Storage.players.add(new Player(new EntityBuilder()));
+
+        Storage.enemies.add(new Zombie());
+        Storage.enemies.add(new Zombie());
+        Storage.enemies.add(new Zombie());
+        Storage.enemies.add(new Zombie());
+
     }
 
     @Override
@@ -66,7 +75,9 @@ public class OverworldScreen implements Screen  {
         debugRenderer.render(world, camera.combined);
         camera.update();
 
-        players.forEach(Player::render);
+        Storage.players.forEach(Player::render);
+
+        Storage.enemies.forEach(Enemy::render);
     }
 
     @Override

@@ -2,45 +2,37 @@ package com.finalproject.game.entities.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
+import com.finalproject.game.builder.EntityBuilder;
 import com.finalproject.game.entities.Entity;
 import com.finalproject.game.items.Item;
 import com.finalproject.game.projectile.Bullet;
-import com.finalproject.game.projectile.ShotgunShell;
-import com.finalproject.game.status.Status;
 
 import java.util.ArrayList;
-
-import com.badlogic.gdx.graphics.GL20;
 
 import static com.finalproject.game.screens.OverworldScreen.*;
 
 public class Player extends Entity {
 
-    private static final float RUNNING_MULTIPLIER = 1.5F;
-
-    int currentStamina;
-    int maxStamina;
-
-    private boolean isRunning = false;
+    protected boolean isRunning = false;
+    protected float runningMultiplier;
+    protected int currentStamina;
+    protected int maxStamina;
 
     private ArrayList<Item> items;
 
-    private Body boxBody;
+    public Player(EntityBuilder builder) {
+        super(builder);
 
-    public Player() {
-        this.create();
+        this.runningMultiplier = builder.getRunningMultiplier();
+        this.currentStamina = builder.getCurrentStamina();
+        this.maxStamina = builder.getMaxStamina();
     }
+
 
     @Override
     public void create() {
-
-        setSpeed(3);
-
         // Dynamic body
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -69,17 +61,25 @@ public class Player extends Entity {
 
     private void handleInput() {
 
+        isRunning = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
+
+
+        float currentSpeed = getMaxSpeed() * (isRunning ? runningMultiplier : 1);
+
+        // TODO: and other statusses
+
+
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            boxBody.applyLinearImpulse(new Vector2(getSpeed(), 0), boxBody.getWorldCenter(), true);
+            boxBody.applyLinearImpulse(new Vector2(currentSpeed, 0), boxBody.getWorldCenter(), true);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            boxBody.applyLinearImpulse(new Vector2(-getSpeed(), 0), boxBody.getWorldCenter(), true);
+            boxBody.applyLinearImpulse(new Vector2(-currentSpeed, 0), boxBody.getWorldCenter(), true);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            boxBody.applyLinearImpulse(new Vector2(0, getSpeed()), boxBody.getWorldCenter(), true);
+            boxBody.applyLinearImpulse(new Vector2(0, currentSpeed), boxBody.getWorldCenter(), true);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            boxBody.applyLinearImpulse(new Vector2(0, -getSpeed()), boxBody.getWorldCenter(), true);
+            boxBody.applyLinearImpulse(new Vector2(0, -currentSpeed), boxBody.getWorldCenter(), true);
         }
 
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
