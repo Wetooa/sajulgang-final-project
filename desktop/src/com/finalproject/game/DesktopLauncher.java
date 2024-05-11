@@ -10,7 +10,7 @@ public class DesktopLauncher {
 		config.setForegroundFPS(60);
 
 		// FIX: set fullscreen later
-		config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
+//		config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
 
 		config.setTitle("Lost in CIT (tentative name)");
 		new Lwjgl3Application(new MainGame(), config);

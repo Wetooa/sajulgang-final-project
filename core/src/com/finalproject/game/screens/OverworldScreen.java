@@ -11,11 +11,13 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.finalproject.game.MainGame;
 import com.finalproject.game.Storage;
 import com.finalproject.game.builder.EntityBuilder;
+import com.finalproject.game.client.ClientController;
 import com.finalproject.game.entities.Entity;
 import com.finalproject.game.entities.enemies.Enemy;
 import com.finalproject.game.entities.enemies.Zombie;
 import com.finalproject.game.entities.player.Player;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class OverworldScreen implements Screen  {
@@ -26,12 +28,39 @@ public class OverworldScreen implements Screen  {
 
     private Body groundBody;
 
+    public MainGame mainGame;
+
+    public OverworldScreen(MainGame mainGame) {
+        this.mainGame = mainGame;
+
+        Gdx.app.log("Screen", "Initializing overworld screen");
+
+
+        Gdx.app.postRunnable(this::createUiForNet);
+    }
+
     public OrthographicCamera getCamera() {
         return camera;
     }
     public World getWorld() {
         return world;
     }
+
+
+    public void createUiForNet() {
+        String ip = "127.0.0.1";
+        try {
+            ClientController.clientController = new ClientController(ip);
+            Gdx.app.log("Client Connection", "Connected to server successfully");
+//            info.setText("Connected, waiting for opponent");
+        } catch (IOException e) {
+            Gdx.app.log("Client Connection", "Could not connect to the main server");
+//            info.setText("Could not connect to the main server");
+
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void show() {

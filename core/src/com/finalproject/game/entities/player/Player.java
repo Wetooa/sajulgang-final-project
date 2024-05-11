@@ -2,15 +2,20 @@ package com.finalproject.game.entities.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.esotericsoftware.kryonet.Client;
 import com.finalproject.game.builder.EntityBuilder;
+import com.finalproject.game.client.ClientController;
 import com.finalproject.game.entities.Entity;
 import com.finalproject.game.items.Item;
 import com.finalproject.game.projectile.Bullet;
+import com.finalproject.game.server.packets.client.KeyPressed;
 
 import java.util.ArrayList;
 
+import static com.finalproject.game.client.ClientController.clientController;
 import static com.finalproject.game.screens.OverworldScreen.*;
 
 public class Player extends Entity {
@@ -63,34 +68,56 @@ public class Player extends Entity {
 
     private void handleInput() {
 
-        isRunning = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
-
-        float currentSpeed = getMaxSpeed() * (isRunning ? runningMultiplier : 1);
-
+//        isRunning = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
+//        float currentSpeed = getMaxSpeed() * (isRunning ? runningMultiplier : 1);
         // TODO: and other statusses
 
 
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            boxBody.applyLinearImpulse(new Vector2(currentSpeed, 0), boxBody.getWorldCenter(), true);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            boxBody.applyLinearImpulse(new Vector2(-currentSpeed, 0), boxBody.getWorldCenter(), true);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            boxBody.applyLinearImpulse(new Vector2(0, currentSpeed), boxBody.getWorldCenter(), true);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            boxBody.applyLinearImpulse(new Vector2(0, -currentSpeed), boxBody.getWorldCenter(), true);
-        }
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            public boolean keyDown(int keycode) {
 
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            shoot();
-        }
+                Gdx.app.log("Player", "Clicked " + keycode);
 
-        if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-            // TODO: but cooler
-            shoot();
-        }
+                ClientController.client.sendUDP(new KeyPressed(keycode));
+
+                if (keycode == Input.Keys.SPACE)
+                    Gdx.app.log("ping: ", ClientController.client.getReturnTripTime() + " ");
+
+                return false;
+            }
+
+//            public boolean keyUp(int keycode) {
+//                if (keycode == Input.Keys.LEFT || keycode == Input.Keys.A)
+//                    clientController.client.sendUDP(new KeyReleased(finalKEY_LEFT));
+//                if (keycode == Input.Keys.RIGHT || keycode == Input.Keys.D)
+//                    clientController.client.sendUDP(new KeyReleased(finalKEY_RIGHT));
+//
+//
+//                return false;
+//            }
+        });
+
+//        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+//            boxBody.applyLinearImpulse(new Vector2(currentSpeed, 0), boxBody.getWorldCenter(), true);
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+//            boxBody.applyLinearImpulse(new Vector2(-currentSpeed, 0), boxBody.getWorldCenter(), true);
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+//            boxBody.applyLinearImpulse(new Vector2(0, currentSpeed), boxBody.getWorldCenter(), true);
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+//            boxBody.applyLinearImpulse(new Vector2(0, -currentSpeed), boxBody.getWorldCenter(), true);
+//        }
+//
+//        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+//            shoot();
+//        }
+//
+//        if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+//            // TODO: but cooler
+//            shoot();
+//        }
     }
 
     public void shoot() {
