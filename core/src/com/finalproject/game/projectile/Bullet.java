@@ -20,10 +20,15 @@ public class Bullet extends Projectile {
         float playerX = boxBody.getPosition().x;
         float playerY = boxBody.getPosition().y;
 
+        float mouseX = Gdx.input.getX();
+        float mouseY = Gdx.input.getY(); // Y-axis not inverted for screen coordinates
+        Vector3 mousePosition = camera.unproject(new Vector3(mouseX, mouseY, 0));
+
+        float angle = MathUtils.atan2(mousePosition.y - playerY, mousePosition.x - playerX);
 
         BodyDef bulletDef = new BodyDef();
         bulletDef.type = BodyDef.BodyType.DynamicBody;
-        bulletDef.position.set(playerX, playerY);
+        bulletDef.position.set(playerX + MathUtils.cos(angle), playerY + MathUtils.sin(angle));
         Body bullet = world.createBody(bulletDef);
 
         CircleShape bulletShape = new CircleShape();
@@ -35,13 +40,7 @@ public class Bullet extends Projectile {
         bullet.createFixture(bulletFixture);
         bulletShape.dispose();
 
-        float mouseX = Gdx.input.getX();
-        float mouseY = Gdx.input.getY(); // Y-axis not inverted for screen coordinates
-        Vector3 mousePosition = camera.unproject(new Vector3(mouseX, mouseY, 0));
-
-        float angle = MathUtils.atan2(mousePosition.y - playerY, mousePosition.x - playerX);
         float impulseStrength = 10f; // Adjust as needed
-
         Vector2 impulse = new Vector2(MathUtils.cos(angle) * impulseStrength, MathUtils.sin(angle) * impulseStrength);
         bullet.applyLinearImpulse(impulse, bullet.getWorldCenter(), true);
     }

@@ -26,8 +26,6 @@ public class OverworldScreen implements Screen  {
 
     private Body groundBody;
 
-
-
     public OrthographicCamera getCamera() {
         return camera;
     }
@@ -60,10 +58,10 @@ public class OverworldScreen implements Screen  {
 
         Storage.players.add(new Player(new EntityBuilder()));
 
-        Storage.enemies.add(new Zombie());
-        Storage.enemies.add(new Zombie());
-        Storage.enemies.add(new Zombie());
-        Storage.enemies.add(new Zombie());
+//        Storage.enemies.add(new Zombie());
+//        Storage.enemies.add(new Zombie());
+//        Storage.enemies.add(new Zombie());
+//        Storage.enemies.add(new Zombie());
 
     }
 

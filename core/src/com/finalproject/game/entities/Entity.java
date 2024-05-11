@@ -9,16 +9,7 @@ import java.util.ArrayList;
 
 public abstract class Entity extends Game  {
 
-    public Entity(EntityBuilder builder) {
-        this.create();
-
-        this.maxSpeed = builder.getMaxSpeed();
-        this.maxHealth = builder.getMaxHealth();
-        this.currentHealth = builder.getCurrentHealth();
-        this.posX = builder.getPosX();
-        this.posY = builder.getPosY();
-    }
-
+    private ArrayList<Status> statuses;
 
     protected float maxSpeed;
 
@@ -29,6 +20,16 @@ public abstract class Entity extends Game  {
     protected float posY;
 
     protected Body boxBody;
+
+    public Entity(EntityBuilder builder) {
+        this.create();
+
+        this.maxSpeed = builder.getMaxSpeed();
+        this.maxHealth = builder.getMaxHealth();
+        this.currentHealth = builder.getCurrentHealth();
+        this.posX = builder.getPosX();
+        this.posY = builder.getPosY();
+    }
 
     public Body getBoxBody() {
         return boxBody;
@@ -78,7 +79,6 @@ public abstract class Entity extends Game  {
         this.posY = posY;
     }
 
-    private ArrayList<Status> statuses;
 
 
 

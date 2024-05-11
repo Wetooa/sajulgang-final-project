@@ -57,12 +57,13 @@ public class Player extends Entity {
     @Override
     public void render() {
         handleInput();
+
+
     }
 
     private void handleInput() {
 
         isRunning = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
-
 
         float currentSpeed = getMaxSpeed() * (isRunning ? runningMultiplier : 1);
 
