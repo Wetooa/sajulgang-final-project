@@ -2,20 +2,22 @@ package com.finalproject.game.client;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.finalproject.game.client.packet.client.KeyPressed;
+import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
 
 import java.io.IOException;
 import java.nio.channels.ClosedSelectorException;
 
+
 public class ClientController {
 
-    public static final String version = "1.0";
-    public static ClientController clientController;
     public static Client client;
-//    private GameScreen gameScreen;
 
     public ClientController(String ip) throws IOException {
         client = new Client();
@@ -29,41 +31,41 @@ public class ClientController {
     }
 
     public void setupController() {
-//        client.sendTCP(new RegisterName(Save.INSTANCE.name));
-
         Gdx.app.log("Controller", "Setting up controllers...");
+
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean keyDown(int keycode) {
+
+                Gdx.app.log("Player", "Clicked " + keycode);
+
+                ClientController.client.sendUDP(new KeyPressed(keycode));
+
+                if (keycode == Input.Keys.SPACE)
+                    Gdx.app.log("ping: ", ClientController.client.getReturnTripTime() + " ");
+
+                return false;
+            }
+
+            @Override
+            public boolean keyUp(int keycode) {
+                return super.keyUp(keycode);
+            }
+        });
+
 
         client.addListener(new Listener() {
             @Override
             public void received(Connection connection, Object object) {
-//                System.out.println(object);
+                Gdx.app.log("Client", "Recieved " + object + " from " + connection);
+
+                if (object instanceof GameInstanceSnapshot) {
+                    GameInstanceSnapshot game = (GameInstanceSnapshot) object;
+
+
+                }
             }
         });
-
-//        Listener.typeListener = new Listener.TypeListener();
-
-//        typeListener.addTypeHandler(GameSetup.class, ((connection, gameSetup) -> {
-//            Gdx.app.log("Game setup", gameSetup.toString());
-//            Gdx.app.postRunnable(() -> {
-//                gameScreen = new GameScreen(main, this, gameSetup);
-//                main.setScreen(gameScreen);
-//            });
-//        }));
-//
-//        typeListener.addTypeHandler(GameInstanceSnapshot.class, (connection, snapshot) -> {
-//            gameScreen.parse(snapshot);
-//        });
-//
-//        typeListener.addTypeHandler(GameEndDisconnect.class, ((connection, s) -> {
-////            Gdx.app.postRunnable(() -> gameScreen.opponentDisconnected());
-//        }));
-//
-//        typeListener.addTypeHandler(Error.class, ((connection, error) -> {
-//            error.printStackTrace();
-//        }));
-//
-//
-//        client.addListener(typeListener);
     }
 
 

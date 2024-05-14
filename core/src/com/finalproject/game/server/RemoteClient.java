@@ -2,7 +2,7 @@ package com.finalproject.game.server;
 
 
 import com.esotericsoftware.kryonet.Connection;
-import com.finalproject.game.entities.player.Player;
+import com.finalproject.game.server.entities.live.player.Player;
 
 public class RemoteClient {
 
@@ -33,6 +33,8 @@ public class RemoteClient {
         connection = c;
         clientState = ClientState.NAMELESS;
         currentGameID = -1;
+
+        name = "Player " + c.getID();
     }
 
 
