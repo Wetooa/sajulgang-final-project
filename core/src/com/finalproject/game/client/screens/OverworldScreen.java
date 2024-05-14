@@ -29,8 +29,13 @@ public class OverworldScreen implements Screen {
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
 
-        GameClient.gameInstanceClient.players.forEach(player -> {
+        GameClient.gameInstanceSnapshot.players.forEach(player -> {
             Vector2 pos = player.getPos();
+            shapeRenderer.rect(pos.x, pos.y, 1, 1);
+        });
+
+        GameClient.gameInstanceSnapshot.projectiles.forEach(projectile -> {
+            Vector2 pos = projectile.getPos();
             shapeRenderer.rect(pos.x, pos.y, 1, 1);
         });
 

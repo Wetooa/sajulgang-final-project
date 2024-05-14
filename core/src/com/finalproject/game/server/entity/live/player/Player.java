@@ -5,10 +5,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.finalproject.game.server.builder.EntityBuilder;
+import com.finalproject.game.server.builder.entity.LiveEntityBuilder;
 import com.finalproject.game.server.entity.Entity;
-import com.finalproject.game.server.entity.items.Item;
-import com.finalproject.game.server.entity.projectile.Bullet;
+import com.finalproject.game.server.items.Item;
+import com.finalproject.game.server.items.weapons.range.HandGun;
 
 import java.util.ArrayList;
 
@@ -19,9 +19,11 @@ public class Player extends Entity {
     protected int currentStamina;
     protected int maxStamina;
 
-    private ArrayList<Item> items;
+    protected int currentItemHeld = 0;
 
-    public Player(EntityBuilder builder) {
+    protected ArrayList<Item> items = new ArrayList<>();
+
+    public Player(LiveEntityBuilder builder) {
         super(builder);
 
         this.runningMultiplier = builder.getRunningMultiplier();
@@ -31,7 +33,7 @@ public class Player extends Entity {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(posX, posY);
-        boxBody = gameInstance.world.createBody(bodyDef);
+        boxBody = gameInstanceServer.world.createBody(bodyDef);
 
         // player collision box
         PolygonShape dynamicBox = new PolygonShape();
@@ -46,13 +48,27 @@ public class Player extends Entity {
         boxBody.createFixture(fixtureDef);
         boxBody.setLinearDamping(5.0f);
         dynamicBox.dispose();
+
+        items.add(new HandGun(getGameInstanceServer(), getRemoteClient()));
     }
 
 
-    public void update(int keycode) {
-        float currentSpeed = getMaxSpeed() * (isRunning ? runningMultiplier : 1);
+    public boolean isRunning() {
+        return isRunning;
+    }
 
-        System.out.println("updatein");
+    public void setRunning(boolean running) {
+        isRunning = running;
+    }
+
+    public void updateMouseAction(int keycode) {
+        if (keycode == Input.Buttons.LEFT) {
+            shoot();
+        }
+    }
+
+    public void updateMovement(int keycode) {
+        float currentSpeed = getMaxSpeed() * (isRunning ? runningMultiplier : 1);
 
         if (keycode == Input.Keys.D) {
             boxBody.applyLinearImpulse(new Vector2(currentSpeed, 0), boxBody.getWorldCenter(), true);
@@ -66,18 +82,11 @@ public class Player extends Entity {
         if (keycode == Input.Keys.S) {
             boxBody.applyLinearImpulse(new Vector2(0, -currentSpeed), boxBody.getWorldCenter(), true);
         }
-
-//        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-//            shoot();
-//        }
     }
-
 
     public void shoot() {
-        new Bullet(boxBody);
-    }
-
-    public void render() {
-
+        // TODO: temp fix
+        Item heldItem = items.get(currentItemHeld);
+        heldItem.activate();
     }
 };

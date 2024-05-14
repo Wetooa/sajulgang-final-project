@@ -4,8 +4,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
-import com.finalproject.game.client.packet.client.KeyPressed;
-import com.finalproject.game.client.packet.client.KeyReleased;
+import com.finalproject.game.client.packet.client.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -43,7 +42,6 @@ public class GameServer {
                                public void received(Connection connection, Object object) {
                                    System.out.println("[Server]: " + connection + " sent this object " + object);
                                    RemoteClient remoteClient = remoteClients.get(connection);
-                                   GameInstanceServer gameInstance = activeGames.get(remoteClient.getCurrentGameID());
 
                                    if (object instanceof KeyPressed) {
                                        remoteClient.getInputStates().add(((KeyPressed) object).key);
@@ -51,6 +49,20 @@ public class GameServer {
 
                                    if (object instanceof KeyReleased) {
                                        remoteClient.getInputStates().remove((Object)((KeyReleased) object).key);
+                                   }
+
+                                   if (object instanceof MousePressed) {
+                                       remoteClient.getMouseButtonStates().add(((MousePressed) object).key);
+                                   }
+
+                                   if (object instanceof MouseReleased) {
+                                       remoteClient.getMouseButtonStates().remove((Object)((MouseReleased) object).key);
+                                   }
+
+                                   if (object instanceof MouseMove) {
+                                       MouseMove mouse = (MouseMove)object;
+                                       remoteClient.setMouseX(mouse.mouseX);
+                                       remoteClient.setMouseY(mouse.mouseY);
                                    }
 
                                }
@@ -86,7 +98,7 @@ public class GameServer {
 //                attemptMatchmake();
 //            }
 
-            // Parallel update of game instances if feasible
+            // Parallel updateMovement of game instances if feasible
             activeGames.values().parallelStream().forEach(gameInstance -> gameUpdatePool.submit(gameInstance::update));
 
         }, 0L, sleep, TimeUnit.MILLISECONDS);

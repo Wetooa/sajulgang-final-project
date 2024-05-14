@@ -7,9 +7,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.finalproject.game.client.packet.client.KeyPressed;
-import com.finalproject.game.client.packet.client.KeyReleased;
-import com.finalproject.game.server.packet.server.GameInitialization;
+import com.finalproject.game.client.packet.client.*;
 import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
 
 import java.io.IOException;
@@ -19,9 +17,10 @@ import java.nio.channels.ClosedSelectorException;
 public class ClientController {
 
     public static Client client;
+    private final static int BUFFER_SIZE = 1024 * 1024;
 
     public ClientController(String ip) throws IOException {
-        client = new Client();
+        client = new Client(BUFFER_SIZE, BUFFER_SIZE);
         client.start();
 
         Kryo kryo = client.getKryo();
@@ -48,6 +47,27 @@ public class ClientController {
                 ClientController.client.sendUDP(new KeyReleased(keycode));
                 return false;
             }
+
+            @Override
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                Gdx.app.log("Player", "Mouse Pressed " + button);
+                ClientController.client.sendUDP(new MousePressed(button));
+                return false;
+            }
+
+            @Override
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                Gdx.app.log("Player", "Mouse Released " + button);
+                ClientController.client.sendUDP(new MouseReleased(button));
+                return false;
+            }
+
+            @Override
+            public boolean mouseMoved(int screenX, int screenY) {
+                Gdx.app.log("Player", "Moved mouse to " + screenX + " " + screenY);
+                ClientController.client.sendUDP(new MouseMove(screenX, screenY));
+                return false;
+            }
         });
 
 
@@ -58,16 +78,9 @@ public class ClientController {
 
                 // TODO: lol they look the same but trust me they *might differ lololkasdjfiosdni
 
-                if (object instanceof GameInitialization) {
-                    GameInitialization game = (GameInitialization) object;
-
-                    GameClient.gameInstanceClient.players = game.players;
-                }
 
                 if (object instanceof GameInstanceSnapshot) {
-                    GameInstanceSnapshot game = (GameInstanceSnapshot) object;
-
-                    GameClient.gameInstanceClient.players = game.players;
+                    GameClient.gameInstanceSnapshot = (GameInstanceSnapshot) object;
                 }
             }
         });

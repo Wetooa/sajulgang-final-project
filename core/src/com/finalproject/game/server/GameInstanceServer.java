@@ -3,12 +3,14 @@ package com.finalproject.game.server;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.esotericsoftware.kryonet.Connection;
-import com.finalproject.game.server.builder.EntityBuilder;
+import com.finalproject.game.server.builder.entity.EntityBuilder;
+import com.finalproject.game.server.builder.entity.LiveEntityBuilder;
 import com.finalproject.game.server.entity.live.enemy.Enemy;
 import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.server.entity.projectile.Projectile;
 import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class GameInstanceServer {
     public HashMap<Connection, RemoteClient> remoteClientsInServer = new HashMap<>();
 
     public HashMap<RemoteClient, Player> players = new HashMap<>();
-    public List<Projectile> projectiles;
+    public List<Projectile> projectiles = new ArrayList<>();
     public List<Enemy> enemies;
 
     public World world;
@@ -35,7 +37,6 @@ public class GameInstanceServer {
 
 
     public void update() {
-        System.out.println("remote clients " + remoteClientsInServer );
         remoteClientsInServer.values().forEach(RemoteClient::update);
 
         world.step(1 / 60f, 6, 2);
@@ -45,14 +46,14 @@ public class GameInstanceServer {
     }
 
 
-    public void addRemoteClient(Connection connection, RemoteClient client) {
-        Player p = new Player(new EntityBuilder().setGameInstance(this));
+    public void addRemoteClient(Connection connection, RemoteClient remoteClient) {
+        Player p = new Player((LiveEntityBuilder) new LiveEntityBuilder().setGameInstanceServer(this).setRemoteClient(remoteClient));
 
-        remoteClientsInServer.put(connection, client);
-        players.put(client, p);
+        remoteClientsInServer.put(connection, remoteClient);
+        players.put(remoteClient, p);
 
-        client.setPlayer(p);
-        client.setCurrentGameID(this.GAME_ID);
+        remoteClient.setPlayer(p);
+        remoteClient.setCurrentGameID(this.GAME_ID);
     }
 
 }

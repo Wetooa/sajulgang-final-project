@@ -2,9 +2,9 @@ package com.finalproject.game.server.entity.projectile;
 
 import com.badlogic.gdx.physics.box2d.Body;
 
-public class ShotgunShell {
+public class Shell {
 
-    public ShotgunShell(Body boxBody) {
+    public Shell(Body boxBody) {
 //        float playerX = boxBody.getPosition().x;
 //        float playerY = boxBody.getPosition().y;
 //

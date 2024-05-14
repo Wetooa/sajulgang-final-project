@@ -2,9 +2,10 @@ package com.finalproject.game.server.entity;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.finalproject.game.server.builder.EntityBuilder;
+import com.finalproject.game.server.RemoteClient;
+import com.finalproject.game.server.builder.entity.EntityBuilder;
 import com.finalproject.game.server.GameInstanceServer;
-import com.finalproject.game.server.entity.statusEffect.Status;
+import com.finalproject.game.server.statusEffect.Status;
 
 import java.util.ArrayList;
 
@@ -14,25 +15,21 @@ public abstract class Entity extends Sprite {
 
     protected float maxSpeed;
 
-    protected int currentHealth;
-    protected int maxHealth;
-
     protected float posX;
     protected float posY;
 
     protected Body boxBody;
 
-    protected GameInstanceServer gameInstance;
+    protected GameInstanceServer gameInstanceServer;
+    protected RemoteClient remoteClient;
 
     public Entity(EntityBuilder builder) {
-
         this.maxSpeed = builder.getMaxSpeed();
-        this.maxHealth = builder.getMaxHealth();
-        this.currentHealth = builder.getCurrentHealth();
         this.posX = builder.getPosX();
         this.posY = builder.getPosY();
 
-        this.gameInstance = builder.getGameInstance();
+        this.gameInstanceServer = builder.getGameInstanceServer();
+        this.remoteClient = builder.getRemoteClient();
 
     }
 
@@ -52,22 +49,6 @@ public abstract class Entity extends Sprite {
         this.maxSpeed = maxSpeed;
     }
 
-    public int getCurrentHealth() {
-        return currentHealth;
-    }
-
-    public void setCurrentHealth(int currentHealth) {
-        this.currentHealth = currentHealth;
-    }
-
-    public int getMaxHealth() {
-        return maxHealth;
-    }
-
-    public void setMaxHealth(int maxHealth) {
-        this.maxHealth = maxHealth;
-    }
-
     public float getPosX() {
         return posX;
     }
@@ -84,6 +65,22 @@ public abstract class Entity extends Sprite {
         this.posY = posY;
     }
 
+
+    public GameInstanceServer getGameInstanceServer() {
+        return gameInstanceServer;
+    }
+
+    public void setGameInstanceServer(GameInstanceServer gameInstanceServer) {
+        this.gameInstanceServer = gameInstanceServer;
+    }
+
+    public RemoteClient getRemoteClient() {
+        return remoteClient;
+    }
+
+    public void setRemoteClient(RemoteClient remoteClient) {
+        this.remoteClient = remoteClient;
+    }
 
 
 }

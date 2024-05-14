@@ -1,6 +1,7 @@
 package com.finalproject.game.server;
 
 
+import com.badlogic.gdx.Input;
 import com.esotericsoftware.kryonet.Connection;
 import com.finalproject.game.server.entity.live.player.Player;
 
@@ -8,18 +9,47 @@ import java.util.ArrayList;
 
 public class RemoteClient {
 
-    private final Connection connection;
-    private int currentGameID;
-    private String name;
+    protected final Connection connection;
+    protected int currentGameID;
+    protected String name;
+    protected GameInstanceServer gameInstanceServer;
 
-    private ClientState clientState;
-    private ArrayList<Integer> inputStates = new ArrayList<>();
+    protected ClientState clientState;
 
-    private Player player;
+    protected ArrayList<Integer> inputStates = new ArrayList<>();
+    protected ArrayList<Integer> mouseButtonStates = new ArrayList<>();
+
+    public ArrayList<Integer> getMouseButtonStates() {
+        return mouseButtonStates;
+    }
+
+    public float getMouseY() {
+        return mouseY;
+    }
+
+    public void setMouseY(float mouseY) {
+        this.mouseY = mouseY;
+    }
+
+    public float getMouseX() {
+        return mouseX;
+    }
+
+    public void setMouseX(float mouseX) {
+        this.mouseX = mouseX;
+    }
+
+    protected float mouseX = 0;
+    protected float mouseY = 0;
+
+    protected Player player;
 
     public void update() {
-        inputStates.forEach(keycode -> player.update(keycode));
-        System.out.println(player);
+        // FIX: maybe naay better, but like if player is running ni
+        player.setRunning(inputStates.contains(Input.Keys.SHIFT_LEFT));
+
+        inputStates.forEach(keycode -> player.updateMovement(keycode));
+        mouseButtonStates.forEach(button -> player.updateMouseAction(button));
     }
 
     public Connection getConnection() {
@@ -64,13 +94,6 @@ public class RemoteClient {
 
     public void setPlayer(Player player) {
         this.player = player;
-    }
-
-    public static enum InputState {
-        LEFT,
-        RIGHT,
-        UP,
-        DOWN,
     }
 
     public static enum ClientState {

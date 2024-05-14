@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.client.screens.OverworldScreen;
+import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,9 +16,10 @@ import java.util.ArrayList;
 public class GameClient extends Game {
     public SpriteBatch batch;
 
+
     public static GameClient gameClient;
     public static ClientController clientController;
-    public static GameInstanceClient gameInstanceClient = new GameInstanceClient();
+    public static GameInstanceSnapshot gameInstanceSnapshot = new GameInstanceSnapshot();
 
     public static ShapeRenderer shapeRenderer;
     public static OrthographicCamera camera;
@@ -65,7 +67,8 @@ public class GameClient extends Game {
 
 
     public void connectToServer() {
-        String ip = "127.0.0.1";
+        String ip = "192.168.1.22";
+
         try {
             clientController = new ClientController(ip);
             Gdx.app.log("Client Connection", "Connected to server successfully");
