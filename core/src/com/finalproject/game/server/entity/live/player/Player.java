@@ -1,12 +1,14 @@
-package com.finalproject.game.server.entities.live.player;
+package com.finalproject.game.server.entity.live.player;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.finalproject.game.server.builder.EntityBuilder;
-import com.finalproject.game.server.entities.Entity;
-import com.finalproject.game.server.entities.items.Item;
-import com.finalproject.game.server.entities.projectile.Bullet;
+import com.finalproject.game.server.entity.Entity;
+import com.finalproject.game.server.entity.items.Item;
+import com.finalproject.game.server.entity.projectile.Bullet;
 
 import java.util.ArrayList;
 
@@ -26,12 +28,12 @@ public class Player extends Entity {
         this.currentStamina = builder.getCurrentStamina();
         this.maxStamina = builder.getMaxStamina();
 
-        // Dynamic body
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(posX, posY);
         boxBody = gameInstance.world.createBody(bodyDef);
 
+        // player collision box
         PolygonShape dynamicBox = new PolygonShape();
         dynamicBox.setAsBox(1.0f, 1.0f);
 
@@ -46,8 +48,11 @@ public class Player extends Entity {
         dynamicBox.dispose();
     }
 
-    public void move(int keycode) {
+
+    public void update(int keycode) {
         float currentSpeed = getMaxSpeed() * (isRunning ? runningMultiplier : 1);
+
+        System.out.println("updatein");
 
         if (keycode == Input.Keys.D) {
             boxBody.applyLinearImpulse(new Vector2(currentSpeed, 0), boxBody.getWorldCenter(), true);
@@ -67,50 +72,10 @@ public class Player extends Entity {
 //        }
     }
 
-    private void handleInput() {
-
-//        isRunning = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
-//        float currentSpeed = getMaxSpeed() * (isRunning ? runningMultiplier : 1);
-        // TODO: and other statusses
-
-
-//            public boolean keyUp(int keycode) {
-//                if (keycode == Input.Keys.LEFT || keycode == Input.Keys.A)
-//                    clientController.client.sendUDP(new KeyReleased(finalKEY_LEFT));
-//                if (keycode == Input.Keys.RIGHT || keycode == Input.Keys.D)
-//                    clientController.client.sendUDP(new KeyReleased(finalKEY_RIGHT));
-//
-//
-//                return false;
-//            }
-
-//        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-//            boxBody.applyLinearImpulse(new Vector2(currentSpeed, 0), boxBody.getWorldCenter(), true);
-//        }
-//        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-//            boxBody.applyLinearImpulse(new Vector2(-currentSpeed, 0), boxBody.getWorldCenter(), true);
-//        }
-//        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-//            boxBody.applyLinearImpulse(new Vector2(0, currentSpeed), boxBody.getWorldCenter(), true);
-//        }
-//        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-//            boxBody.applyLinearImpulse(new Vector2(0, -currentSpeed), boxBody.getWorldCenter(), true);
-//        }
-//
-//        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-//            shoot();
-//        }
-//
-//        if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-//            // TODO: but cooler
-//            shoot();
-//        }
-    }
 
     public void shoot() {
         new Bullet(boxBody);
     }
-
 
     public void render() {
 

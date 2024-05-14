@@ -1,6 +1,7 @@
 package com.finalproject.game.server.builder;
 
 import com.finalproject.game.server.GameInstanceServer;
+import com.finalproject.game.server.RemoteClient;
 
 public class EntityBuilder {
     float maxSpeed = 10;
@@ -16,6 +17,7 @@ public class EntityBuilder {
     int maxStamina = 100;
 
     GameInstanceServer gameInstance;
+    RemoteClient remoteClient;
 
     public GameInstanceServer getGameInstance() {
         return gameInstance;
@@ -23,6 +25,15 @@ public class EntityBuilder {
 
     public EntityBuilder setGameInstance(GameInstanceServer gameInstance) {
         this.gameInstance = gameInstance;
+        return this;
+    }
+
+    public RemoteClient getRemoteClient() {
+        return remoteClient;
+    }
+
+    public EntityBuilder setRemoteClient(RemoteClient remoteClient) {
+        this.remoteClient = remoteClient;
         return this;
     }
 

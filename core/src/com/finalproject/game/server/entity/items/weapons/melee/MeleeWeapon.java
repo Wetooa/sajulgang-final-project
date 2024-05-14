@@ -1,6 +1,6 @@
-package com.finalproject.game.server.entities.items.weapons.melee;
+package com.finalproject.game.server.entity.items.weapons.melee;
 
-import com.finalproject.game.server.entities.items.weapons.Weapon;
+import com.finalproject.game.server.entity.items.weapons.Weapon;
 
 public abstract class MeleeWeapon extends Weapon {
 

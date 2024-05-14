@@ -1,4 +1,4 @@
-package com.finalproject.game.server.entities.items;
+package com.finalproject.game.server.entity.items;
 
 public abstract class Item {
 

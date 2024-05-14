@@ -5,6 +5,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.finalproject.game.client.packet.client.KeyPressed;
+import com.finalproject.game.client.packet.client.KeyReleased;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -19,16 +20,15 @@ public class GameServer {
     private final Map<Connection, RemoteClient> remoteClients = new HashMap<>();
     private final ConcurrentHashMap<Integer, GameInstanceServer> activeGames = new ConcurrentHashMap<>();
 
-    private final Server server;
-
     private static final float TARGET_DELTA = 0.016f; // Assuming target delta is 16ms
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private static final ExecutorService gameUpdatePool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-    private double mmTimer = 0.0;
+
+//    private double matchMakeTimer = 0.0;
 
     public GameServer() throws IOException {
 
-        server = new Server(BUFFER_SIZE, BUFFER_SIZE);
+        Server server = new Server(BUFFER_SIZE, BUFFER_SIZE);
         server.start();
         server.bind(54555, 54777);
 
@@ -42,24 +42,16 @@ public class GameServer {
                                @Override
                                public void received(Connection connection, Object object) {
                                    System.out.println("[Server]: " + connection + " sent this object " + object);
-
                                    RemoteClient remoteClient = remoteClients.get(connection);
-                                   GameInstanceServer gameInstance = activeGames.get(remoteClient.getGameID());
+                                   GameInstanceServer gameInstance = activeGames.get(remoteClient.getCurrentGameID());
 
                                    if (object instanceof KeyPressed) {
-                                       int key = ((KeyPressed) object).key;
-                                       gameInstance.players.get(remoteClient).move(key);
-//                        remoteClient.inputState = RemoteClient.InputState.LEFT;
+                                       remoteClient.getInputStates().add(((KeyPressed) object).key);
                                    }
 
-//                if (object instanceof KeyReleased) {
-//                    int key = ((KeyReleased) object).key;
-//
-//                    if (key == -1 && remoteClient.inputState == RemoteClient.InputState.LEFT)
-//                        remoteClient.inputState = RemoteClient.InputState.IDLE;
-//                    if (key == 1 && remoteClient.inputState == RemoteClient.InputState.RIGHT)
-//                        remoteClient.inputState = RemoteClient.InputState.IDLE;
-//                }
+                                   if (object instanceof KeyReleased) {
+                                       remoteClient.getInputStates().remove((Object)((KeyReleased) object).key);
+                                   }
 
                                }
 

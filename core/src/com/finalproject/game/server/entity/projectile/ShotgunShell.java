@@ -1,15 +1,6 @@
-package com.finalproject.game.server.entities.projectile;
+package com.finalproject.game.server.entity.projectile;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.finalproject.game.client.ClientController;
-import com.finalproject.game.client.GameClient;
 
 public class ShotgunShell {
 

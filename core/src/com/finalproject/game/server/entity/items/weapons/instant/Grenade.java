@@ -1,4 +1,4 @@
-package com.finalproject.game.server.entities.items.weapons.instant;
+package com.finalproject.game.server.entity.items.weapons.instant;
 
 public  class Grenade extends InstantWeapon {
 

@@ -1,10 +1,10 @@
-package com.finalproject.game.server.entities;
+package com.finalproject.game.server.entity;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.finalproject.game.server.builder.EntityBuilder;
 import com.finalproject.game.server.GameInstanceServer;
-import com.finalproject.game.server.entities.status.Status;
+import com.finalproject.game.server.entity.statusEffect.Status;
 
 import java.util.ArrayList;
 

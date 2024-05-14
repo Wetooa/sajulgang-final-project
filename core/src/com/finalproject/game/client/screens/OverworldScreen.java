@@ -5,8 +5,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.finalproject.game.client.GameClient;
 
-import static com.finalproject.game.client.GameClient.*;
+import static com.finalproject.game.client.GameClient.camera;
+import static com.finalproject.game.client.GameClient.shapeRenderer;
 
 public class OverworldScreen implements Screen {
 
@@ -25,6 +28,11 @@ public class OverworldScreen implements Screen {
         shapeRenderer.begin();
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
+
+        GameClient.gameInstanceClient.players.forEach(player -> {
+            Vector2 pos = player.getPos();
+            shapeRenderer.rect(pos.x, pos.y, 1, 1);
+        });
 
         shapeRenderer.end();
     }

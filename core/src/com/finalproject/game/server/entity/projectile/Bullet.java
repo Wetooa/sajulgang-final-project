@@ -1,4 +1,4 @@
-package com.finalproject.game.server.entities.projectile;
+package com.finalproject.game.server.entity.projectile;
 
 import com.badlogic.gdx.physics.box2d.Body;
 

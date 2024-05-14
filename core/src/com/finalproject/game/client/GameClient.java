@@ -6,7 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.finalproject.game.server.entities.live.player.Player;
+import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.client.screens.OverworldScreen;
 
 import java.io.IOException;
@@ -14,8 +14,10 @@ import java.util.ArrayList;
 
 public class GameClient extends Game {
     public SpriteBatch batch;
-    public GameClient gameClient;
-    public ClientController clientController;
+
+    public static GameClient gameClient;
+    public static ClientController clientController;
+    public static GameInstanceClient gameInstanceClient = new GameInstanceClient();
 
     public static ShapeRenderer shapeRenderer;
     public static OrthographicCamera camera;
@@ -26,7 +28,7 @@ public class GameClient extends Game {
     @Override
     public void create () {
         this.batch = new SpriteBatch();
-        this.gameClient = this;
+        gameClient = this;
 
         Gdx.app.log("Client: ", "Initializing client");
         Gdx.app.postRunnable(this::connectToServer);
@@ -71,7 +73,6 @@ public class GameClient extends Game {
         } catch (IOException e) {
             Gdx.app.log("Client Connection", "Could not connect to the main server");
             //            info.setText("Could not connect to the main server");
-
             e.printStackTrace();
         }
     }

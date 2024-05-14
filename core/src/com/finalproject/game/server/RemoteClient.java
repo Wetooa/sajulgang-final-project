@@ -2,26 +2,78 @@ package com.finalproject.game.server;
 
 
 import com.esotericsoftware.kryonet.Connection;
-import com.finalproject.game.server.entities.live.player.Player;
+import com.finalproject.game.server.entity.live.player.Player;
+
+import java.util.ArrayList;
 
 public class RemoteClient {
 
-    public final Connection connection;
+    private final Connection connection;
     private int currentGameID;
-
     private String name;
+
     private ClientState clientState;
-    public InputState inputState;
+    private ArrayList<Integer> inputStates = new ArrayList<>();
 
-    public Player player;
+    private Player player;
 
-    public enum InputState{
-        IDLE,
-        LEFT,
-        RIGHT
+    public void update() {
+        inputStates.forEach(keycode -> player.update(keycode));
+        System.out.println(player);
     }
 
-    public enum ClientState {
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public int getCurrentGameID() {
+        return currentGameID;
+    }
+
+    public void setCurrentGameID(int currentGameID) {
+        this.currentGameID = currentGameID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ClientState getClientState() {
+        return clientState;
+    }
+
+    public void setClientState(ClientState clientState) {
+        this.clientState = clientState;
+    }
+
+    public ArrayList<Integer> getInputStates() {
+        return inputStates;
+    }
+
+    public void setInputStates(ArrayList<Integer> inputStates) {
+        this.inputStates = inputStates;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public static enum InputState {
+        LEFT,
+        RIGHT,
+        UP,
+        DOWN,
+    }
+
+    public static enum ClientState {
         NAMELESS,
         IDLE,
         QUEUED,
@@ -37,40 +89,6 @@ public class RemoteClient {
         name = "Player " + c.getID();
     }
 
-
-    public Connection getConnection() {
-        return connection;
-    }
-
-    public String name() {
-        return name;
-    }
-
-    public ClientState clientState() {
-        return clientState;
-    }
-
-    public int getGameID() {
-        return currentGameID;
-    }
-
-
-    public void setGameID(int id) {
-        currentGameID = id;
-    }
-
-    public void setName(String nameToSet) {
-        if (clientState == ClientState.NAMELESS) {
-            name = nameToSet;
-            clientState = ClientState.IDLE;
-        } else {
-            System.out.println("Tried to set a name for a client that already has one!");
-        }
-    }
-
-    public void setClientState(ClientState state) {
-        clientState = state;
-    }
 
     @Override
     public String toString() {

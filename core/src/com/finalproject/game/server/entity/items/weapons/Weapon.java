@@ -1,6 +1,6 @@
-package com.finalproject.game.server.entities.items.weapons;
+package com.finalproject.game.server.entity.items.weapons;
 
-import com.finalproject.game.server.entities.items.Item;
+import com.finalproject.game.server.entity.items.Item;
 
 public abstract class Weapon extends Item {
 
