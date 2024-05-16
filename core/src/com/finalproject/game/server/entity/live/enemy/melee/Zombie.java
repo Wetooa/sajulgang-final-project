@@ -7,10 +7,10 @@ import com.finalproject.game.server.entity.live.enemy.Enemy;
 
 public class Zombie extends Enemy {
 
-    public Zombie(GameInstanceServer gameInstanceServer) {
-        super((LiveEntityBuilder) new LiveEntityBuilder().setGameInstanceServer(gameInstanceServer));
-    }
 
+    public Zombie(LiveEntityBuilder builder) {
+        super(builder);
+    }
 
     @Override
     public void update(float delta) {

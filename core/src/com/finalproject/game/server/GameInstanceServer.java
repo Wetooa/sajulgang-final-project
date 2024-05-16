@@ -78,37 +78,6 @@ public class GameInstanceServer {
             }
         });
 
-
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
-        enemies.add(new Zombie(this));
     }
 
 
@@ -116,19 +85,11 @@ public class GameInstanceServer {
         bodiesToRemove.add(body);
     }
 
-    int tmp = 0;
 
+    int tmp = 0;
     public void update(float delta) {
 
-        world.step(1, 6, 2);
-
-//        if (tmp <= 0) {
-//            enemies.add(new Zombie(this));
-//            tmp = 30;
-//        }
-//        tmp -= delta;
-
-
+        world.step(1 / 60f, 6, 2);
 
         for (Player p : players) p.update(delta);
         for (Enemy p : enemies) p.update(delta);
@@ -136,6 +97,12 @@ public class GameInstanceServer {
 
         GameInstanceSnapshot gameInstanceSnapshot = new GameInstanceSnapshot(this);
         remoteClientsInServer.keySet().forEach(connection -> connection.sendTCP(gameInstanceSnapshot));
+
+        if (tmp <= 0) {
+            enemies.add(new Zombie((LiveEntityBuilder) new LiveEntityBuilder().setGameInstanceServer(this)));
+            tmp = 5;
+        }
+        tmp -= delta;
 
         clearBodiesToRemove();
     }
@@ -155,23 +122,22 @@ public class GameInstanceServer {
         if (world.isLocked()) return;
 
         for (Body body : bodiesToRemove) {
+            if (body == null || !body.isActive()) continue;
+
             // Destroy all joints connected to the body
-            final Array<JointEdge> list = body.getJointList();
-            while (!list.isEmpty()) {
-                world.destroyJoint(list.get(0).joint);
+            final Array<JointEdge> joints  = body.getJointList();
+            while (!joints.isEmpty()) {
+                world.destroyJoint(joints.get(0).joint);
             }
 
             // Destroy all fixtures attached to the body
-            Array<Fixture> fixtureList = body.getFixtureList();
-            while (fixtureList.size > 0) {
-                Fixture fixture = fixtureList.get(0);
-                body.destroyFixture(fixture);
-                fixtureList = body.getFixtureList(); // Update the fixture list after removing a fixture
+            final Array<Fixture> fixtures = body.getFixtureList();
+            while (!fixtures.isEmpty()) {
+                body.destroyFixture(fixtures.get(0));
             }
 
             // Retrieve the user data
             Object userData = body.getUserData();
-
             body.setUserData(null);
             world.destroyBody(body);
 

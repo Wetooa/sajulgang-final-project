@@ -33,6 +33,8 @@ public abstract class Projectile extends Entity {
 
     @Override
     public void update(float delta) {
+//        if (!boxBody.isActive()) return;
+
         float impulseStrength = getMaxSpeed(); // Adjust as needed
         Vector2 impulse = new Vector2(MathUtils.cos(angle) * impulseStrength, MathUtils.sin(angle) * impulseStrength);
         boxBody.applyLinearImpulse(impulse, boxBody.getWorldCenter(), true);

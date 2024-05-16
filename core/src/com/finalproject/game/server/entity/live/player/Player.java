@@ -35,7 +35,7 @@ public class Player extends LiveEntity {
         this.currentStamina = builder.getCurrentStamina();
         this.maxStamina = builder.getMaxStamina();
 
-        items.add(new Handgun((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient)));
+        items.add(new LaserGun((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient)));
     }
 
     public boolean isRunning() {
