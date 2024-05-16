@@ -68,6 +68,7 @@ public class GameClient extends Game {
 
     public void connectToServer() {
         String ip = "192.168.1.22";
+        ip = "127.0.0.1";
 
         try {
             clientController = new ClientController(ip);

@@ -4,18 +4,17 @@ import com.finalproject.game.server.builder.Builder;
 
 public class WeaponBuilder extends ItemBuilder {
 
-    protected float accuracy;
-    protected float range;
-    protected float fireRate;
+    protected float accuracy = 1;
+    protected float range = 10;
 
-    protected int maxAmmo;
-    protected int currentAmmo;
+    protected int maxAmmo = 100;
+    protected int currentAmmo = 100;
 
     public float getAccuracy() {
         return accuracy;
     }
 
-    public Builder setAccuracy(float accuracy) {
+    public ItemBuilder setAccuracy(float accuracy) {
         this.accuracy = accuracy;
         return this;
     }
@@ -24,17 +23,8 @@ public class WeaponBuilder extends ItemBuilder {
         return range;
     }
 
-    public Builder setRange(float range) {
+    public ItemBuilder setRange(float range) {
         this.range = range;
-        return this;
-    }
-
-    public float getFireRate() {
-        return fireRate;
-    }
-
-    public Builder setFireRate(float fireRate) {
-        this.fireRate = fireRate;
         return this;
     }
 
@@ -42,7 +32,7 @@ public class WeaponBuilder extends ItemBuilder {
         return maxAmmo;
     }
 
-    public Builder setMaxAmmo(int maxAmmo) {
+    public ItemBuilder setMaxAmmo(int maxAmmo) {
         this.maxAmmo = maxAmmo;
         return this;
     }
@@ -51,7 +41,7 @@ public class WeaponBuilder extends ItemBuilder {
         return currentAmmo;
     }
 
-    public Builder setCurrentAmmo(int currentAmmo) {
+    public ItemBuilder setCurrentAmmo(int currentAmmo) {
         this.currentAmmo = currentAmmo;
         return this;
     }

@@ -15,7 +15,7 @@ public class LiveEntityBuilder extends EntityBuilder {
         return runningMultiplier;
     }
 
-    public Builder setRunningMultiplier(int runningMultiplier) {
+    public LiveEntityBuilder setRunningMultiplier(int runningMultiplier) {
         this.runningMultiplier = runningMultiplier;
         return this;
     }
@@ -24,7 +24,7 @@ public class LiveEntityBuilder extends EntityBuilder {
         return maxStamina;
     }
 
-    public Builder setMaxStamina(int maxStamina) {
+    public LiveEntityBuilder setMaxStamina(int maxStamina) {
         this.maxStamina = maxStamina;
         return this;
     }
@@ -33,7 +33,7 @@ public class LiveEntityBuilder extends EntityBuilder {
         return currentStamina;
     }
 
-    public Builder setCurrentStamina(int currentStamina) {
+    public LiveEntityBuilder setCurrentStamina(int currentStamina) {
         this.currentStamina = currentStamina;
         return this;
     }
@@ -42,7 +42,7 @@ public class LiveEntityBuilder extends EntityBuilder {
         return maxHealth;
     }
 
-    public Builder setMaxHealth(int maxHealth) {
+    public LiveEntityBuilder setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
         return this;
     }
@@ -51,7 +51,7 @@ public class LiveEntityBuilder extends EntityBuilder {
         return currentHealth;
     }
 
-    public Builder setCurrentHealth(int currentHealth) {
+    public LiveEntityBuilder setCurrentHealth(int currentHealth) {
         this.currentHealth = currentHealth;
         return this;
     }

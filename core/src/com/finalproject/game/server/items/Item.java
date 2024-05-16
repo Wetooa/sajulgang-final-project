@@ -11,6 +11,9 @@ public abstract class Item {
 
     protected final float weight;
 
+    protected final float fireRate;
+    protected float reload;
+
     protected GameInstanceServer gameInstanceServer;
     protected RemoteClient remoteClient;
 
@@ -19,12 +22,24 @@ public abstract class Item {
         this.description = builder.getDescription();
 
         this.weight = builder.getWeight();
+        this.fireRate = builder.getFireRate();
 
         this.gameInstanceServer = builder.getGameInstanceServer();
         this.remoteClient = builder.getRemoteClient();
     }
 
-    public abstract void activate();
+    public void activate(float delta) {
+        this.reload = Math.max(0, this.reload - delta);
+
+        if (this.reload > 0) {
+            return;
+        }
+
+        doAction();
+        this.reload = this.fireRate;
+    }
+
+    public abstract void doAction();
 
     public GameInstanceServer getGameInstanceServer() {
         return gameInstanceServer;

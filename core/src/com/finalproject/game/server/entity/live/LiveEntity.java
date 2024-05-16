@@ -7,7 +7,6 @@ public abstract class LiveEntity extends Entity {
     protected int currentHealth;
     protected int maxHealth;
 
-
     public LiveEntity(LiveEntityBuilder builder) {
         super(builder);
 
@@ -31,4 +30,16 @@ public abstract class LiveEntity extends Entity {
         this.maxHealth = maxHealth;
     }
 
+
+    public void takeDamage(int damage) {
+        setCurrentHealth(getCurrentHealth() - damage);
+    }
+
+
+    @Override
+    public void update(float delta) {
+        if (getCurrentHealth() <= 0) {
+            removeBody();
+        }
+    }
 }

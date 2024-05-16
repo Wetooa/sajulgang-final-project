@@ -31,12 +31,20 @@ public class OverworldScreen implements Screen {
 
         GameClient.gameInstanceSnapshot.players.forEach(player -> {
             Vector2 pos = player.getPos();
-            shapeRenderer.rect(pos.x, pos.y, 1, 1);
+            shapeRenderer.setColor(Color.WHITE);
+            shapeRenderer.rect(pos.x, pos.y, player.getSizeX(), player.getSizeY());
+        });
+
+        GameClient.gameInstanceSnapshot.enemies.forEach(enemy -> {
+            Vector2 pos = enemy.getPos();
+            shapeRenderer.setColor(Color.RED);
+            shapeRenderer.rect(pos.x, pos.y, enemy.getSizeX(), enemy.getSizeY());
         });
 
         GameClient.gameInstanceSnapshot.projectiles.forEach(projectile -> {
             Vector2 pos = projectile.getPos();
-            shapeRenderer.rect(pos.x, pos.y, 1, 1);
+            shapeRenderer.setColor(Color.GREEN);
+            shapeRenderer.rect(pos.x, pos.y, projectile.getSizeX(), projectile.getSizeY());
         });
 
         shapeRenderer.end();

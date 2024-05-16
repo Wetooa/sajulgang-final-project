@@ -1,10 +1,14 @@
 package com.finalproject.game.client.packet.client;
 
-public class KeyPressed extends KeyAction {
+public class KeyPressed {
+
+    public int keycode;
 
     public KeyPressed() {}
 
     public KeyPressed(int keycode) {
-        super(keycode);
+        this.keycode = keycode;
     }
+
+
 }

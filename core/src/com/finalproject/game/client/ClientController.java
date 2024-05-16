@@ -3,6 +3,8 @@ package com.finalproject.game.client;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
@@ -38,35 +40,47 @@ public class ClientController {
             public boolean keyDown(int keycode) {
                 Gdx.app.log("Player", "Clicked " + keycode);
                 ClientController.client.sendUDP(new KeyPressed(keycode));
-                return false;
+                return super.keyDown(keycode);
             }
 
             @Override
             public boolean keyUp(int keycode) {
                 Gdx.app.log("Player", "Released " + keycode);
                 ClientController.client.sendUDP(new KeyReleased(keycode));
-                return false;
+                return super.keyUp(keycode);
             }
 
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
                 Gdx.app.log("Player", "Mouse Pressed " + button);
-                ClientController.client.sendUDP(new MousePressed(button));
-                return false;
+                Vector3 worldCoordinates = GameClient.camera.unproject(new Vector3(screenX, screenY, 0));
+                ClientController.client.sendUDP(new MousePressed(worldCoordinates.x, worldCoordinates.y, button));
+                return super.touchDown(screenX, screenY, pointer, button);
             }
 
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 Gdx.app.log("Player", "Mouse Released " + button);
-                ClientController.client.sendUDP(new MouseReleased(button));
-                return false;
+                Vector3 worldCoordinates = GameClient.camera.unproject(new Vector3(screenX, screenY, 0));
+                ClientController.client.sendUDP(new MouseReleased(worldCoordinates.x, worldCoordinates.y, button));
+                return super.touchUp(screenX, screenY, pointer, button);
+            }
+
+
+            @Override
+            public boolean touchDragged(int screenX, int screenY, int pointer) {
+                Gdx.app.log("Player", "Mouse Dragged " + screenX + " " + screenY);
+                Vector3 worldCoordinates = GameClient.camera.unproject(new Vector3(screenX, screenY, 0));
+                ClientController.client.sendUDP(new MouseMove(worldCoordinates.x, worldCoordinates.y));
+                return super.touchDragged(screenX, screenY, pointer);
             }
 
             @Override
             public boolean mouseMoved(int screenX, int screenY) {
                 Gdx.app.log("Player", "Moved mouse to " + screenX + " " + screenY);
-                ClientController.client.sendUDP(new MouseMove(screenX, screenY));
-                return false;
+                Vector3 worldCoordinates = GameClient.camera.unproject(new Vector3(screenX, screenY, 0));
+                ClientController.client.sendUDP(new MouseMove(worldCoordinates.x, worldCoordinates.y));
+                return super.mouseMoved(screenX, screenY);
             }
         });
 
@@ -77,7 +91,6 @@ public class ClientController {
                 Gdx.app.log("Client", "Received " + object + " from " + connection);
 
                 // TODO: lol they look the same but trust me they *might differ lololkasdjfiosdni
-
 
                 if (object instanceof GameInstanceSnapshot) {
                     GameClient.gameInstanceSnapshot = (GameInstanceSnapshot) object;

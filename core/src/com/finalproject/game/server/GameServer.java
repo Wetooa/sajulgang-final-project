@@ -40,23 +40,28 @@ public class GameServer {
         server.addListener(new Listener() {
                                @Override
                                public void received(Connection connection, Object object) {
-                                   System.out.println("[Server]: " + connection + " sent this object " + object);
                                    RemoteClient remoteClient = remoteClients.get(connection);
 
                                    if (object instanceof KeyPressed) {
-                                       remoteClient.getInputStates().add(((KeyPressed) object).key);
+                                       remoteClient.getInputStates().add(((KeyPressed) object).keycode);
                                    }
 
                                    if (object instanceof KeyReleased) {
-                                       remoteClient.getInputStates().remove((Object)((KeyReleased) object).key);
+                                       remoteClient.getInputStates().remove((Object)((KeyReleased) object).keycode);
                                    }
 
                                    if (object instanceof MousePressed) {
-                                       remoteClient.getMouseButtonStates().add(((MousePressed) object).key);
+                                       MousePressed mouse = (MousePressed) object;
+                                       remoteClient.getMouseButtonStates().add(mouse.button);
+                                       remoteClient.setMouseX(mouse.mouseX);
+                                       remoteClient.setMouseY(mouse.mouseY);
                                    }
 
                                    if (object instanceof MouseReleased) {
-                                       remoteClient.getMouseButtonStates().remove((Object)((MouseReleased) object).key);
+                                       MouseReleased mouse = (MouseReleased) object;
+                                       remoteClient.getMouseButtonStates().remove((Object)(mouse.button));
+                                       remoteClient.setMouseX(mouse.mouseX);
+                                       remoteClient.setMouseY(mouse.mouseY);
                                    }
 
                                    if (object instanceof MouseMove) {
@@ -89,7 +94,7 @@ public class GameServer {
         scheduler.scheduleAtFixedRate(() -> {
             long now = System.nanoTime();
             long frameTime = now - lastUpdateTime.getAndSet(now);
-            double delta = frameTime / 1_000_000_000.0f;
+            float delta = frameTime / 1_000_000_000.0f;
 
             // Update game logic timers
 //            mmTimer += delta;
@@ -99,7 +104,7 @@ public class GameServer {
 //            }
 
             // Parallel updateMovement of game instances if feasible
-            activeGames.values().parallelStream().forEach(gameInstance -> gameUpdatePool.submit(gameInstance::update));
+            activeGames.values().parallelStream().forEach(gameInstance -> gameUpdatePool.submit(() -> gameInstance.update(delta)));
 
         }, 0L, sleep, TimeUnit.MILLISECONDS);
 

@@ -9,7 +9,7 @@ public class Tukog extends MeleeWeapon {
     }
 
     @Override
-    public void activate() {
+    public void doAction() {
         System.out.println("Using Tukog");
     }
 }

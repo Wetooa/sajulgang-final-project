@@ -9,7 +9,7 @@ public  class Grenade extends InstantWeapon {
     }
 
     @Override
-    public void activate() {
+    public void doAction() {
 
     }
 }

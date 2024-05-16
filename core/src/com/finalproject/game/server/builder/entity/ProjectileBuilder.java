@@ -4,24 +4,25 @@ import com.finalproject.game.server.builder.Builder;
 
 public class ProjectileBuilder extends EntityBuilder {
 
-    protected int damage;
-    protected float speed;
+    protected float angle = 0;
 
-    public float getSpeed() {
-        return speed;
+    public float getRange() {
+        return range;
     }
 
-    public Builder setSpeed(float speed) {
-        this.speed = speed;
-        return this;
+    public ProjectileBuilder setRange(float range) {
+        this.range = range;
+        return  this;
     }
 
-    public int getDamage() {
-        return damage;
+    protected float range = 100;
+
+    public float getAngle() {
+        return angle;
     }
 
-    public Builder setDamage(int damage) {
-        this.damage = damage;
+    public ProjectileBuilder setAngle(float angle) {
+        this.angle = angle;
         return this;
     }
 

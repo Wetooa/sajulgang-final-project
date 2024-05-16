@@ -1,10 +1,14 @@
 package com.finalproject.game.client.packet.client;
 
-public class MousePressed extends KeyAction {
+public class MousePressed extends  MouseMove {
+
+    public int button;
+
     public MousePressed() {
     }
 
-    public MousePressed(int button) {
-        super(button);
+    public MousePressed(float mouseX, float mouseY, int button) {
+        super(mouseX, mouseY);
+        this.button = button;
     }
 }

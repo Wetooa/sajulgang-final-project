@@ -2,6 +2,7 @@ package com.finalproject.game.server.builder;
 
 import com.finalproject.game.server.GameInstanceServer;
 import com.finalproject.game.server.RemoteClient;
+import com.finalproject.game.server.builder.entity.EntityBuilder;
 
 public class Builder {
 

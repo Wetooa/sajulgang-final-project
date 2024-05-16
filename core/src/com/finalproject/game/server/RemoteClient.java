@@ -44,14 +44,6 @@ public class RemoteClient {
 
     protected Player player;
 
-    public void update() {
-        // FIX: maybe naay better, but like if player is running ni
-        player.setRunning(inputStates.contains(Input.Keys.SHIFT_LEFT));
-
-        inputStates.forEach(keycode -> player.updateMovement(keycode));
-        mouseButtonStates.forEach(button -> player.updateMouseAction(button));
-    }
-
     public Connection getConnection() {
         return connection;
     }
