@@ -43,4 +43,8 @@ public class Entity {
     }
 
 
+    public float getSize() {
+        return getSizeX();
+    }
+
 }

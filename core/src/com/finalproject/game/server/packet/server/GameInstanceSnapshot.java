@@ -1,5 +1,6 @@
 package com.finalproject.game.server.packet.server;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.finalproject.game.client.builder.EntityBuilder;
 import com.finalproject.game.client.entity.Entity;
@@ -16,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 public class GameInstanceSnapshot {
+
+    public Vector2 playerPos = new Vector2(0, 0);
 
     public List<com.finalproject.game.client.entity.live.player.Player> players = new ArrayList<>();
     public List<com.finalproject.game.client.entity.live.enemy.Enemy> enemies = new ArrayList<>();
@@ -38,10 +41,12 @@ public class GameInstanceSnapshot {
         }
     }
 
-    public GameInstanceSnapshot(GameInstanceServer gameInstance) {
+    public GameInstanceSnapshot(GameInstanceServer gameInstance, RemoteClient remoteClient) {
         getClientData(com.finalproject.game.client.entity.live.player.Player.class, players, gameInstance.players);
         getClientData(com.finalproject.game.client.entity.live.enemy.Enemy.class, enemies, gameInstance.enemies);
         getClientData(com.finalproject.game.client.entity.projectile.Projectile.class, projectiles, gameInstance.projectiles);
+
+        playerPos = remoteClient.getPlayer().getBoxBody().getPosition();
     }
 
 

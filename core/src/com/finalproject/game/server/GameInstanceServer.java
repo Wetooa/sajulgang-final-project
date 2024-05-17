@@ -46,18 +46,21 @@ public class GameInstanceServer {
                 Object a = fixtureA.getBody().getUserData();
                 Object b = fixtureB.getBody().getUserData();
 
+
+                if (a == null || b == null) return;
                 if (a instanceof Enemy && b instanceof Projectile) {
                     Object c = a;
                     a = b;
                     b = c;
                 }
-
                 if (a instanceof Projectile && b instanceof Enemy) {
-                    Projectile p = (Projectile)a;
-                    Enemy e = (Enemy)b;
+                    Projectile p = (Projectile) a;
+                    Enemy e = (Enemy) b;
 
-                    e.takeDamage(p.getDamage());
-                    p.removeBody();
+                    if (p != null) {
+                        e.takeDamage(p.getDamage());
+                        p.removeBody();
+                    }
                 }
 
             }
@@ -87,6 +90,7 @@ public class GameInstanceServer {
 
 
     int tmp = 0;
+
     public void update(float delta) {
 
         world.step(1 / 60f, 6, 2);
@@ -95,11 +99,10 @@ public class GameInstanceServer {
         for (Enemy p : enemies) p.update(delta);
         for (Projectile p : projectiles) p.update(delta);
 
-        GameInstanceSnapshot gameInstanceSnapshot = new GameInstanceSnapshot(this);
-        remoteClientsInServer.keySet().forEach(connection -> connection.sendTCP(gameInstanceSnapshot));
+        remoteClientsInServer.values().forEach(RemoteClient::sendDataToClient);
 
         if (tmp <= 0) {
-            enemies.add(new Zombie((LiveEntityBuilder) new LiveEntityBuilder().setGameInstanceServer(this)));
+            enemies.add(new Zombie((LiveEntityBuilder) new LiveEntityBuilder().setPosX(20).setPosY(20).setGameInstanceServer(this)));
             tmp = 5;
         }
         tmp -= delta;
@@ -116,6 +119,7 @@ public class GameInstanceServer {
 
         remoteClient.setPlayer(p);
         remoteClient.setCurrentGameID(this.GAME_ID);
+        remoteClient.setGameInstanceServer(this);
     }
 
     public void clearBodiesToRemove() {
@@ -125,7 +129,7 @@ public class GameInstanceServer {
             if (body == null || !body.isActive()) continue;
 
             // Destroy all joints connected to the body
-            final Array<JointEdge> joints  = body.getJointList();
+            final Array<JointEdge> joints = body.getJointList();
             while (!joints.isEmpty()) {
                 world.destroyJoint(joints.get(0).joint);
             }

@@ -2,18 +2,13 @@ package com.finalproject.game.server.entity.live.player;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.finalproject.game.server.builder.entity.LiveEntityBuilder;
 import com.finalproject.game.server.builder.item.WeaponBuilder;
-import com.finalproject.game.server.entity.Entity;
 import com.finalproject.game.server.entity.live.LiveEntity;
 import com.finalproject.game.server.items.Item;
-import com.finalproject.game.server.items.weapons.range.CrossBow;
-import com.finalproject.game.server.items.weapons.range.Handgun;
-import com.finalproject.game.server.items.weapons.range.LaserGun;
-import com.finalproject.game.server.items.weapons.range.Shotgun;
+import com.finalproject.game.server.items.weapons.melee.Katana;
+import com.finalproject.game.server.items.weapons.melee.Tukog;
+import com.finalproject.game.server.items.weapons.range.HandGun;
 
 import java.util.ArrayList;
 
@@ -35,7 +30,7 @@ public class Player extends LiveEntity {
         this.currentStamina = builder.getCurrentStamina();
         this.maxStamina = builder.getMaxStamina();
 
-        items.add(new LaserGun((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient)));
+        items.add(new Katana((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient)));
     }
 
     public boolean isRunning() {

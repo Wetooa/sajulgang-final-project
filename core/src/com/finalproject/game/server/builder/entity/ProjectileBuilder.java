@@ -5,6 +5,7 @@ import com.finalproject.game.server.builder.Builder;
 public class ProjectileBuilder extends EntityBuilder {
 
     protected float angle = 0;
+    protected float range = 1;
 
     public float getRange() {
         return range;
@@ -15,7 +16,6 @@ public class ProjectileBuilder extends EntityBuilder {
         return  this;
     }
 
-    protected float range = 100;
 
     public float getAngle() {
         return angle;

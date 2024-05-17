@@ -1,15 +1,16 @@
 package com.finalproject.game.server.items.weapons.melee;
 
 import com.finalproject.game.server.builder.item.WeaponBuilder;
+import com.finalproject.game.server.entity.projectile.melee.Thrust;
 
 public class Tukog extends MeleeWeapon {
 
-    protected Tukog(WeaponBuilder builder) {
-        super(builder);
+    public Tukog(WeaponBuilder builder) {
+        super((WeaponBuilder) builder.setFireRate(0.1f));
     }
 
     @Override
     public void doAction() {
-        System.out.println("Using Tukog");
+        shoot(Thrust.class);
     }
 }

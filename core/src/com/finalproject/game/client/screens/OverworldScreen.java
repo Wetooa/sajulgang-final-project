@@ -24,6 +24,11 @@ public class OverworldScreen implements Screen {
         Gdx.gl.glClearColor(0.0f, 0, 0.0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
+        Vector2 playerPos = GameClient.gameInstanceSnapshot.playerPos;
+        camera.position.set(playerPos.x, playerPos.y, 0);
+        camera.update();
+
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin();
         shapeRenderer.setColor(Color.WHITE);
@@ -32,19 +37,19 @@ public class OverworldScreen implements Screen {
         GameClient.gameInstanceSnapshot.players.forEach(player -> {
             Vector2 pos = player.getPos();
             shapeRenderer.setColor(Color.WHITE);
-            shapeRenderer.rect(pos.x, pos.y, player.getSizeX(), player.getSizeY());
+            shapeRenderer.circle(pos.x, pos.y, player.getSize());
         });
 
         GameClient.gameInstanceSnapshot.enemies.forEach(enemy -> {
             Vector2 pos = enemy.getPos();
             shapeRenderer.setColor(Color.RED);
-            shapeRenderer.rect(pos.x, pos.y, enemy.getSizeX(), enemy.getSizeY());
+            shapeRenderer.circle(pos.x, pos.y, enemy.getSize());
         });
 
         GameClient.gameInstanceSnapshot.projectiles.forEach(projectile -> {
             Vector2 pos = projectile.getPos();
             shapeRenderer.setColor(Color.GREEN);
-            shapeRenderer.rect(pos.x, pos.y, projectile.getSizeX(), projectile.getSizeY());
+            shapeRenderer.circle(pos.x, pos.y, projectile.getSize());
         });
 
         shapeRenderer.end();

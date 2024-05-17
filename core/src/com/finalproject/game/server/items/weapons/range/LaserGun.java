@@ -1,7 +1,7 @@
 package com.finalproject.game.server.items.weapons.range;
 
 import com.finalproject.game.server.builder.item.WeaponBuilder;
-import com.finalproject.game.server.entity.projectile.Energy;
+import com.finalproject.game.server.entity.projectile.range.Energy;
 
 public class LaserGun extends RangeWeapon {
     public LaserGun(WeaponBuilder builder) {

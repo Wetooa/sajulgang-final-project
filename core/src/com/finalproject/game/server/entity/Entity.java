@@ -40,6 +40,9 @@ public abstract class Entity extends Sprite {
     protected float sizeX;
     protected float sizeY;
 
+
+
+
     public float getSizeX() {
         return sizeX;
     }

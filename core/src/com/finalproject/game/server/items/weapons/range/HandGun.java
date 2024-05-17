@@ -1,13 +1,11 @@
 package com.finalproject.game.server.items.weapons.range;
 
-import com.finalproject.game.server.GameInstanceServer;
-import com.finalproject.game.server.RemoteClient;
 import com.finalproject.game.server.builder.item.WeaponBuilder;
-import com.finalproject.game.server.entity.projectile.Bullet;
+import com.finalproject.game.server.entity.projectile.range.Bullet;
 
-public class Handgun extends RangeWeapon {
+public class HandGun extends RangeWeapon {
 
-    public Handgun(WeaponBuilder builder) {
+    public HandGun(WeaponBuilder builder) {
         super((WeaponBuilder) builder.setFireRate(0.1f));
     }
 

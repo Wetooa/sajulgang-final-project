@@ -1,20 +1,16 @@
 package com.finalproject.game.server.entity.projectile;
 
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.finalproject.game.server.builder.entity.ProjectileBuilder;
 import com.finalproject.game.server.entity.Entity;
 
 public abstract class Projectile extends Entity {
 
     protected float angle;
+
+    protected float range;
+    protected float expiration = 0;
 
     public Projectile(ProjectileBuilder builder) {
 
@@ -27,13 +23,20 @@ public abstract class Projectile extends Entity {
         float mouseY = remoteClient.getMouseY();
 
         this.angle = MathUtils.atan2(mouseY - playerY, mouseX - playerX);
+        this.range = builder.getRange();
+        this.expiration = range;
 
-        boxBody.setTransform(new Vector2(playerX + MathUtils.cos(angle), playerY + MathUtils.sin(angle)), 0);
+        boxBody.setTransform(new Vector2(playerX + MathUtils.cos(angle) * this.getSizeX(), playerY + MathUtils.sin(angle) * this.getSizeY()), 0);
+
     }
 
     @Override
     public void update(float delta) {
-//        if (!boxBody.isActive()) return;
+        expiration -= delta;
+        if (expiration <= 0) {
+            removeBody();
+            return;
+        }
 
         float impulseStrength = getMaxSpeed(); // Adjust as needed
         Vector2 impulse = new Vector2(MathUtils.cos(angle) * impulseStrength, MathUtils.sin(angle) * impulseStrength);

@@ -4,6 +4,7 @@ package com.finalproject.game.server;
 import com.badlogic.gdx.Input;
 import com.esotericsoftware.kryonet.Connection;
 import com.finalproject.game.server.entity.live.player.Player;
+import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,15 @@ public class RemoteClient {
     protected final Connection connection;
     protected int currentGameID;
     protected String name;
+
+    public GameInstanceServer getGameInstanceServer() {
+        return gameInstanceServer;
+    }
+
+    public void setGameInstanceServer(GameInstanceServer gameInstanceServer) {
+        this.gameInstanceServer = gameInstanceServer;
+    }
+
     protected GameInstanceServer gameInstanceServer;
 
     protected ClientState clientState;
@@ -21,6 +31,14 @@ public class RemoteClient {
 
     public ArrayList<Integer> getMouseButtonStates() {
         return mouseButtonStates;
+    }
+
+
+    public void sendDataToClient() {
+
+        GameInstanceSnapshot gameInstanceSnapshot = new GameInstanceSnapshot(gameInstanceServer, this);
+        connection.sendTCP(gameInstanceSnapshot);
+
     }
 
     public float getMouseY() {
@@ -48,9 +66,7 @@ public class RemoteClient {
         return connection;
     }
 
-    public int getCurrentGameID() {
-        return currentGameID;
-    }
+    public int getCurrentGameID() {return currentGameID;}
 
     public void setCurrentGameID(int currentGameID) {
         this.currentGameID = currentGameID;
