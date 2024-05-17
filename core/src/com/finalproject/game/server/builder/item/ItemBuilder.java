@@ -2,7 +2,7 @@ package com.finalproject.game.server.builder.item;
 
 import com.finalproject.game.server.builder.Builder;
 
-public abstract class ItemBuilder extends Builder {
+public  class ItemBuilder extends Builder {
 
 
     protected String name = "Weapon";

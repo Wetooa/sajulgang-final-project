@@ -99,7 +99,7 @@ public class GameInstanceServer {
         for (Enemy p : enemies) p.update(delta);
         for (Projectile p : projectiles) p.update(delta);
 
-        remoteClientsInServer.values().forEach(RemoteClient::sendDataToClient);
+        remoteClientsInServer.values().forEach(RemoteClient::update);
 
         if (tmp <= 0) {
             enemies.add(new Zombie((LiveEntityBuilder) new LiveEntityBuilder().setPosX(20).setPosY(20).setGameInstanceServer(this)));

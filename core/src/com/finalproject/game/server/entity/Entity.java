@@ -42,7 +42,6 @@ public abstract class Entity extends Sprite {
 
 
 
-
     public float getSizeX() {
         return sizeX;
     }
@@ -88,8 +87,8 @@ public abstract class Entity extends Sprite {
     protected CircleShape dynamicBox;
     protected FixtureDef  fixtureDef;
 
-    protected GameInstanceServer gameInstanceServer;
-    protected RemoteClient remoteClient;
+    protected transient GameInstanceServer gameInstanceServer;
+    protected transient RemoteClient remoteClient;
 
     public Entity(EntityBuilder builder) {
         this.maxSpeed = builder.getMaxSpeed();

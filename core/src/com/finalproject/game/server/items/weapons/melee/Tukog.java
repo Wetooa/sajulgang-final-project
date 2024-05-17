@@ -5,6 +5,11 @@ import com.finalproject.game.server.entity.projectile.melee.Thrust;
 
 public class Tukog extends MeleeWeapon {
 
+
+    public Tukog() {
+        this(new WeaponBuilder());
+    }
+
     public Tukog(WeaponBuilder builder) {
         super((WeaponBuilder) builder.setFireRate(0.1f));
     }

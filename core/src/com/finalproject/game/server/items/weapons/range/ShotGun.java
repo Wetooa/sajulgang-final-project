@@ -9,6 +9,10 @@ public class ShotGun extends RangeWeapon {
 
     public static final int SHELLS_PER_SHOT = 10;
 
+    public ShotGun() {
+        this(new WeaponBuilder());
+    }
+
     public ShotGun(WeaponBuilder builder) {
         super((WeaponBuilder) builder.setFireRate(0.3f));
     }

@@ -9,6 +9,7 @@ import com.finalproject.game.server.RemoteClient;
 import com.finalproject.game.server.entity.live.enemy.Enemy;
 import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.server.entity.projectile.Projectile;
+import com.finalproject.game.server.items.ItemBox;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -19,6 +20,7 @@ import java.util.Map;
 public class GameInstanceSnapshot {
 
     public Vector2 playerPos = new Vector2(0, 0);
+    public ItemBox itemBox = new ItemBox();
 
     public List<com.finalproject.game.client.entity.live.player.Player> players = new ArrayList<>();
     public List<com.finalproject.game.client.entity.live.enemy.Enemy> enemies = new ArrayList<>();
@@ -46,7 +48,12 @@ public class GameInstanceSnapshot {
         getClientData(com.finalproject.game.client.entity.live.enemy.Enemy.class, enemies, gameInstance.enemies);
         getClientData(com.finalproject.game.client.entity.projectile.Projectile.class, projectiles, gameInstance.projectiles);
 
-        playerPos = remoteClient.getPlayer().getBoxBody().getPosition();
+
+        Player p = remoteClient.getPlayer();
+
+        playerPos = p.getBoxBody().getPosition();
+        itemBox = p.getItemBox();
+
     }
 
 

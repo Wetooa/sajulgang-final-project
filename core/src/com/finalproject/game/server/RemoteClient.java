@@ -29,6 +29,16 @@ public class RemoteClient {
     protected ArrayList<Integer> inputStates = new ArrayList<>();
     protected ArrayList<Integer> mouseButtonStates = new ArrayList<>();
 
+    public int getIsScrollingUp() {
+        return isScrollingUp;
+    }
+
+    public void setIsScrollingUp(int isScrollingUp) {
+        this.isScrollingUp = isScrollingUp;
+    }
+
+    protected int isScrollingUp = 0;
+
     public ArrayList<Integer> getMouseButtonStates() {
         return mouseButtonStates;
     }
@@ -66,7 +76,9 @@ public class RemoteClient {
         return connection;
     }
 
-    public int getCurrentGameID() {return currentGameID;}
+    public int getCurrentGameID() {
+        return currentGameID;
+    }
 
     public void setCurrentGameID(int currentGameID) {
         this.currentGameID = currentGameID;
@@ -102,6 +114,14 @@ public class RemoteClient {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public void update() {
+        if (getIsScrollingUp() == -1) player.getItemBox().scrollItemUp();
+        if (getIsScrollingUp() == 1) player.getItemBox().scrollItemDown();
+        setIsScrollingUp(0);
+
+        sendDataToClient();
     }
 
     public static enum ClientState {

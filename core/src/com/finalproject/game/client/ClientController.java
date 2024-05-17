@@ -82,6 +82,14 @@ public class ClientController {
                 ClientController.client.sendUDP(new MouseMove(worldCoordinates.x, worldCoordinates.y));
                 return super.mouseMoved(screenX, screenY);
             }
+
+
+            @Override
+            public boolean scrolled(float amountX, float amountY) {
+                Gdx.app.log("Player", "Moved scrolled " + amountX + " " + amountY);
+                ClientController.client.sendUDP(new MouseScroll(amountX > 0));
+                return super.scrolled(amountX, amountY);
+            }
         });
 
 

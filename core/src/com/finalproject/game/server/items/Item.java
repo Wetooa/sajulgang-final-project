@@ -14,8 +14,13 @@ public abstract class Item {
     protected final float fireRate;
     protected float reload;
 
-    protected GameInstanceServer gameInstanceServer;
-    protected RemoteClient remoteClient;
+    protected transient GameInstanceServer gameInstanceServer;
+    protected transient RemoteClient remoteClient;
+
+
+    protected Item() {
+        this(new ItemBuilder());
+    }
 
     protected Item(ItemBuilder builder) {
         this.name = builder.getName();

@@ -5,6 +5,11 @@ import com.finalproject.game.server.entity.projectile.range.Bullet;
 
 public class HandGun extends RangeWeapon {
 
+
+    public HandGun() {
+        this(new WeaponBuilder());
+    }
+
     public HandGun(WeaponBuilder builder) {
         super((WeaponBuilder) builder.setFireRate(0.1f));
     }

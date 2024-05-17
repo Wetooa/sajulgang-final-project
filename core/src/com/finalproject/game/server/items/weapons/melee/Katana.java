@@ -7,6 +7,9 @@ import com.finalproject.game.server.entity.projectile.melee.Slash;
 
 public class Katana extends MeleeWeapon {
 
+    public Katana() {
+        this(new WeaponBuilder());
+    }
 
     public Katana(WeaponBuilder builder) {
         super((WeaponBuilder) builder.setFireRate(0.3f));

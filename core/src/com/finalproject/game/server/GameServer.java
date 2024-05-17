@@ -70,6 +70,11 @@ public class GameServer {
                                        remoteClient.setMouseY(mouse.mouseY);
                                    }
 
+                                   if (object instanceof  MouseScroll) {
+                                       MouseScroll mouse = (MouseScroll) object;
+                                       remoteClient.setIsScrollingUp(mouse.scrolledUp ? 1 : -1);
+                                   }
+
                                }
 
                                @Override

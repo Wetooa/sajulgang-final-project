@@ -6,9 +6,12 @@ import com.finalproject.game.server.builder.entity.LiveEntityBuilder;
 import com.finalproject.game.server.builder.item.WeaponBuilder;
 import com.finalproject.game.server.entity.live.LiveEntity;
 import com.finalproject.game.server.items.Item;
+import com.finalproject.game.server.items.ItemBox;
 import com.finalproject.game.server.items.weapons.melee.Katana;
 import com.finalproject.game.server.items.weapons.melee.Tukog;
+import com.finalproject.game.server.items.weapons.range.CrossBow;
 import com.finalproject.game.server.items.weapons.range.HandGun;
+import com.finalproject.game.server.items.weapons.range.LaserGun;
 
 import java.util.ArrayList;
 
@@ -19,9 +22,27 @@ public class Player extends LiveEntity {
     protected int currentStamina;
     protected int maxStamina;
 
-    protected int currentItemHeld = 0;
+    public int getCurrentStamina() {
+        return currentStamina;
+    }
 
-    protected ArrayList<Item> items = new ArrayList<>();
+    public void setCurrentStamina(int currentStamina) {
+        this.currentStamina = currentStamina;
+    }
+
+    public int getMaxStamina() {
+        return maxStamina;
+    }
+
+    public void setMaxStamina(int maxStamina) {
+        this.maxStamina = maxStamina;
+    }
+
+    public ItemBox getItemBox() {
+        return itemBox;
+    }
+
+    protected ItemBox itemBox = new ItemBox();
 
     public Player(LiveEntityBuilder builder) {
         super(builder);
@@ -30,7 +51,11 @@ public class Player extends LiveEntity {
         this.currentStamina = builder.getCurrentStamina();
         this.maxStamina = builder.getMaxStamina();
 
-        items.add(new Katana((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient)));
+        itemBox.addItem(new HandGun((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient)));
+        itemBox.addItem(new LaserGun((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient)));
+        itemBox.addItem(new Tukog((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient)));
+        itemBox.addItem(new CrossBow((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient)));
+        itemBox.addItem(new Katana((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient)));
     }
 
     public boolean isRunning() {
@@ -44,7 +69,6 @@ public class Player extends LiveEntity {
 
     @Override
     public void update(float delta) {
-
         this.setRunning(remoteClient.getInputStates().contains(Input.Keys.SHIFT_LEFT));
 
         remoteClient.getInputStates().forEach(keycode -> this.updateMovement(delta, keycode));
@@ -75,8 +99,7 @@ public class Player extends LiveEntity {
     }
 
     public void shoot(float delta) {
-        // TODO: temp fix
-        Item heldItem = items.get(currentItemHeld);
+        Item heldItem = itemBox.getHeldItem();
         heldItem.activate(delta);
     }
 };

@@ -13,7 +13,6 @@ public abstract class Weapon extends Item {
     protected final float accuracy;
     protected final float range;
 
-
     protected Weapon(WeaponBuilder builder) {
         super(builder);
 
