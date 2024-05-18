@@ -13,7 +13,11 @@ public abstract class Weapon extends Item {
     protected final float accuracy;
     protected final float range;
 
-    protected Weapon(WeaponBuilder builder) {
+    public Weapon() {
+        this(new WeaponBuilder());
+    }
+
+    public Weapon(WeaponBuilder builder) {
         super(builder);
 
         this.accuracy = builder.getAccuracy();
@@ -23,8 +27,9 @@ public abstract class Weapon extends Item {
     public <T extends Projectile> void shoot(Class<T> projectile) {
         try {
             Constructor<T> constructor = projectile.getConstructor(ProjectileBuilder.class);
-            gameInstanceServer.projectiles.add(constructor.newInstance((ProjectileBuilder) new ProjectileBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient)));
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            gameInstanceServer.projectiles.add(constructor.newInstance(new ProjectileBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient)));
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException e) {
             e.printStackTrace();
         }
 

@@ -4,19 +4,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.finalproject.game.client.GameClient;
 
-import static com.finalproject.game.client.GameClient.camera;
-import static com.finalproject.game.client.GameClient.shapeRenderer;
+import static com.finalproject.game.client.GameClient.*;
 
 public class OverworldScreen implements Screen {
+    protected Texture texture;
 
     @Override
     public void show() {
-
-
+        texture = new Texture("screens/overworld.jpg");
     }
 
     @Override
@@ -24,13 +24,18 @@ public class OverworldScreen implements Screen {
         Gdx.gl.glClearColor(0.0f, 0, 0.0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
         Vector2 playerPos = GameClient.gameInstanceSnapshot.playerPos;
         camera.position.set(playerPos.x, playerPos.y, 0);
         camera.update();
 
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw(texture, 0, 0);
+        batch.end();
+
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin();
+
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
 

@@ -1,13 +1,11 @@
 package com.finalproject.game.server.builder.entity;
 
-import com.finalproject.game.server.builder.Builder;
-
 public class LiveEntityBuilder extends EntityBuilder {
 
     int maxHealth = 100;
     int currentHealth = 100;
 
-    float runningMultiplier = 1.5F;
+    float runningMultiplier = 3F;
     int currentStamina = 100;
     int maxStamina = 100;
 

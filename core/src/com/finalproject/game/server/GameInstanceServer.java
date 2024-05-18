@@ -5,14 +5,13 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryonet.Connection;
 import com.finalproject.game.server.builder.entity.LiveEntityBuilder;
-import com.finalproject.game.server.builder.entity.ProjectileBuilder;
 import com.finalproject.game.server.entity.live.enemy.Enemy;
-import com.finalproject.game.server.entity.live.enemy.melee.Zombie;
 import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.server.entity.projectile.Projectile;
-import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class GameInstanceServer {
 
@@ -30,6 +29,8 @@ public class GameInstanceServer {
     public World world;
 
     public List<Body> bodiesToRemove = new ArrayList<>();
+    int tmp = 0;
+
 
     public GameInstanceServer(int GAME_ID, HashMap<Connection, RemoteClient> remoteClients) {
         this.GAME_ID = GAME_ID;
@@ -83,13 +84,9 @@ public class GameInstanceServer {
 
     }
 
-
     public void removeObject(Body body) {
         bodiesToRemove.add(body);
     }
-
-
-    int tmp = 0;
 
     public void update(float delta) {
 
@@ -102,7 +99,7 @@ public class GameInstanceServer {
         remoteClientsInServer.values().forEach(RemoteClient::update);
 
         if (tmp <= 0) {
-            enemies.add(new Zombie((LiveEntityBuilder) new LiveEntityBuilder().setPosX(20).setPosY(20).setGameInstanceServer(this)));
+//            enemies.add(new Zombie((LiveEntityBuilder) new LiveEntityBuilder().setPosX(20).setPosY(20).setGameInstanceServer(this)));
             tmp = 5;
         }
         tmp -= delta;

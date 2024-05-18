@@ -7,6 +7,9 @@ import com.finalproject.game.server.entity.live.enemy.Enemy;
 
 public class Zombie extends Enemy {
 
+    public Zombie() {
+        this(new LiveEntityBuilder());
+    }
 
     public Zombie(LiveEntityBuilder builder) {
         super(builder);

@@ -4,8 +4,14 @@ import com.finalproject.game.server.builder.entity.LiveEntityBuilder;
 import com.finalproject.game.server.entity.Entity;
 
 public abstract class LiveEntity extends Entity {
+
     protected int currentHealth;
     protected int maxHealth;
+
+
+    public LiveEntity() {
+        this(new LiveEntityBuilder());
+    }
 
     public LiveEntity(LiveEntityBuilder builder) {
         super(builder);
@@ -30,7 +36,6 @@ public abstract class LiveEntity extends Entity {
         this.maxHealth = maxHealth;
     }
 
-
     public void takeDamage(int damage) {
         setCurrentHealth(getCurrentHealth() - damage);
     }
@@ -41,5 +46,7 @@ public abstract class LiveEntity extends Entity {
         if (getCurrentHealth() <= 0) {
             removeBody();
         }
+
+        super.update(delta);
     }
 }

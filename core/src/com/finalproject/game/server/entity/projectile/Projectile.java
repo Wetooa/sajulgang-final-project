@@ -8,9 +8,13 @@ import com.finalproject.game.server.entity.Entity;
 public abstract class Projectile extends Entity {
 
     protected float angle;
-
     protected float range;
     protected float expiration = 0;
+
+
+    public Projectile() {
+        this(new ProjectileBuilder());
+    }
 
     public Projectile(ProjectileBuilder builder) {
 

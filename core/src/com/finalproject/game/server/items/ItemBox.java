@@ -11,8 +11,8 @@ public class ItemBox {
     protected int currentItemHeld = 0;
     protected List<Item> items = new ArrayList<>();
 
-
-    public ItemBox() {}
+    public ItemBox() {
+    }
 
     public void addItem(Item item) {
         if (items.size() == MAX_ITEMS) return;

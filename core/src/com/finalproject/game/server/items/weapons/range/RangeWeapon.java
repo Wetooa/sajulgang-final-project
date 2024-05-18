@@ -6,11 +6,13 @@ import com.finalproject.game.server.items.weapons.Weapon;
 public abstract class RangeWeapon extends Weapon {
 
 
-    protected RangeWeapon(WeaponBuilder builder) {
-        super(builder);
+    public RangeWeapon() {
+        this(new WeaponBuilder());
     }
 
-
+    public RangeWeapon(WeaponBuilder builder) {
+        super(builder);
+    }
 
 
 }

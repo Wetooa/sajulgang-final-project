@@ -17,7 +17,6 @@ public abstract class Item {
     protected transient GameInstanceServer gameInstanceServer;
     protected transient RemoteClient remoteClient;
 
-
     protected Item() {
         this(new ItemBuilder());
     }

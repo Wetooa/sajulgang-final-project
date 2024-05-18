@@ -6,30 +6,26 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.client.screens.OverworldScreen;
+import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameClient extends Game {
-    public SpriteBatch batch;
-
-
+    public static GameInstanceSnapshot gameInstanceSnapshot = new GameInstanceSnapshot();
     public static GameClient gameClient;
     public static ClientController clientController;
-    public static GameInstanceSnapshot gameInstanceSnapshot = new GameInstanceSnapshot();
-
     public static ShapeRenderer shapeRenderer;
     public static OrthographicCamera camera;
     public static Screen screen;
-
     public static ArrayList<Player> players;
+    public static SpriteBatch batch;
 
     @Override
-    public void create () {
-        this.batch = new SpriteBatch();
+    public void create() {
+        batch = new SpriteBatch();
         gameClient = this;
 
         Gdx.app.log("Client: ", "Initializing client");
@@ -38,7 +34,7 @@ public class GameClient extends Game {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
-        camera = new OrthographicCamera(50, 50 * (h / w));
+        camera = new OrthographicCamera(1500, 1500 * (h / w));
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
 
@@ -51,12 +47,12 @@ public class GameClient extends Game {
 
 
     @Override
-    public void render () {
+    public void render() {
         super.render();
     }
 
     @Override
-    public void dispose () {
+    public void dispose() {
         batch.dispose();
         shapeRenderer.dispose();
     }

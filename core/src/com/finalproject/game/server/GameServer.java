@@ -15,13 +15,11 @@ import java.util.concurrent.atomic.AtomicLong;
 public class GameServer {
 
     private final static int BUFFER_SIZE = 1024 * 1024;
-
-    private final Map<Connection, RemoteClient> remoteClients = new HashMap<>();
-    private final ConcurrentHashMap<Integer, GameInstanceServer> activeGames = new ConcurrentHashMap<>();
-
     private static final float TARGET_DELTA = 0.016f; // Assuming target delta is 16ms
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private static final ExecutorService gameUpdatePool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+    private final Map<Connection, RemoteClient> remoteClients = new HashMap<>();
+    private final ConcurrentHashMap<Integer, GameInstanceServer> activeGames = new ConcurrentHashMap<>();
 
 //    private double matchMakeTimer = 0.0;
 
@@ -33,6 +31,7 @@ public class GameServer {
 
         Kryo kryo = server.getKryo();
         kryo.setRegistrationRequired(false);
+        kryo.setReferences(true);
 
         GameInstanceServer ng = new GameInstanceServer(1, new HashMap<>());
         activeGames.put(1, ng);
@@ -47,7 +46,7 @@ public class GameServer {
                                    }
 
                                    if (object instanceof KeyReleased) {
-                                       remoteClient.getInputStates().remove((Object)((KeyReleased) object).keycode);
+                                       remoteClient.getInputStates().remove((Object) ((KeyReleased) object).keycode);
                                    }
 
                                    if (object instanceof MousePressed) {
@@ -59,18 +58,18 @@ public class GameServer {
 
                                    if (object instanceof MouseReleased) {
                                        MouseReleased mouse = (MouseReleased) object;
-                                       remoteClient.getMouseButtonStates().remove((Object)(mouse.button));
+                                       remoteClient.getMouseButtonStates().remove((Object) (mouse.button));
                                        remoteClient.setMouseX(mouse.mouseX);
                                        remoteClient.setMouseY(mouse.mouseY);
                                    }
 
                                    if (object instanceof MouseMove) {
-                                       MouseMove mouse = (MouseMove)object;
+                                       MouseMove mouse = (MouseMove) object;
                                        remoteClient.setMouseX(mouse.mouseX);
                                        remoteClient.setMouseY(mouse.mouseY);
                                    }
 
-                                   if (object instanceof  MouseScroll) {
+                                   if (object instanceof MouseScroll) {
                                        MouseScroll mouse = (MouseScroll) object;
                                        remoteClient.setIsScrollingUp(mouse.scrolledUp ? 1 : -1);
                                    }
@@ -116,13 +115,12 @@ public class GameServer {
 
     }
 
-    public void addClient(Connection connection) {
-        if (!remoteClients.containsKey(connection)) {
-            RemoteClient newClient = new RemoteClient(connection);
-            remoteClients.put(connection, newClient);
-            activeGames.get(1).addRemoteClient(connection, newClient);
-        } else
-            System.out.println("Client with connection ID: " + connection.getID() + " is already connected!");
+    public static void main(String[] args) {
+        try {
+            new GameServer();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -153,12 +151,12 @@ public class GameServer {
 //        }
 //    }
 
-
-    public static void main(String[] args) {
-        try {
-            new GameServer();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void addClient(Connection connection) {
+        if (!remoteClients.containsKey(connection)) {
+            RemoteClient newClient = new RemoteClient(connection);
+            remoteClients.put(connection, newClient);
+            activeGames.get(1).addRemoteClient(connection, newClient);
+        } else
+            System.out.println("Client with connection ID: " + connection.getID() + " is already connected!");
     }
 }

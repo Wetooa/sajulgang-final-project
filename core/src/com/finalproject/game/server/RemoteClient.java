@@ -1,7 +1,6 @@
 package com.finalproject.game.server;
 
 
-import com.badlogic.gdx.Input;
 import com.esotericsoftware.kryonet.Connection;
 import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
@@ -10,9 +9,28 @@ import java.util.ArrayList;
 
 public class RemoteClient {
 
-    protected final Connection connection;
+
+    protected transient final Connection connection;
+    protected transient GameInstanceServer gameInstanceServer;
+
     protected int currentGameID;
     protected String name;
+    protected ClientState clientState;
+    protected ArrayList<Integer> inputStates = new ArrayList<>();
+    protected ArrayList<Integer> mouseButtonStates = new ArrayList<>();
+    protected int isScrollingUp = 0;
+    protected float mouseX = 0;
+    protected float mouseY = 0;
+    protected Player player;
+
+
+    public RemoteClient(Connection c) {
+        connection = c;
+        clientState = ClientState.NAMELESS;
+        currentGameID = -1;
+
+        name = "Player " + c.getID();
+    }
 
     public GameInstanceServer getGameInstanceServer() {
         return gameInstanceServer;
@@ -22,13 +40,6 @@ public class RemoteClient {
         this.gameInstanceServer = gameInstanceServer;
     }
 
-    protected GameInstanceServer gameInstanceServer;
-
-    protected ClientState clientState;
-
-    protected ArrayList<Integer> inputStates = new ArrayList<>();
-    protected ArrayList<Integer> mouseButtonStates = new ArrayList<>();
-
     public int getIsScrollingUp() {
         return isScrollingUp;
     }
@@ -37,17 +48,14 @@ public class RemoteClient {
         this.isScrollingUp = isScrollingUp;
     }
 
-    protected int isScrollingUp = 0;
-
     public ArrayList<Integer> getMouseButtonStates() {
         return mouseButtonStates;
     }
 
-
     public void sendDataToClient() {
 
         GameInstanceSnapshot gameInstanceSnapshot = new GameInstanceSnapshot(gameInstanceServer, this);
-        connection.sendTCP(gameInstanceSnapshot);
+        connection.sendUDP(gameInstanceSnapshot);
 
     }
 
@@ -66,11 +74,6 @@ public class RemoteClient {
     public void setMouseX(float mouseX) {
         this.mouseX = mouseX;
     }
-
-    protected float mouseX = 0;
-    protected float mouseY = 0;
-
-    protected Player player;
 
     public Connection getConnection() {
         return connection;
@@ -116,6 +119,7 @@ public class RemoteClient {
         this.player = player;
     }
 
+
     public void update() {
         if (getIsScrollingUp() == -1) player.getItemBox().scrollItemUp();
         if (getIsScrollingUp() == 1) player.getItemBox().scrollItemDown();
@@ -123,23 +127,6 @@ public class RemoteClient {
 
         sendDataToClient();
     }
-
-    public static enum ClientState {
-        NAMELESS,
-        IDLE,
-        QUEUED,
-        INGAME,
-        READY
-    }
-
-    public RemoteClient(Connection c) {
-        connection = c;
-        clientState = ClientState.NAMELESS;
-        currentGameID = -1;
-
-        name = "Player " + c.getID();
-    }
-
 
     @Override
     public String toString() {
@@ -149,6 +136,15 @@ public class RemoteClient {
                 ", clientState=" + clientState +
                 ", currentGameID=" + currentGameID +
                 '}';
+    }
+
+
+    public enum ClientState {
+        NAMELESS,
+        IDLE,
+        QUEUED,
+        INGAME,
+        READY
     }
 
 }

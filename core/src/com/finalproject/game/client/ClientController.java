@@ -3,7 +3,6 @@ package com.finalproject.game.client;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
@@ -18,8 +17,8 @@ import java.nio.channels.ClosedSelectorException;
 
 public class ClientController {
 
-    public static Client client;
     private final static int BUFFER_SIZE = 1024 * 1024;
+    public static Client client;
 
     public ClientController(String ip) throws IOException {
         client = new Client(BUFFER_SIZE, BUFFER_SIZE);
@@ -27,6 +26,7 @@ public class ClientController {
 
         Kryo kryo = client.getKryo();
         kryo.setRegistrationRequired(false);
+        kryo.setReferences(true);
 
         client.connect(5000, ip, 54555, 54777);
         setupController();

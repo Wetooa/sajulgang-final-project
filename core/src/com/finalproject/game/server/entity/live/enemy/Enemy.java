@@ -12,6 +12,10 @@ public abstract class Enemy extends LiveEntity {
         super(builder);
     }
 
+    public Enemy() {
+        this(new LiveEntityBuilder());
+    }
+
     @Override
     public void update(float delta) {
         super.update(delta);
