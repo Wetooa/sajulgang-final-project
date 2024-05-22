@@ -9,24 +9,29 @@ import java.util.ArrayList;
 
 public class RemoteClient {
 
-
     protected transient final Connection connection;
-    protected transient GameInstanceServer gameInstanceServer;
 
     protected int currentGameID;
     protected String name;
+
     protected ClientState clientState;
+    protected ClientGameState clientGameState;
+
+    protected int respawnTimer = 0;
+
     protected ArrayList<Integer> inputStates = new ArrayList<>();
     protected ArrayList<Integer> mouseButtonStates = new ArrayList<>();
     protected int isScrollingUp = 0;
     protected float mouseX = 0;
     protected float mouseY = 0;
-    protected Player player;
+
+    protected transient GameInstanceServer gameInstanceServer;
+    protected transient Player player;
 
 
     public RemoteClient(Connection c) {
         connection = c;
-        clientState = ClientState.NAMELESS;
+        clientState = ClientState.IDLE;
         currentGameID = -1;
 
         name = "Player " + c.getID();
@@ -138,9 +143,22 @@ public class RemoteClient {
                 '}';
     }
 
+    public ClientGameState getClientGameState() {
+        return clientGameState;
+    }
+
+    public void setClientGameState(ClientGameState clientGameState) {
+        this.clientGameState = clientGameState;
+    }
+
+    public enum ClientGameState {
+        ALIVE,
+        RESPAWNING,
+        DEAD
+    }
+
 
     public enum ClientState {
-        NAMELESS,
         IDLE,
         QUEUED,
         INGAME,

@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameClient extends Game {
+    public static final int CAMERA_VIEW_X = 32;
+    public static final int CAMERA_VIEW_Y = 24;
     public static GameInstanceSnapshot gameInstanceSnapshot = new GameInstanceSnapshot();
     public static GameClient gameClient;
     public static ClientController clientController;
@@ -34,7 +36,7 @@ public class GameClient extends Game {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
-        camera = new OrthographicCamera(1500, 1500 * (h / w));
+        camera = new OrthographicCamera(CAMERA_VIEW_X, CAMERA_VIEW_Y * (h / w));
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
 

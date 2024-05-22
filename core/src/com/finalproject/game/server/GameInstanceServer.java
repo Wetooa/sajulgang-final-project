@@ -15,9 +15,7 @@ import java.util.List;
 
 public class GameInstanceServer {
 
-
     // TODO: add current state of game, maybe paused or some thing
-
 
     private final int GAME_ID;
     public HashMap<Connection, RemoteClient> remoteClientsInServer = new HashMap<>();
@@ -25,62 +23,64 @@ public class GameInstanceServer {
     public List<Player> players = new ArrayList<>();
     public List<Projectile> projectiles = new ArrayList<>();
     public List<Enemy> enemies = new ArrayList<>();
-
-    public World world;
-
+    public HashMap<GameWorld, World> worlds = new HashMap<>();
     public List<Body> bodiesToRemove = new ArrayList<>();
-    int tmp = 0;
-
 
     public GameInstanceServer(int GAME_ID, HashMap<Connection, RemoteClient> remoteClients) {
         this.GAME_ID = GAME_ID;
         this.remoteClientsInServer = remoteClients;
 
-        this.world = new World(new Vector2(0, 0), true);
+        for (GameWorld world : GameWorld.values()) {
+            World w = new World(new Vector2(0, 0), true);
+            this.worlds.put(world, w);
 
-        this.world.setContactListener(new ContactListener() {
-            @Override
-            public void beginContact(Contact contact) {
-                Fixture fixtureA = contact.getFixtureA();
-                Fixture fixtureB = contact.getFixtureB();
+            w.setContactListener(new ContactListener() {
+                @Override
+                public void beginContact(Contact contact) {
+                    Fixture fixtureA = contact.getFixtureA();
+                    Fixture fixtureB = contact.getFixtureB();
 
-                Object a = fixtureA.getBody().getUserData();
-                Object b = fixtureB.getBody().getUserData();
+                    Object a = fixtureA.getBody().getUserData();
+                    Object b = fixtureB.getBody().getUserData();
 
+                    if (a == null || b == null) return;
 
-                if (a == null || b == null) return;
-                if (a instanceof Enemy && b instanceof Projectile) {
-                    Object c = a;
-                    a = b;
-                    b = c;
-                }
-                if (a instanceof Projectile && b instanceof Enemy) {
-                    Projectile p = (Projectile) a;
-                    Enemy e = (Enemy) b;
-
-                    if (p != null) {
-                        e.takeDamage(p.getDamage());
-                        p.removeBody();
+                    if (a instanceof Player && b instanceof Projectile) {
+                        Object c = a;
+                        a = b;
+                        b = c;
                     }
+
+                    if (a instanceof Projectile && b instanceof Player) {
+                        Projectile p = (Projectile) a;
+                        Player pl = (Player) b;
+
+                        if (pl != null && p != null) {
+                            pl.takeDamage(p.getDamage());
+                            p.removeBody();
+                        }
+                    }
+
                 }
 
-            }
+                @Override
+                public void endContact(Contact contact) {
 
-            @Override
-            public void endContact(Contact contact) {
+                }
 
-            }
+                @Override
+                public void preSolve(Contact contact, Manifold manifold) {
 
-            @Override
-            public void preSolve(Contact contact, Manifold manifold) {
+                }
 
-            }
+                @Override
+                public void postSolve(Contact contact, ContactImpulse contactImpulse) {
 
-            @Override
-            public void postSolve(Contact contact, ContactImpulse contactImpulse) {
+                }
+            });
 
-            }
-        });
+
+        }
 
     }
 
@@ -89,29 +89,22 @@ public class GameInstanceServer {
     }
 
     public void update(float delta) {
-
-        world.step(1 / 60f, 6, 2);
+        worlds.values().forEach(world -> world.step(delta, 6, 2));
 
         for (Player p : players) p.update(delta);
         for (Enemy p : enemies) p.update(delta);
         for (Projectile p : projectiles) p.update(delta);
 
         remoteClientsInServer.values().forEach(RemoteClient::update);
-
-        if (tmp <= 0) {
-//            enemies.add(new Zombie((LiveEntityBuilder) new LiveEntityBuilder().setPosX(20).setPosY(20).setGameInstanceServer(this)));
-            tmp = 5;
-        }
-        tmp -= delta;
-
         clearBodiesToRemove();
     }
 
-
     public void addRemoteClient(Connection connection, RemoteClient remoteClient) {
-        Player p = new Player((LiveEntityBuilder) new LiveEntityBuilder().setGameInstanceServer(this).setRemoteClient(remoteClient));
+        // TODO: logic where player spawns on location with less playersr
 
+        Player p = new Player((LiveEntityBuilder) new LiveEntityBuilder().setGameInstanceServer(this).setRemoteClient(remoteClient).setCurrentWorld(worlds.get(GameWorld.OVERWORLD)));
         remoteClientsInServer.put(connection, remoteClient);
+
         players.add(p);
 
         remoteClient.setPlayer(p);
@@ -120,10 +113,11 @@ public class GameInstanceServer {
     }
 
     public void clearBodiesToRemove() {
-        if (world.isLocked()) return;
-
         for (Body body : bodiesToRemove) {
             if (body == null || !body.isActive()) continue;
+
+            World world = ((GameObject) body.getUserData()).getCurrentWorld();
+            if (world.isLocked()) continue;
 
             // Destroy all joints connected to the body
             final Array<JointEdge> joints = body.getJointList();
@@ -151,6 +145,10 @@ public class GameInstanceServer {
         }
 
         bodiesToRemove.clear();
+    }
+
+    public enum GameWorld {
+        OVERWORLD,
     }
 
 

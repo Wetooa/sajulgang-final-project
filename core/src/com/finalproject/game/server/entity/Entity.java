@@ -1,40 +1,39 @@
 package com.finalproject.game.server.entity;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.finalproject.game.server.GameInstanceServer;
-import com.finalproject.game.server.RemoteClient;
+import com.finalproject.game.server.GameObject;
 import com.finalproject.game.server.builder.entity.EntityBuilder;
 import com.finalproject.game.server.statusEffect.Status;
 
 import java.util.ArrayList;
 
-public abstract class Entity extends Sprite {
+public abstract class Entity extends GameObject {
 
-    protected transient GameInstanceServer gameInstanceServer;
     protected int damage;
     protected float posX;
     protected float posY;
     protected float sizeX;
     protected float sizeY;
+    protected float maxSpeed;
+
     protected BodyDef bodyDef;
     protected Body boxBody;
     protected CircleShape dynamicBox;
     protected FixtureDef fixtureDef;
-    protected RemoteClient remoteClient;
-    protected float maxSpeed;
     private ArrayList<Status> statuses;
+
 
     public Entity() {
         this(new EntityBuilder());
     }
 
-
     public Entity(EntityBuilder builder) {
+        super(builder);
+
         this.maxSpeed = builder.getMaxSpeed();
         this.posX = builder.getPosX();
         this.posY = builder.getPosY();
@@ -42,13 +41,10 @@ public abstract class Entity extends Sprite {
         this.sizeY = builder.getSizeY();
         this.damage = builder.getDamage();
 
-        this.gameInstanceServer = builder.getGameInstanceServer();
-        this.remoteClient = builder.getRemoteClient();
-
         bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(posX, posY);
-        boxBody = gameInstanceServer.world.createBody(bodyDef);
+        boxBody = currentWorld.createBody(bodyDef);
 
         dynamicBox = new CircleShape();
         dynamicBox.setRadius(sizeX);
@@ -56,11 +52,11 @@ public abstract class Entity extends Sprite {
         fixtureDef = new FixtureDef();
         fixtureDef.shape = dynamicBox;
         fixtureDef.density = 1.0f;
-        fixtureDef.friction = 0.5f;
+        fixtureDef.friction = 0.3f;
         fixtureDef.restitution = 0.5f; // Bounciness
 
         boxBody.createFixture(fixtureDef);
-        boxBody.setLinearDamping(5f);
+        boxBody.setLinearDamping(0.1f);
         boxBody.setUserData(this);
 
         dynamicBox.dispose();
@@ -136,22 +132,6 @@ public abstract class Entity extends Sprite {
 
     public void setPosY(float posY) {
         this.posY = posY;
-    }
-
-    public GameInstanceServer getGameInstanceServer() {
-        return gameInstanceServer;
-    }
-
-    public void setGameInstanceServer(GameInstanceServer gameInstanceServer) {
-        this.gameInstanceServer = gameInstanceServer;
-    }
-
-    public RemoteClient getRemoteClient() {
-        return remoteClient;
-    }
-
-    public void setRemoteClient(RemoteClient remoteClient) {
-        this.remoteClient = remoteClient;
     }
 
     public void update(float delta) {

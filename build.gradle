@@ -1,5 +1,5 @@
 buildscript {
-    
+
 
     repositories {
         mavenLocal()
@@ -48,6 +48,7 @@ project(":desktop") {
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+
     }
 }
 
@@ -80,5 +81,6 @@ project(":core") {
         // Add these lines for Kryo and KryoNet
         implementation "com.esotericsoftware:kryo:5.2.0" // Check for the latest version
         implementation "com.esotericsoftware:kryonet:2.22.0-RC1" // Check for the latest version
+
     }
 }

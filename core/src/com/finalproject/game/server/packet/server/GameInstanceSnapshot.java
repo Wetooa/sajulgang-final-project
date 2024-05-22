@@ -19,6 +19,16 @@ public class GameInstanceSnapshot {
     public Vector2 playerPos = new Vector2(0, 0);
     public ItemBox itemBox = new ItemBox();
 
+    public int playerHealth;
+    public int playerMaxHealth;
+
+    public int playerStamina;
+    public int playerMaxStamina;
+
+    public RemoteClient.ClientState clientState;
+    public RemoteClient.ClientGameState clientGameState;
+    public int respawnTimer = 0;
+
     public List<com.finalproject.game.client.entity.live.player.Player> players = new ArrayList<>();
     public List<com.finalproject.game.client.entity.live.enemy.Enemy> enemies = new ArrayList<>();
     public List<com.finalproject.game.client.entity.projectile.Projectile> projectiles = new ArrayList<>();
@@ -33,8 +43,18 @@ public class GameInstanceSnapshot {
 
         Player p = remoteClient.getPlayer();
 
-        playerPos = p.getBoxBody().getPosition();
-        itemBox = p.getItemBox();
+        clientState = remoteClient.getClientState();
+        clientGameState = remoteClient.getClientGameState();
+
+        if (p != null) {
+            playerPos = p.getBoxBody().getPosition();
+            itemBox = p.getItemBox();
+
+            playerHealth = p.getCurrentHealth();
+            playerMaxHealth = p.getMaxHealth();
+            playerStamina = p.getCurrentStamina();
+            playerMaxStamina = p.getMaxStamina();
+        }
 
     }
 

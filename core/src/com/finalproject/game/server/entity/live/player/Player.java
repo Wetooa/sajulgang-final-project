@@ -7,11 +7,7 @@ import com.finalproject.game.server.builder.item.WeaponBuilder;
 import com.finalproject.game.server.entity.live.LiveEntity;
 import com.finalproject.game.server.items.Item;
 import com.finalproject.game.server.items.ItemBox;
-import com.finalproject.game.server.items.weapons.melee.Katana;
-import com.finalproject.game.server.items.weapons.melee.Tukog;
-import com.finalproject.game.server.items.weapons.range.CrossBow;
-import com.finalproject.game.server.items.weapons.range.HandGun;
-import com.finalproject.game.server.items.weapons.range.LaserGun;
+import com.finalproject.game.server.items.weapons.range.primary.LaserGun;
 
 public class Player extends LiveEntity {
 
@@ -28,16 +24,11 @@ public class Player extends LiveEntity {
 
     public Player(LiveEntityBuilder builder) {
         super(builder);
-
         this.runningMultiplier = builder.getRunningMultiplier();
         this.currentStamina = builder.getCurrentStamina();
         this.maxStamina = builder.getMaxStamina();
 
-        itemBox.addItem(new HandGun((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient)));
-        itemBox.addItem(new LaserGun((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient)));
-        itemBox.addItem(new Tukog((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient)));
-        itemBox.addItem(new CrossBow((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient)));
-        itemBox.addItem(new Katana((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient)));
+        itemBox.addItem(new LaserGun((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient).setCurrentWorld(currentWorld)));
     }
 
 
@@ -75,6 +66,9 @@ public class Player extends LiveEntity {
     public void update(float delta) {
         super.update(delta);
 
+        if (isRunning) currentStamina = Math.max(0, currentStamina - 1);
+        else currentStamina = Math.min(maxStamina, currentStamina + 1);
+
         this.setRunning(remoteClient.getInputStates().contains(Input.Keys.SHIFT_LEFT));
 
         remoteClient.getInputStates().forEach(keycode -> this.updateMovement(delta, keycode));
@@ -88,7 +82,7 @@ public class Player extends LiveEntity {
     }
 
     public void updateMovement(float delta, int keycode) {
-        float currentSpeed = getMaxSpeed() * (isRunning ? runningMultiplier : 1);
+        float currentSpeed = getMaxSpeed() * (isRunning && currentStamina > 0 ? runningMultiplier : 1);
 
         if (keycode == Input.Keys.D) {
             boxBody.applyLinearImpulse(new Vector2(currentSpeed, 0), boxBody.getWorldCenter(), true);

@@ -11,13 +11,11 @@ public abstract class Projectile extends Entity {
     protected float range;
     protected float expiration = 0;
 
-
     public Projectile() {
         this(new ProjectileBuilder());
     }
 
     public Projectile(ProjectileBuilder builder) {
-
         super(builder);
 
         float playerX = remoteClient.getPlayer().getBoxBody().getPosition().x;
@@ -30,12 +28,17 @@ public abstract class Projectile extends Entity {
         this.range = builder.getRange();
         this.expiration = range;
 
-        boxBody.setTransform(new Vector2(playerX + MathUtils.cos(angle) * this.getSizeX(), playerY + MathUtils.sin(angle) * this.getSizeY()), 0);
 
+        float acc_x = builder.getAccuracy();
+        float acc_y = builder.getAccuracy();
+
+        boxBody.setTransform(new Vector2(playerX + MathUtils.cos(angle) * this.getSizeX() + acc_x, playerY + MathUtils.sin(angle) * this.getSizeY() + acc_y), 0);
     }
 
     @Override
     public void update(float delta) {
+        super.update(delta);
+
         expiration -= delta;
         if (expiration <= 0) {
             removeBody();

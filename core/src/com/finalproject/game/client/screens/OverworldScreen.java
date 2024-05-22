@@ -6,16 +6,24 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.finalproject.game.client.GameClient;
 
-import static com.finalproject.game.client.GameClient.*;
+import static com.finalproject.game.client.GameClient.camera;
+import static com.finalproject.game.client.GameClient.shapeRenderer;
 
 public class OverworldScreen implements Screen {
-    protected Texture texture;
+    private Texture texture;
+
+    private TiledMap tiledMap;
+    private OrthogonalTiledMapRenderer tiledMapRenderer;
 
     @Override
     public void show() {
+//        tiledMap = new TmxMapLoader().load("screens/maptmx.tmx");
+//        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         texture = new Texture("screens/overworld.jpg");
     }
 
@@ -28,10 +36,13 @@ public class OverworldScreen implements Screen {
         camera.position.set(playerPos.x, playerPos.y, 0);
         camera.update();
 
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        batch.draw(texture, 0, 0);
-        batch.end();
+//        batch.setProjectionMatrix(camera.combined);
+//        batch.begin();
+//        batch.draw(texture, 0, 0);
+//        batch.end();
+
+//        tiledMapRenderer.setView(camera);
+//        tiledMapRenderer.render();
 
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin();
@@ -61,8 +72,8 @@ public class OverworldScreen implements Screen {
     }
 
     @Override
-    public void resize(int i, int i1) {
-
+    public void resize(int width, int height) {
+//        camera.setToOrtho(false, width, height);
     }
 
     @Override
@@ -80,7 +91,10 @@ public class OverworldScreen implements Screen {
 
     }
 
+    @Override
     public void dispose() {
+        tiledMapRenderer.dispose();
+        tiledMap.dispose();
     }
 
 }

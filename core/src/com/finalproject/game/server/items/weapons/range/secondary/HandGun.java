@@ -1,8 +1,10 @@
-package com.finalproject.game.server.items.weapons.range;
+package com.finalproject.game.server.items.weapons.range.secondary;
 
 import com.finalproject.game.server.builder.item.WeaponBuilder;
 import com.finalproject.game.server.entity.projectile.range.Bullet;
+import com.finalproject.game.server.items.weapons.range.RangeWeapon;
 
+// TODO: to be removed, this weapon is just a basic template
 public class HandGun extends RangeWeapon {
 
 

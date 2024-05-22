@@ -3,14 +3,15 @@ package com.finalproject.game.server.builder.entity;
 import com.finalproject.game.server.builder.Builder;
 
 public class EntityBuilder extends Builder {
-    float maxSpeed = 1000000;
+
+    float maxSpeed = 50;
     int damage = 20;
 
     float posX = 0;
     float posY = 0;
 
-    float sizeX = 20f;
-    float sizeY = 20f;
+    float sizeX = 0.5f;
+    float sizeY = 0.5f;
 
     public float getSizeX() {
         return sizeX;

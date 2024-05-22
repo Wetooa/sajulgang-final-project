@@ -1,7 +1,8 @@
-package com.finalproject.game.server.items.weapons.range;
+package com.finalproject.game.server.items.weapons.range.primary;
 
 import com.finalproject.game.server.builder.item.WeaponBuilder;
 import com.finalproject.game.server.entity.projectile.range.Bolt;
+import com.finalproject.game.server.items.weapons.range.RangeWeapon;
 
 public class CrossBow extends RangeWeapon {
 

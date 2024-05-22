@@ -27,7 +27,7 @@ public abstract class Weapon extends Item {
     public <T extends Projectile> void shoot(Class<T> projectile) {
         try {
             Constructor<T> constructor = projectile.getConstructor(ProjectileBuilder.class);
-            gameInstanceServer.projectiles.add(constructor.newInstance(new ProjectileBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient)));
+            gameInstanceServer.projectiles.add(constructor.newInstance(new ProjectileBuilder().setAccuracy(accuracy).setRange(range).setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient).setCurrentWorld(currentWorld)));
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
                  InvocationTargetException e) {
             e.printStackTrace();
