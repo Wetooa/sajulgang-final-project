@@ -15,7 +15,7 @@ public class ItemBox {
     public static final int MAX_ITEMS = MAX_INSTANT_WEAPONS + 3;
 
 
-    protected Integer currentItemHeld = 2;
+    protected Integer currentItemHeld = 0;
     protected List<Item> items = new ArrayList<>();
 
     protected PrimaryGun primaryGun;
@@ -27,13 +27,13 @@ public class ItemBox {
 
 
     public ItemBox() {
-        items = new ArrayList<>(MAX_ITEMS);
+        items = new ArrayList<>();
     }
 
     public void addItem(Item item) {
-        if (item instanceof PrimaryGun) items.set(0, item);
-        else if (item instanceof SecondaryGun) items.set(1, item);
-        else if (item instanceof MeleeWeapon) items.set(2, item);
+        if (item instanceof PrimaryGun) items.add(0, item);
+        else if (item instanceof SecondaryGun) items.add(1, item);
+        else if (item instanceof MeleeWeapon) items.add(2, item);
         else if (item instanceof InstantWeapon) {
             if (instantWeapons.size() > MAX_INSTANT_WEAPONS) return;
 

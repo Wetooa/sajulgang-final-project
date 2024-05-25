@@ -54,6 +54,7 @@ public class GameInstanceSnapshot {
             playerMaxHealth = p.getMaxHealth();
             playerStamina = p.getCurrentStamina();
             playerMaxStamina = p.getMaxStamina();
+
         }
 
     }

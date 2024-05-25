@@ -8,7 +8,6 @@ public abstract class LiveEntity extends Entity {
     protected int currentHealth;
     protected int maxHealth;
 
-
     public LiveEntity() {
         this(new LiveEntityBuilder());
     }

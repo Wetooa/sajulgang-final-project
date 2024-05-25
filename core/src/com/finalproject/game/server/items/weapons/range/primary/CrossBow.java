@@ -11,7 +11,7 @@ public class CrossBow extends RangeWeapon {
     }
 
     public CrossBow(WeaponBuilder builder) {
-        super((WeaponBuilder) builder.setFireRate(0.5f));
+        super((WeaponBuilder) builder.setAccuracy(1).setRange(500).setFireRate(0.5f).setName("Crossbox").setDescription("A crossbow"));
     }
 
     @Override

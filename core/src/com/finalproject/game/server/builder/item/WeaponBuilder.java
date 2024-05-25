@@ -1,7 +1,5 @@
 package com.finalproject.game.server.builder.item;
 
-import com.finalproject.game.server.builder.Builder;
-
 public class WeaponBuilder extends ItemBuilder {
 
     protected float accuracy = 1;
@@ -14,7 +12,7 @@ public class WeaponBuilder extends ItemBuilder {
         return accuracy;
     }
 
-    public ItemBuilder setAccuracy(float accuracy) {
+    public WeaponBuilder setAccuracy(float accuracy) {
         this.accuracy = accuracy;
         return this;
     }
@@ -23,7 +21,7 @@ public class WeaponBuilder extends ItemBuilder {
         return range;
     }
 
-    public ItemBuilder setRange(float range) {
+    public WeaponBuilder setRange(float range) {
         this.range = range;
         return this;
     }
@@ -41,7 +39,7 @@ public class WeaponBuilder extends ItemBuilder {
         return currentAmmo;
     }
 
-    public ItemBuilder setCurrentAmmo(int currentAmmo) {
+    public WeaponBuilder setCurrentAmmo(int currentAmmo) {
         this.currentAmmo = currentAmmo;
         return this;
     }

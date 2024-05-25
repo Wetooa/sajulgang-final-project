@@ -1,6 +1,7 @@
 package com.finalproject.game.server.items.weapons.range.secondary;
 
 import com.finalproject.game.server.builder.item.WeaponBuilder;
+import com.finalproject.game.server.entity.projectile.range.Bullet;
 
 public class Anaconda extends SecondaryGun {
 
@@ -9,13 +10,13 @@ public class Anaconda extends SecondaryGun {
     }
 
     public Anaconda(WeaponBuilder builder) {
-        super(builder);
+        super((WeaponBuilder) builder.setAccuracy(0.90f).setRange(100).setFireRate(0.7f).setName("Anaconda").setDescription("Slither'in"));
     }
 
 
     @Override
     public void doAction() {
-
+        shoot(Bullet.class);
     }
 
 

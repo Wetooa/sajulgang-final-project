@@ -15,7 +15,7 @@ public class ShotGun extends RangeWeapon {
     }
 
     public ShotGun(WeaponBuilder builder) {
-        super((WeaponBuilder) builder.setFireRate(0.3f));
+        super((WeaponBuilder) builder.setAccuracy(0.5f).setRange(50).setFireRate(0.3f).setName("Shotgun").setDescription("A shotgun"));
     }
 
     @Override

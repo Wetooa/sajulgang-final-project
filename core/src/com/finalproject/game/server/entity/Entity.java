@@ -20,12 +20,12 @@ public abstract class Entity extends GameObject {
     protected float sizeY;
     protected float maxSpeed;
 
-    protected BodyDef bodyDef;
-    protected Body boxBody;
-    protected CircleShape dynamicBox;
-    protected FixtureDef fixtureDef;
-    private ArrayList<Status> statuses;
+    protected transient BodyDef bodyDef;
+    protected transient Body boxBody;
+    protected transient CircleShape dynamicBox;
+    protected transient FixtureDef fixtureDef;
 
+    private ArrayList<Status> statuses;
 
     public Entity() {
         this(new EntityBuilder());
@@ -136,6 +136,7 @@ public abstract class Entity extends GameObject {
 
     public void update(float delta) {
         Vector2 playerPos = getBoxBody().getPosition();
+
         this.posX = playerPos.x;
         this.posY = playerPos.y;
     }

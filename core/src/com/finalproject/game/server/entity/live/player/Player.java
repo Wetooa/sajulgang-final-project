@@ -15,6 +15,7 @@ public class Player extends LiveEntity {
     protected float runningMultiplier;
     protected int currentStamina;
     protected int maxStamina;
+
     protected ItemBox itemBox = new ItemBox();
 
 
@@ -24,6 +25,8 @@ public class Player extends LiveEntity {
 
     public Player(LiveEntityBuilder builder) {
         super(builder);
+
+
         this.runningMultiplier = builder.getRunningMultiplier();
         this.currentStamina = builder.getCurrentStamina();
         this.maxStamina = builder.getMaxStamina();
