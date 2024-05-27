@@ -11,8 +11,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.finalproject.game.client.GameClient;
 
-import static com.finalproject.game.client.GameClient.camera;
-import static com.finalproject.game.client.GameClient.shapeRenderer;
+import static com.finalproject.game.client.GameClient.*;
 
 public class OverworldScreen implements Screen {
     private Texture texture;
@@ -36,10 +35,10 @@ public class OverworldScreen implements Screen {
         camera.position.set(playerPos.x, playerPos.y, 0);
         camera.update();
 
-//        batch.setProjectionMatrix(camera.combined);
-//        batch.begin();
-//        batch.draw(texture, 0, 0);
-//        batch.end();
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw(texture, 0, 0);
+        batch.end();
 
 //        tiledMapRenderer.setView(camera);
 //        tiledMapRenderer.render();

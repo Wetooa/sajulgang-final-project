@@ -4,7 +4,7 @@ import com.finalproject.game.server.builder.Builder;
 
 public class EntityBuilder extends Builder {
 
-    float maxSpeed = 50;
+    float maxSpeed = 1;
     int damage = 20;
 
     float posX = 0;

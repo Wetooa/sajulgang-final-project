@@ -55,10 +55,10 @@ public class GameInstanceServer {
                         Projectile p = (Projectile) a;
                         Player pl = (Player) b;
 
-//                        if (pl != null && p != null) {
-//                            pl.takeDamage(p.getDamage());
-//                            p.removeBody();
-//                        }
+                        if (pl != null && p != null && !p.getRemoteClient().equals(pl.getRemoteClient())) {
+                            pl.takeDamage(p.getDamage());
+                            p.removeBody();
+                        }
                     }
 
                 }

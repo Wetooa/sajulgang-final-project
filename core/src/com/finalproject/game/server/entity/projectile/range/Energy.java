@@ -10,7 +10,7 @@ public class Energy extends Projectile {
     }
 
     public Energy(ProjectileBuilder builder) {
-        super((ProjectileBuilder) builder.setMaxSpeed(50).setSize(3f));
+        super((ProjectileBuilder) builder.setMaxSpeed(50).setSize(0.5f));
     }
 
 }

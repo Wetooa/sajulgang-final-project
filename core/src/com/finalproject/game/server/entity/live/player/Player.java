@@ -55,7 +55,6 @@ public class Player extends LiveEntity {
         return itemBox;
     }
 
-
     public boolean isRunning() {
         return isRunning;
     }

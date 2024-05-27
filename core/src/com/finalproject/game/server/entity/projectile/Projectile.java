@@ -32,7 +32,7 @@ public abstract class Projectile extends Entity {
         float acc_x = builder.getAccuracy();
         float acc_y = builder.getAccuracy();
 
-        boxBody.setTransform(new Vector2(playerX + MathUtils.cos(angle) * this.getSizeX() + acc_x, playerY + MathUtils.sin(angle) * this.getSizeY() + acc_y), 0);
+        boxBody.setTransform(new Vector2(playerX + MathUtils.cos(angle) * this.getSizeX(), playerY + MathUtils.sin(angle) * this.getSizeY()), 0);
     }
 
     @Override

@@ -1,4 +1,3 @@
-
 package com.finalproject.game;
 
 
@@ -10,7 +9,6 @@ import java.io.IOException;
  * Launches the server application.
  */
 public class ServerLauncher {
-
 
 
     public static void main(String[] args) {
