@@ -9,15 +9,18 @@ import java.util.ArrayList;
 
 public class RemoteClient {
 
+
+    protected final int RESPAWN_TIMER = 3;
+
     protected transient final Connection connection;
 
     protected int currentGameID;
     protected String name;
 
-    protected ClientState clientState;
-    protected ClientGameState clientGameState;
+    protected ClientState clientState = ClientState.INGAME;
+    protected ClientGameState clientGameState = ClientGameState.ALIVE;
 
-    protected int respawnTimer = 0;
+    protected float respawnTimer = 0;
 
     protected ArrayList<Integer> inputStates = new ArrayList<>();
     protected ArrayList<Integer> mouseButtonStates = new ArrayList<>();
@@ -124,11 +127,31 @@ public class RemoteClient {
         this.player = player;
     }
 
+    public float getRespawnTimer() {
+        return respawnTimer;
+    }
 
-    public void update() {
+    public void setRespawnTimer(float respawnTimer) {
+        this.respawnTimer = respawnTimer;
+    }
+
+    public void update(float delta) {
         if (getIsScrollingUp() == -1) player.getItemBox().scrollItemUp();
         if (getIsScrollingUp() == 1) player.getItemBox().scrollItemDown();
         setIsScrollingUp(0);
+
+        if (this.getClientGameState().equals(ClientGameState.DEAD)) {
+            respawnTimer -= RESPAWN_TIMER;
+        }
+
+        if (this.getClientGameState().equals(ClientGameState.RESPAWNING)) {
+            respawnTimer -= delta;
+
+            if (respawnTimer <= 0) {
+                respawnTimer = 0;
+                this.getGameInstanceServer().spawnPlayer(this);
+            }
+        }
 
         sendDataToClient();
     }

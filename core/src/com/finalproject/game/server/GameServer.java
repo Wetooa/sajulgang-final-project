@@ -1,5 +1,7 @@
 package com.finalproject.game.server;
 
+import com.badlogic.gdx.backends.headless.HeadlessApplication;
+import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -33,12 +35,12 @@ public class GameServer {
         kryo.setRegistrationRequired(false);
         kryo.setReferences(true);
 
-        GameInstanceServer ng = new GameInstanceServer(1, new HashMap<>());
-        activeGames.put(1, ng);
+        createNewGameInstance();
 
         server.addListener(new Listener() {
                                @Override
                                public void received(Connection connection, Object object) {
+
                                    RemoteClient remoteClient = remoteClients.get(connection);
 
                                    if (object instanceof KeyPressed) {
@@ -93,23 +95,13 @@ public class GameServer {
         );
 
 
-        long sleep = (long) (1000 * TARGET_DELTA);
         AtomicLong lastUpdateTime = new AtomicLong(System.nanoTime());
+        long sleep = (long) (1000 * TARGET_DELTA);
+
         scheduler.scheduleAtFixedRate(() -> {
             long now = System.nanoTime();
-            long frameTime = now - lastUpdateTime.getAndSet(now);
-            float delta = frameTime / 1_000_000_000.0f;
-
-            // Update game logic timers
-//            mmTimer += delta;
-//            if (mmTimer > 3.0f) {
-//                mmTimer = 0.0f;
-//                attemptMatchmake();
-//            }
-
-            // Parallel updateMovement of game instances if feasible
+            float delta = (now - lastUpdateTime.getAndSet(now)) / 1_000_000_000.0f;
             activeGames.values().parallelStream().forEach(gameInstance -> gameUpdatePool.submit(() -> gameInstance.update(delta)));
-
         }, 0L, sleep, TimeUnit.MILLISECONDS);
 
 
@@ -121,6 +113,20 @@ public class GameServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void createNewGameInstance() {
+        int gameId = activeGames.size();
+
+        GameInstanceServer ng = new GameInstanceServer(gameId, GameInstanceServer.GameWorld.OVERWORLD);
+
+        HeadlessApplicationConfiguration config = new HeadlessApplicationConfiguration();
+        new HeadlessApplication(ng, config);
+
+//        Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+//        new Lwjgl3Application(ng, config);
+
+        activeGames.put(gameId, ng);
     }
 
 
@@ -155,8 +161,7 @@ public class GameServer {
         if (!remoteClients.containsKey(connection)) {
             RemoteClient newClient = new RemoteClient(connection);
             remoteClients.put(connection, newClient);
-            activeGames.get(1).addRemoteClient(connection, newClient);
-        } else
-            System.out.println("Client with connection ID: " + connection.getID() + " is already connected!");
+            activeGames.get(activeGames.size() - 1).addRemoteClient(connection, newClient);
+        } else System.out.println("Client with connection ID: " + connection.getID() + " is already connected!");
     }
 }

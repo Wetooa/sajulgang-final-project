@@ -5,8 +5,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.finalproject.game.server.builder.entity.ProjectileBuilder;
 import com.finalproject.game.server.entity.Entity;
 
+import java.util.Random;
+
 public abstract class Projectile extends Entity {
 
+    protected float accuracy;
     protected float angle;
     protected float range;
     protected float expiration = 0;
@@ -24,13 +27,13 @@ public abstract class Projectile extends Entity {
         float mouseX = remoteClient.getMouseX();
         float mouseY = remoteClient.getMouseY();
 
-        this.angle = MathUtils.atan2(mouseY - playerY, mouseX - playerX);
+
+        Random rand = new Random();
+
+        this.accuracy = 1 - builder.getAccuracy();
+        this.angle = MathUtils.atan2(mouseY - playerY, mouseX - playerX) + rand.nextFloat(-this.accuracy, this.accuracy);
         this.range = builder.getRange();
         this.expiration = range;
-
-
-        float acc_x = builder.getAccuracy();
-        float acc_y = builder.getAccuracy();
 
         boxBody.setTransform(new Vector2(playerX + MathUtils.cos(angle) * this.getSizeX(), playerY + MathUtils.sin(angle) * this.getSizeY()), 0);
     }

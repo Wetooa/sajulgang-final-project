@@ -5,6 +5,7 @@ import com.finalproject.game.client.entity.Entity;
 
 public class Player extends Entity {
 
+
     public Player() {
         super(new EntityBuilder());
     }

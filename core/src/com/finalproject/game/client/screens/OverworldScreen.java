@@ -4,44 +4,64 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.finalproject.game.client.ClientController;
 import com.finalproject.game.client.GameClient;
+import com.finalproject.game.client.packet.client.MouseMove;
 
-import static com.finalproject.game.client.GameClient.*;
+import static com.finalproject.game.client.GameClient.camera;
+import static com.finalproject.game.client.GameClient.shapeRenderer;
 
 public class OverworldScreen implements Screen {
-    private Texture texture;
+    private static final float UPDATE_INTERVAL = 0.1f;
 
-    private TiledMap tiledMap;
-    private OrthogonalTiledMapRenderer tiledMapRenderer;
+    protected TiledMap tiledMap;
+    protected OrthogonalTiledMapRenderer tiledMapRenderer;
+    private float timeSinceLastUpdate = 0;
 
     @Override
     public void show() {
-//        tiledMap = new TmxMapLoader().load("screens/maptmx.tmx");
-//        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        texture = new Texture("screens/overworld.jpg");
+
+        tiledMap = new TmxMapLoader().load("ooptilesets/oopmap.tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+
+    }
+
+    public void sendMouseUpdates() {
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        timeSinceLastUpdate += deltaTime;
+
+        if (timeSinceLastUpdate >= UPDATE_INTERVAL) {
+            Vector3 worldCoordinates = GameClient.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+            ClientController.client.sendUDP(new MouseMove(worldCoordinates.x, worldCoordinates.y));
+            timeSinceLastUpdate = 0;
+        }
     }
 
     @Override
     public void render(float v) {
+        sendMouseUpdates();
+
         Gdx.gl.glClearColor(0.0f, 0, 0.0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         Vector2 playerPos = GameClient.gameInstanceSnapshot.playerPos;
-        camera.position.set(playerPos.x, playerPos.y, 0);
-        camera.update();
 
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        batch.draw(texture, 0, 0);
-        batch.end();
+        if (playerPos != null) {
+            GameClient.cameraX = playerPos.x;
+            GameClient.cameraY = playerPos.y;
 
-//        tiledMapRenderer.setView(camera);
-//        tiledMapRenderer.render();
+            camera.position.set(playerPos.x, playerPos.y, 0);
+            camera.update();
+        }
+
+        tiledMapRenderer.setView(camera);
+        tiledMapRenderer.render();
 
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin();

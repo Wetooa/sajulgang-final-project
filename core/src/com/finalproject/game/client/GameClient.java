@@ -14,8 +14,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameClient extends Game {
-    public static final int CAMERA_VIEW_X = 100;
-    public static final int CAMERA_VIEW_Y = 100;
+    public static final int CAMERA_VIEW_X = 1000;
+    public static final int CAMERA_VIEW_Y = 1000;
+
+    public static float cameraX = 0;
+    public static float cameraY = 0;
 
     public static GameInstanceSnapshot gameInstanceSnapshot = new GameInstanceSnapshot();
     public static GameClient gameClient;

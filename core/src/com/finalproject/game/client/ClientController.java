@@ -20,6 +20,7 @@ public class ClientController {
     private final static int BUFFER_SIZE = 1024 * 1024;
     public static Client client;
 
+
     public ClientController(String ip) throws IOException {
         client = new Client(BUFFER_SIZE, BUFFER_SIZE);
         client.start();
@@ -32,8 +33,10 @@ public class ClientController {
         setupController();
     }
 
+
     public void setupController() {
         Gdx.app.log("Controller", "Setting up controllers...");
+
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
@@ -91,7 +94,6 @@ public class ClientController {
                 return super.scrolled(amountX, amountY);
             }
         });
-
 
         client.addListener(new Listener() {
             @Override

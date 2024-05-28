@@ -39,7 +39,6 @@ public abstract class LiveEntity extends Entity {
         setCurrentHealth(getCurrentHealth() - damage);
     }
 
-
     @Override
     public void update(float delta) {
         if (getCurrentHealth() <= 0) {
@@ -47,5 +46,10 @@ public abstract class LiveEntity extends Entity {
         }
 
         super.update(delta);
+    }
+
+
+    public enum FacingDirection {
+        UP, DOWN, LEFT, RIGHT
     }
 }

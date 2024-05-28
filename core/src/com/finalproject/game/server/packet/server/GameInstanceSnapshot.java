@@ -47,15 +47,17 @@ public class GameInstanceSnapshot {
         clientGameState = remoteClient.getClientGameState();
 
         if (p != null) {
-            playerPos = p.getBoxBody().getPosition();
+
+            playerPos = remoteClient.getClientGameState().equals(RemoteClient.ClientGameState.ALIVE) ? p.getBoxBody().getPosition() : null;
+
             itemBox = p.getItemBox();
 
             playerHealth = p.getCurrentHealth();
             playerMaxHealth = p.getMaxHealth();
             playerStamina = p.getCurrentStamina();
             playerMaxStamina = p.getMaxStamina();
-
         }
+
 
     }
 

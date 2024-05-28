@@ -2,6 +2,7 @@ package com.finalproject.game.server.entity.live.player;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
+import com.finalproject.game.server.RemoteClient;
 import com.finalproject.game.server.builder.entity.LiveEntityBuilder;
 import com.finalproject.game.server.builder.item.WeaponBuilder;
 import com.finalproject.game.server.entity.live.LiveEntity;
@@ -18,14 +19,12 @@ public class Player extends LiveEntity {
 
     protected ItemBox itemBox = new ItemBox();
 
-
     public Player() {
         this(new LiveEntityBuilder());
     }
 
     public Player(LiveEntityBuilder builder) {
         super(builder);
-
 
         this.runningMultiplier = builder.getRunningMultiplier();
         this.currentStamina = builder.getCurrentStamina();
@@ -68,10 +67,17 @@ public class Player extends LiveEntity {
     public void update(float delta) {
         super.update(delta);
 
+        if (!this.getRemoteClient().getClientGameState().equals(RemoteClient.ClientGameState.ALIVE)) return;
+
+
         if (isRunning) currentStamina = Math.max(0, currentStamina - 1);
         else currentStamina = Math.min(maxStamina, currentStamina + 1);
 
         this.setRunning(remoteClient.getInputStates().contains(Input.Keys.SHIFT_LEFT));
+
+        if (this.currentHealth <= 0) {
+            this.getRemoteClient().setClientGameState(RemoteClient.ClientGameState.DEAD);
+        }
 
         remoteClient.getInputStates().forEach(keycode -> this.updateMovement(delta, keycode));
         remoteClient.getMouseButtonStates().forEach(button -> this.updateMouseAction(delta, button));
