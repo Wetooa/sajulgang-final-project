@@ -2,6 +2,7 @@ package com.finalproject.game.server;
 
 
 import com.esotericsoftware.kryonet.Connection;
+import com.finalproject.game.server.entity.live.LiveEntity;
 import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
 
@@ -13,6 +14,8 @@ public class RemoteClient {
     protected final int RESPAWN_TIMER = 3;
 
     protected transient final Connection connection;
+    protected transient GameInstanceServer gameInstanceServer;
+    protected transient Player player;
 
     protected int currentGameID;
     protected String name;
@@ -27,9 +30,6 @@ public class RemoteClient {
     protected int isScrollingUp = 0;
     protected float mouseX = 0;
     protected float mouseY = 0;
-
-    protected transient GameInstanceServer gameInstanceServer;
-    protected transient Player player;
 
 
     public RemoteClient(Connection c) {
@@ -153,7 +153,23 @@ public class RemoteClient {
             }
         }
 
+        this.player.setFacingDirection(getFacingDirection());
+
         sendDataToClient();
+    }
+
+    public LiveEntity.FacingDirection getFacingDirection() {
+        float angle = getPlayer().getAngle();
+
+        if (angle >= -Math.PI / 4 && angle <= Math.PI / 4) {
+            return LiveEntity.FacingDirection.RIGHT;
+        } else if (angle > Math.PI / 4 && angle < 3 * Math.PI / 4) {
+            return LiveEntity.FacingDirection.UP;
+        } else if (angle >= 3 * Math.PI / 4 || angle <= -3 * Math.PI / 4) {
+            return LiveEntity.FacingDirection.LEFT;
+        } else {
+            return LiveEntity.FacingDirection.DOWN;
+        }
     }
 
     @Override

@@ -27,11 +27,11 @@ public abstract class Projectile extends Entity {
         float mouseX = remoteClient.getMouseX();
         float mouseY = remoteClient.getMouseY();
 
-
         Random rand = new Random();
 
         this.accuracy = 1 - builder.getAccuracy();
         this.angle = MathUtils.atan2(mouseY - playerY, mouseX - playerX) + rand.nextFloat(-this.accuracy, this.accuracy);
+
         this.range = builder.getRange();
         this.expiration = range;
 

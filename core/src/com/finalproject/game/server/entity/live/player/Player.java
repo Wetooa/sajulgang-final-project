@@ -1,7 +1,9 @@
 package com.finalproject.game.server.entity.live.player;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.finalproject.game.server.RemoteClient;
 import com.finalproject.game.server.builder.entity.LiveEntityBuilder;
 import com.finalproject.game.server.builder.item.WeaponBuilder;
@@ -18,6 +20,7 @@ public class Player extends LiveEntity {
     protected int maxStamina;
 
     protected ItemBox itemBox = new ItemBox();
+    protected PlayerState playerState = PlayerState.IDLE;
 
     public Player() {
         this(new LiveEntityBuilder());
@@ -32,7 +35,6 @@ public class Player extends LiveEntity {
 
         itemBox.addItem(new LaserGun((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient).setCurrentWorld(currentWorld)));
     }
-
 
     public int getCurrentStamina() {
         return currentStamina;
@@ -62,13 +64,11 @@ public class Player extends LiveEntity {
         isRunning = running;
     }
 
-
     @Override
     public void update(float delta) {
         super.update(delta);
 
         if (!this.getRemoteClient().getClientGameState().equals(RemoteClient.ClientGameState.ALIVE)) return;
-
 
         if (isRunning) currentStamina = Math.max(0, currentStamina - 1);
         else currentStamina = Math.min(maxStamina, currentStamina + 1);
@@ -79,6 +79,19 @@ public class Player extends LiveEntity {
             this.getRemoteClient().setClientGameState(RemoteClient.ClientGameState.DEAD);
         }
 
+        Body playerbody = this.getBoxBody();
+        Vector2 velocity = playerbody.getLinearVelocity();
+        float speed = velocity.len();
+        float movementThreshold = 0.1f; // Adjust as needed
+        boolean isMoving = speed > movementThreshold;
+
+        if (isMoving) {
+            this.setPlayerState(PlayerState.WALK);
+        } else {
+            this.setPlayerState(PlayerState.IDLE);
+        }
+
+
         remoteClient.getInputStates().forEach(keycode -> this.updateMovement(delta, keycode));
         remoteClient.getMouseButtonStates().forEach(button -> this.updateMouseAction(delta, button));
     }
@@ -87,6 +100,16 @@ public class Player extends LiveEntity {
         if (keycode == Input.Buttons.LEFT) {
             shoot(delta);
         }
+    }
+
+    public float getAngle() {
+        float playerX = this.getBoxBody().getPosition().x;
+        float playerY = this.getBoxBody().getPosition().y;
+
+        float mouseX = remoteClient.getMouseX();
+        float mouseY = remoteClient.getMouseY();
+
+        return MathUtils.atan2(mouseY - playerY, mouseX - playerX);
     }
 
     public void updateMovement(float delta, int keycode) {
@@ -109,5 +132,17 @@ public class Player extends LiveEntity {
     public void shoot(float delta) {
         Item heldItem = itemBox.getHeldItem();
         heldItem.activate(delta);
+    }
+
+    public PlayerState getPlayerState() {
+        return playerState;
+    }
+
+    public void setPlayerState(PlayerState playerState) {
+        this.playerState = playerState;
+    }
+
+    public enum PlayerState {
+        WALK, IDLE, HURT
     }
 }

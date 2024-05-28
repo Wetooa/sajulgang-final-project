@@ -1,12 +1,25 @@
 package com.finalproject.game.client.builder;
 
 import com.badlogic.gdx.math.Vector2;
+import com.finalproject.game.server.entity.live.LiveEntity;
 
 public class EntityBuilder {
 
     protected Vector2 pos = new Vector2(0, 0);
     protected float sizeX = 0.5f;
     protected float sizeY = 0.5f;
+
+    protected LiveEntity.FacingDirection facingDirection = LiveEntity.FacingDirection.UP;
+    protected float stateTime = 0;
+
+    public LiveEntity.FacingDirection getFacingDirection() {
+        return facingDirection;
+    }
+
+    public EntityBuilder setFacingDirection(LiveEntity.FacingDirection facingDirection) {
+        this.facingDirection = facingDirection;
+        return this;
+    }
 
     public float getSizeX() {
         return sizeX;
@@ -35,5 +48,12 @@ public class EntityBuilder {
         return this;
     }
 
+    public float getStateTime() {
+        return stateTime;
+    }
 
+    public EntityBuilder setStateTime(float stateTime) {
+        this.stateTime = stateTime;
+        return this;
+    }
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -13,9 +14,10 @@ import com.badlogic.gdx.math.Vector3;
 import com.finalproject.game.client.ClientController;
 import com.finalproject.game.client.GameClient;
 import com.finalproject.game.client.packet.client.MouseMove;
+import com.finalproject.game.client.resources.Assets;
+import com.finalproject.game.server.entity.live.LiveEntity;
 
-import static com.finalproject.game.client.GameClient.camera;
-import static com.finalproject.game.client.GameClient.shapeRenderer;
+import static com.finalproject.game.client.GameClient.*;
 
 public class OverworldScreen implements Screen {
     private static final float UPDATE_INTERVAL = 0.1f;
@@ -27,7 +29,7 @@ public class OverworldScreen implements Screen {
     @Override
     public void show() {
 
-        tiledMap = new TmxMapLoader().load("ooptilesets/oopmap.tmx");
+        tiledMap = new TmxMapLoader().load("OOP/ADRIAN NAA DIRI TANAN/ooptilesets/oopmap.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
     }
@@ -65,15 +67,21 @@ public class OverworldScreen implements Screen {
 
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin();
-
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
 
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
         GameClient.gameInstanceSnapshot.players.forEach(player -> {
             Vector2 pos = player.getPos();
-            shapeRenderer.setColor(Color.WHITE);
-            shapeRenderer.circle(pos.x, pos.y, player.getSize());
+            float size = player.getSize();
+
+            LiveEntity.FacingDirection facingDirection = player.getFacingDirection();
+
+            TextureRegion frameTexture = Assets.getAssetFramePlayer(player.getPlayerState(), facingDirection, player.getStateTime());
+            batch.draw(frameTexture, pos.x - size / 2, pos.y - size / 2);
         });
+        batch.end();
 
         GameClient.gameInstanceSnapshot.enemies.forEach(enemy -> {
             Vector2 pos = enemy.getPos();
@@ -92,7 +100,7 @@ public class OverworldScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-//        camera.setToOrtho(false, width, height);
+        camera.setToOrtho(false, width, height);
     }
 
     @Override

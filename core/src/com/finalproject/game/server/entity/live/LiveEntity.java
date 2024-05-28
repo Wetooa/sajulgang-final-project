@@ -7,6 +7,7 @@ public abstract class LiveEntity extends Entity {
 
     protected int currentHealth;
     protected int maxHealth;
+    protected FacingDirection facingDirection = FacingDirection.DOWN;
 
     public LiveEntity() {
         this(new LiveEntityBuilder());
@@ -17,6 +18,14 @@ public abstract class LiveEntity extends Entity {
 
         this.maxHealth = builder.getMaxHealth();
         this.currentHealth = builder.getCurrentHealth();
+    }
+
+    public FacingDirection getFacingDirection() {
+        return facingDirection;
+    }
+
+    public void setFacingDirection(FacingDirection facingDirection) {
+        this.facingDirection = facingDirection;
     }
 
     public int getCurrentHealth() {
@@ -44,7 +53,6 @@ public abstract class LiveEntity extends Entity {
         if (getCurrentHealth() <= 0) {
             removeBody();
         }
-
         super.update(delta);
     }
 

@@ -115,11 +115,10 @@ public class GameInstanceServer extends Game {
 
     @Override
     public void create() {
-
         world = new World(new Vector2(0, 0), true);
 
         TmxMapLoader mapLoader = new TmxMapLoader();
-        map = mapLoader.load("ooptilesets/oopmap_backend.tmx");
+        map = mapLoader.load("OOP/ADRIAN NAA DIRI TANAN/ooptilesets/oopmap_backend.tmx");
 
         // Load collision objects
         for (MapObject object : map.getLayers().get("collision layer").getObjects()) {

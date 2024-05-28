@@ -19,6 +19,7 @@ public abstract class Entity extends GameObject {
     protected float sizeX;
     protected float sizeY;
     protected float maxSpeed;
+    protected float stateTime;
 
     protected transient BodyDef bodyDef;
     protected transient Body boxBody;
@@ -51,12 +52,12 @@ public abstract class Entity extends GameObject {
 
         fixtureDef = new FixtureDef();
         fixtureDef.shape = dynamicBox;
-        fixtureDef.density = 1.0f;
+        fixtureDef.density = 0f;
         fixtureDef.friction = 0.3f;
         fixtureDef.restitution = 0.5f; // Bounciness
 
         boxBody.createFixture(fixtureDef);
-        boxBody.setLinearDamping(0.1f);
+        boxBody.setLinearDamping(10f);
         boxBody.setUserData(this);
 
         dynamicBox.dispose();
@@ -135,10 +136,7 @@ public abstract class Entity extends GameObject {
     }
 
     public void update(float delta) {
-        Vector2 playerPos = getBoxBody().getPosition();
-
-        this.posX = playerPos.x;
-        this.posY = playerPos.y;
+        this.stateTime += delta;
     }
 
     public Vector2 getPosition() {
@@ -168,6 +166,14 @@ public abstract class Entity extends GameObject {
 
     public void setDamage(int damage) {
         this.damage = damage;
+    }
+
+    public float getStateTime() {
+        return stateTime;
+    }
+
+    public void setStateTime(float stateTime) {
+        this.stateTime = stateTime;
     }
 
 

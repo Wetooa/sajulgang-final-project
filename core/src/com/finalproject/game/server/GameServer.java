@@ -26,7 +26,6 @@ public class GameServer {
 //    private double matchMakeTimer = 0.0;
 
     public GameServer() throws IOException {
-
         Server server = new Server(BUFFER_SIZE, BUFFER_SIZE);
         server.start();
         server.bind(54555, 54777);
@@ -54,15 +53,11 @@ public class GameServer {
                                    if (object instanceof MousePressed) {
                                        MousePressed mouse = (MousePressed) object;
                                        remoteClient.getMouseButtonStates().add(mouse.button);
-                                       remoteClient.setMouseX(mouse.mouseX);
-                                       remoteClient.setMouseY(mouse.mouseY);
                                    }
 
                                    if (object instanceof MouseReleased) {
                                        MouseReleased mouse = (MouseReleased) object;
                                        remoteClient.getMouseButtonStates().remove((Object) (mouse.button));
-                                       remoteClient.setMouseX(mouse.mouseX);
-                                       remoteClient.setMouseY(mouse.mouseY);
                                    }
 
                                    if (object instanceof MouseMove) {
@@ -161,7 +156,7 @@ public class GameServer {
         if (!remoteClients.containsKey(connection)) {
             RemoteClient newClient = new RemoteClient(connection);
             remoteClients.put(connection, newClient);
-            activeGames.get(activeGames.size() - 1).addRemoteClient(connection, newClient);
+            activeGames.get(0).addRemoteClient(connection, newClient);
         } else System.out.println("Client with connection ID: " + connection.getID() + " is already connected!");
     }
 }
