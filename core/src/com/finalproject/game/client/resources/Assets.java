@@ -100,7 +100,7 @@ public class Assets {
         gunSoundAssets.put(Item.ItemType.ANACONDA, loadSound("gun_shot"));
 
         soundAssets.put(SoundPlayer.SoundType.PLAYER_HIT, loadSound("player_hit"));
-        soundAssets.put(SoundPlayer.SoundType.RUN, loadSound("player_hit"));
+        soundAssets.put(SoundPlayer.SoundType.RUN, loadSound("step"));
         soundAssets.put(SoundPlayer.SoundType.WALK, loadSound("player_hit"));
         soundAssets.put(SoundPlayer.SoundType.BULLET_HIT_WALL, loadSound("player_hit"));
         soundAssets.put(SoundPlayer.SoundType.ITEM_UP, loadSound("item_up"));

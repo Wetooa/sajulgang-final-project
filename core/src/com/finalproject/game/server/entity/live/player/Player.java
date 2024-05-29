@@ -2,6 +2,7 @@ package com.finalproject.game.server.entity.live.player;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
+import com.finalproject.game.client.sound.SoundPlayer;
 import com.finalproject.game.server.RemoteClient;
 import com.finalproject.game.server.builder.entity.LiveEntityBuilder;
 import com.finalproject.game.server.builder.item.WeaponBuilder;
@@ -105,8 +106,10 @@ public abstract class Player extends LiveEntity {
         if (!this.getRemoteClient().getClientGameState().equals(RemoteClient.ClientGameState.ALIVE)) return;
 
         this.setRunning(remoteClient.getInputStates().contains(Input.Keys.SHIFT_LEFT));
-        if (isRunning) currentStamina = Math.max(0, currentStamina - delta * 50);
-        else currentStamina = Math.min(maxStamina, currentStamina + delta * 30);
+        if (isRunning) {
+            currentStamina = Math.max(0, currentStamina - delta * 50);
+            gameInstanceServer.playSound(SoundPlayer.SoundType.RUN);
+        } else currentStamina = Math.min(maxStamina, currentStamina + delta * 100);
 
         this.specialSkillCooldownTimer -= delta;
 
@@ -132,6 +135,7 @@ public abstract class Player extends LiveEntity {
 
         specialSkillCooldownTimer = SPECIAL_SKILL_COOLDOWN_TIMER;
         currentStamina -= SPECIAL_SKILL_STAMINA_COST;
+        gameInstanceServer.playSound(SoundPlayer.SoundType.SKILL);
         castSpecialSkill();
     }
 

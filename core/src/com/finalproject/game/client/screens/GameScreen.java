@@ -45,8 +45,7 @@ public class GameScreen implements Screen {
         backgroundMusic = Assets.musicAssets.get(SoundPlayer.MusicType.BACKGROUND_1);
         backgroundMusic.setLooping(true); //
         backgroundMusic.play();
-
-        font = Assets.generateFont("font/roboto/Roboto-Medium.ttf", 12);
+        font = Assets.generateFont("font/roboto/Roboto-Medium.ttf", 10);
     }
 
     public void sendMouseUpdates() {

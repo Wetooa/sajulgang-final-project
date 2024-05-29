@@ -10,6 +10,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.finalproject.game.client.packet.client.*;
 import com.finalproject.game.client.resources.Assets;
+import com.finalproject.game.client.sound.SoundPlayer;
 import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
 import com.finalproject.game.server.packet.server.ItemSoundPlay;
 import com.finalproject.game.server.packet.server.SoundPlay;
@@ -117,7 +118,12 @@ public class ClientController {
                 }
 
                 if (object instanceof SoundPlay) {
+                    SoundPlayer.SoundType sp = ((SoundPlay) object).soundType;
                     Assets.soundAssets.get(((SoundPlay) (object)).soundType).play();
+
+                    if (sp.equals(SoundPlayer.SoundType.RUN)) {
+                        screenShake.shake(0.1f, 0.25f); // Shake with power 10 for 0.5 seconds
+                    }
                 }
             }
         });
