@@ -1,12 +1,14 @@
 package com.finalproject.game.client.resources;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.finalproject.game.client.sound.Sound;
+import com.finalproject.game.client.sound.SoundPlayer;
 import com.finalproject.game.server.entity.live.LiveEntity;
 import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.server.entity.projectile.Projectile;
@@ -19,7 +21,8 @@ public class Assets {
     public static HashMap<Player.PlayerType, HashMap<Player.PlayerState, HashMap<LiveEntity.FacingDirection, Animation<TextureRegion>>>> playerAssets = new HashMap<>();
     public static HashMap<Projectile.ProjectileType, Animation<TextureRegion>> projectileAssets = new HashMap<>();
     public static HashMap<Item.ItemType, Animation<TextureRegion>> weaponAssets = new HashMap<>();
-    public static HashMap<Sound.SoundType, Object> soundAssets = new HashMap();
+    public static HashMap<SoundPlayer.SoundType, Sound> soundAssets = new HashMap<>();
+    public static HashMap<SoundPlayer.MusicType, Music> musicAssets = new HashMap<>();
 
     // Load assets during initialization
     public static void load() {
@@ -82,6 +85,10 @@ public class Assets {
         projectileAssets.put(Projectile.ProjectileType.SHELL, loadSpritesheet(projectileFilePath + "shell.png", 6));
         projectileAssets.put(Projectile.ProjectileType.BOLT, loadSpritesheet(projectileFilePath + "bolt.png", 4));
 
+        soundAssets.put(SoundPlayer.SoundType.LASER, loadSound("laserShoot"));
+
+
+        musicAssets.put(SoundPlayer.MusicType.BACKGROUND_1, loadMusic("background1"));
     }
 
     private static Animation<TextureRegion> loadSpritesheet(String fileName, int frameCount) {
@@ -96,6 +103,15 @@ public class Assets {
         }
 
         return new Animation<>(0.1f, frames);
+    }
+
+
+    private static Sound loadSound(String fileName) {
+        return Gdx.audio.newSound(Gdx.files.internal("sound/sfx/" + fileName + ".mp3"));
+    }
+
+    private static Music loadMusic(String fileName) {
+        return Gdx.audio.newMusic(Gdx.files.internal("sound/music/" + fileName + ".mp3"));
     }
 
     public static void dispose() {

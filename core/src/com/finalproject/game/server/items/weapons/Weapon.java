@@ -1,5 +1,6 @@
 package com.finalproject.game.server.items.weapons;
 
+import com.finalproject.game.client.sound.SoundPlayer;
 import com.finalproject.game.server.builder.entity.ProjectileBuilder;
 import com.finalproject.game.server.builder.item.WeaponBuilder;
 import com.finalproject.game.server.entity.projectile.Projectile;
@@ -42,6 +43,7 @@ public abstract class Weapon extends Item {
             e.printStackTrace();
         }
 
+        gameInstanceServer.playSound(SoundPlayer.SoundType.LASER);
 
     }
 

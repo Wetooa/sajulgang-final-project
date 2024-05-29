@@ -9,7 +9,9 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.finalproject.game.client.packet.client.*;
+import com.finalproject.game.client.resources.Assets;
 import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
+import com.finalproject.game.server.packet.server.SoundPlay;
 
 import java.io.IOException;
 import java.nio.channels.ClosedSelectorException;
@@ -104,6 +106,10 @@ public class ClientController {
 
                 if (object instanceof GameInstanceSnapshot) {
                     GameClient.gameInstanceSnapshot = (GameInstanceSnapshot) object;
+                }
+
+                if (object instanceof SoundPlay) {
+                    Assets.soundAssets.get(((SoundPlay) (object)).soundType).play();
                 }
             }
         });

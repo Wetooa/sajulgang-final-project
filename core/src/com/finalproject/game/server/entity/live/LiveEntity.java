@@ -53,6 +53,10 @@ public abstract class LiveEntity extends Entity {
         setCurrentHealth(getCurrentHealth() - damage);
     }
 
+    public boolean isDead() {
+        return getCurrentHealth() <= 0;
+    }
+
     private LiveEntity.FacingDirection calculateFacingDirection() {
         float angle = getAngleFromMouse();
 
