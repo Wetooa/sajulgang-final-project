@@ -10,19 +10,15 @@ import java.util.ArrayList;
 
 public class RemoteClient {
     protected final int RESPAWN_TIMER = 3;
-
     protected transient final Connection connection;
+    protected int killCount = 0;
     protected transient GameInstanceServer gameInstanceServer;
     protected Player player;
-
     protected int currentGameID;
     protected String name;
-
     protected ClientState clientState = ClientState.INGAME;
     protected ClientGameState clientGameState = ClientGameState.ALIVE;
-
     protected float respawnTimer = 0;
-
     protected ArrayList<Integer> inputStates = new ArrayList<>();
     protected ArrayList<Integer> mouseButtonStates = new ArrayList<>();
     protected int isScrollingUp = 0;
@@ -39,6 +35,18 @@ public class RemoteClient {
         currentGameID = -1;
 
         name = "Player " + c.getID();
+    }
+
+    public int getKillCount() {
+        return killCount;
+    }
+
+    public void setKillCount(int killCount) {
+        this.killCount = killCount;
+    }
+
+    public void increaseKillCount() {
+        this.killCount++;
     }
 
     public GameInstanceServer getGameInstanceServer() {

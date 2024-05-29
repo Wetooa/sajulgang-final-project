@@ -1,12 +1,14 @@
 package com.finalproject.game.client.resources;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.finalproject.game.client.sound.Sound;
+import com.finalproject.game.client.sound.SoundPlayer;
 import com.finalproject.game.server.entity.live.LiveEntity;
 import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.server.entity.projectile.Projectile;
@@ -18,8 +20,13 @@ public class Assets {
 
     public static HashMap<Player.PlayerType, HashMap<Player.PlayerState, HashMap<LiveEntity.FacingDirection, Animation<TextureRegion>>>> playerAssets = new HashMap<>();
     public static HashMap<Projectile.ProjectileType, Animation<TextureRegion>> projectileAssets = new HashMap<>();
+
     public static HashMap<Item.ItemType, Animation<TextureRegion>> weaponAssets = new HashMap<>();
-    public static HashMap<Sound.SoundType, Object> soundAssets = new HashMap();
+    public static HashMap<Item.ItemType, Sound> gunSoundAssets = new HashMap<>();
+
+    public static HashMap<SoundPlayer.SoundType, Sound> soundAssets = new HashMap<>();
+
+    public static HashMap<SoundPlayer.MusicType, Music> musicAssets = new HashMap<>();
 
     // Load assets during initialization
     public static void load() {
@@ -82,6 +89,26 @@ public class Assets {
         projectileAssets.put(Projectile.ProjectileType.SHELL, loadSpritesheet(projectileFilePath + "shell.png", 6));
         projectileAssets.put(Projectile.ProjectileType.BOLT, loadSpritesheet(projectileFilePath + "bolt.png", 4));
 
+        gunSoundAssets.put(Item.ItemType.LASER_GUN, loadSound("laserShoot"));
+        gunSoundAssets.put(Item.ItemType.HANDGUN, loadSound("9mm"));
+        gunSoundAssets.put(Item.ItemType.AK69, loadSound("heavy_machine_gun"));
+        gunSoundAssets.put(Item.ItemType.MACHINE_GUN, loadSound("heavy_machine_gun"));
+        gunSoundAssets.put(Item.ItemType.SUBMACHINE_GUN, loadSound("smg"));
+        gunSoundAssets.put(Item.ItemType.CROSSBOW, loadSound("laserShoot"));
+        gunSoundAssets.put(Item.ItemType.TWIN_PISTOLS, loadSound("gun_shot"));
+        gunSoundAssets.put(Item.ItemType.DESERT_EAGLE, loadSound("gun_shot"));
+        gunSoundAssets.put(Item.ItemType.ANACONDA, loadSound("gun_shot"));
+
+        soundAssets.put(SoundPlayer.SoundType.PLAYER_HIT, loadSound("player_hit"));
+        soundAssets.put(SoundPlayer.SoundType.RUN, loadSound("player_hit"));
+        soundAssets.put(SoundPlayer.SoundType.WALK, loadSound("player_hit"));
+        soundAssets.put(SoundPlayer.SoundType.BULLET_HIT_WALL, loadSound("player_hit"));
+        soundAssets.put(SoundPlayer.SoundType.ITEM_UP, loadSound("item_up"));
+        soundAssets.put(SoundPlayer.SoundType.ITEM_DOWN, loadSound("item_down"));
+        soundAssets.put(SoundPlayer.SoundType.DEATH, loadSound("death"));
+        soundAssets.put(SoundPlayer.SoundType.SKILL, loadSound("skill"));
+
+        musicAssets.put(SoundPlayer.MusicType.BACKGROUND_1, loadMusic("background1"));
     }
 
     private static Animation<TextureRegion> loadSpritesheet(String fileName, int frameCount) {
@@ -96,6 +123,15 @@ public class Assets {
         }
 
         return new Animation<>(0.1f, frames);
+    }
+
+
+    private static Sound loadSound(String fileName) {
+        return Gdx.audio.newSound(Gdx.files.internal("sound/sfx/" + fileName + ".mp3"));
+    }
+
+    private static Music loadMusic(String fileName) {
+        return Gdx.audio.newMusic(Gdx.files.internal("sound/music/" + fileName + ".mp3"));
     }
 
     public static void dispose() {

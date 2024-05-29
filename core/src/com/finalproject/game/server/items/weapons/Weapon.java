@@ -4,6 +4,7 @@ import com.finalproject.game.server.builder.entity.ProjectileBuilder;
 import com.finalproject.game.server.builder.item.WeaponBuilder;
 import com.finalproject.game.server.entity.projectile.Projectile;
 import com.finalproject.game.server.items.Item;
+import com.finalproject.game.server.packet.server.ItemSoundPlay;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -42,7 +43,11 @@ public abstract class Weapon extends Item {
             e.printStackTrace();
         }
 
+        playItemSound(this.itemType);
+    }
 
+    public void playItemSound(Item.ItemType itemType) {
+        gameInstanceServer.remoteClientsInServer.keySet().forEach(connection -> connection.sendTCP(new ItemSoundPlay(itemType)));
     }
 
 

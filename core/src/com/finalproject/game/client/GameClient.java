@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.finalproject.game.client.resources.Assets;
+import com.finalproject.game.client.resources.ScreenShake;
 import com.finalproject.game.client.screens.GameScreen;
 import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
@@ -29,6 +30,7 @@ public class GameClient extends Game {
     public static Screen screen;
     public static ArrayList<Player> players;
     public static SpriteBatch batch;
+    public static ScreenShake screenShake;
 
     @Override
     public void create() {
@@ -50,6 +52,7 @@ public class GameClient extends Game {
         shapeRenderer = new ShapeRenderer();
         screen = new GameScreen();
         shapeRenderer.setAutoShapeType(true);
+        screenShake = new ScreenShake();
 
         setScreen(screen);
     }

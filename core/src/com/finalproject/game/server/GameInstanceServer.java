@@ -10,11 +10,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryonet.Connection;
+import com.finalproject.game.client.sound.SoundPlayer;
 import com.finalproject.game.server.builder.entity.LiveEntityBuilder;
 import com.finalproject.game.server.entity.live.enemy.Enemy;
 import com.finalproject.game.server.entity.live.player.Joshua;
 import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.server.entity.projectile.Projectile;
+import com.finalproject.game.server.packet.server.SoundPlay;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +26,7 @@ public class GameInstanceServer extends Game {
 
     // TODO: add current state of game, maybe paused or some thing
 
+    public static final int WIN_KILL_COUNT = 2;
     public static final float PPM = 10f;
     protected static HashMap<GameWorld, String> gameWorldStringHashMap = new HashMap<>();
     protected final int GAME_ID;
@@ -67,6 +70,12 @@ public class GameInstanceServer extends Game {
         remoteClientsInServer.values().forEach((remoteClient) -> remoteClient.update(delta));
         clearBodiesToRemove();
     }
+
+
+    public void playSound(SoundPlayer.SoundType soundType) {
+        remoteClientsInServer.keySet().forEach(connection -> connection.sendTCP(new SoundPlay(soundType)));
+    }
+
 
     public void addRemoteClient(Connection connection, RemoteClient remoteClient) {
         // TODO: logic where player spawns on location with less playersr
@@ -178,6 +187,13 @@ public class GameInstanceServer extends Game {
 
                     if (pl != null && p != null && !p.getRemoteClient().equals(pl.getRemoteClient())) {
                         pl.takeDamage(p.getDamage());
+
+                        if (pl.isDead()) {
+                            RemoteClient killer = p.getRemoteClient();
+                            killer.increaseKillCount();
+                            playSound(SoundPlayer.SoundType.DEATH);
+                        }
+
                         p.removeBody();
                     }
                 }

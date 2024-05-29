@@ -2,6 +2,7 @@ package com.finalproject.game.client.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,6 +17,7 @@ import com.finalproject.game.client.ClientController;
 import com.finalproject.game.client.GameClient;
 import com.finalproject.game.client.packet.client.MouseMove;
 import com.finalproject.game.client.resources.Assets;
+import com.finalproject.game.client.sound.SoundPlayer;
 import com.finalproject.game.server.GameInstanceServer;
 import com.finalproject.game.server.RemoteClient;
 import com.finalproject.game.server.entity.live.LiveEntity;
@@ -31,6 +33,7 @@ public class GameScreen implements Screen {
     protected Texture layer2;
     private float timeSinceLastUpdate = 0;
     private BitmapFont font;
+    private Music backgroundMusic;
 
     @Override
     public void show() {
@@ -39,8 +42,11 @@ public class GameScreen implements Screen {
         layer1 = new Texture("ooptilesets/map_layers/overworld_layer_1.png");
         layer2 = new Texture("ooptilesets/map_layers/overworld_layer_2.png");
 
-        font = Assets.generateFont("font/roboto/Roboto-Medium.ttf", 12);
+        backgroundMusic = Assets.musicAssets.get(SoundPlayer.MusicType.BACKGROUND_1);
+        backgroundMusic.setLooping(true); //
+        backgroundMusic.play();
 
+        font = Assets.generateFont("font/roboto/Roboto-Medium.ttf", 12);
     }
 
     public void sendMouseUpdates() {
@@ -55,7 +61,7 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void render(float v) {
+    public void render(float delta) {
         sendMouseUpdates();
 
         Gdx.gl.glClearColor(0.0f, 0, 0.0f, 1f);
@@ -139,7 +145,7 @@ public class GameScreen implements Screen {
 //            renderDimmingOverlay(playerPos, playerAngle);
         }
 
-
+        screenShake.update(delta);
         batch.draw(layer2, 0, 0, frameWidth, frameHeight);
         drawHUD();
 
