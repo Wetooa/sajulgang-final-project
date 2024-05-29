@@ -61,7 +61,7 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void render(float v) {
+    public void render(float delta) {
         sendMouseUpdates();
 
         Gdx.gl.glClearColor(0.0f, 0, 0.0f, 1f);
@@ -145,7 +145,7 @@ public class GameScreen implements Screen {
 //            renderDimmingOverlay(playerPos, playerAngle);
         }
 
-
+        screenShake.update(delta);
         batch.draw(layer2, 0, 0, frameWidth, frameHeight);
         drawHUD();
 

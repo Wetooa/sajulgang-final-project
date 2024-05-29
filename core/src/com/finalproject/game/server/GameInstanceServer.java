@@ -76,6 +76,7 @@ public class GameInstanceServer extends Game {
         remoteClientsInServer.keySet().forEach(connection -> connection.sendTCP(new SoundPlay(soundType)));
     }
 
+
     public void addRemoteClient(Connection connection, RemoteClient remoteClient) {
         // TODO: logic where player spawns on location with less playersr
 
@@ -190,6 +191,7 @@ public class GameInstanceServer extends Game {
                         if (pl.isDead()) {
                             RemoteClient killer = p.getRemoteClient();
                             killer.increaseKillCount();
+                            playSound(SoundPlayer.SoundType.DEATH);
                         }
 
                         p.removeBody();

@@ -8,8 +8,8 @@ import com.finalproject.game.server.builder.item.WeaponBuilder;
 import com.finalproject.game.server.entity.live.LiveEntity;
 import com.finalproject.game.server.items.Item;
 import com.finalproject.game.server.items.ItemBox;
-import com.finalproject.game.server.items.weapons.range.primary.LaserGun;
-import com.finalproject.game.server.items.weapons.range.secondary.Anaconda;
+import com.finalproject.game.server.items.weapons.range.primary.MachineGun;
+import com.finalproject.game.server.items.weapons.range.secondary.TwinPistols;
 
 public abstract class Player extends LiveEntity {
 
@@ -22,7 +22,7 @@ public abstract class Player extends LiveEntity {
     protected float currentStamina;
     protected float maxStamina;
     protected PlayerState playerState = PlayerState.IDLE;
-    protected ItemBox itemBox = new ItemBox();
+    protected ItemBox itemBox;
     protected PlayerType playerType = PlayerType.FRIA;
     protected float specialSkillCooldownTimer = 0;
     private float hurtTimer = 0;
@@ -41,8 +41,11 @@ public abstract class Player extends LiveEntity {
         this.SPECIAL_SKILL_COOLDOWN_TIMER = builder.getSpecialSkillTimer();
         this.SPECIAL_SKILL_STAMINA_COST = builder.getSpecialSkillStaminaCost();
 
-        Item startingGun = new LaserGun((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient).setCurrentWorld(currentWorld));
-        Item startingGun2 = new Anaconda((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient).setCurrentWorld(currentWorld));
+
+        this.itemBox = new ItemBox(this.gameInstanceServer);
+
+        Item startingGun = new MachineGun((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient).setCurrentWorld(currentWorld));
+        Item startingGun2 = new TwinPistols((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient).setCurrentWorld(currentWorld));
 
         itemBox.addItem(startingGun);
         itemBox.addItem(startingGun2);
