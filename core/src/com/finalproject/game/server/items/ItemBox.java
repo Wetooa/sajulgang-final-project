@@ -10,23 +10,14 @@ import java.util.List;
 
 public class ItemBox {
 
-
     public static final int MAX_INSTANT_WEAPONS = 3;
     public static final int MAX_ITEMS = MAX_INSTANT_WEAPONS + 3;
 
     protected Integer currentItemHeld = 0;
     protected List<Item> items = new ArrayList<>();
-
-    protected PrimaryGun primaryGun;
-    protected SecondaryGun secondaryGun;
-    protected MeleeWeapon meleeWeapon;
-
-    protected ArrayList<InstantWeapon> instantWeapons = new ArrayList<>();
     protected int instantWeaponsCount = 0;
 
-
     public ItemBox() {
-        items = new ArrayList<>();
         for (int i = 0; i < MAX_ITEMS; i++) items.add(null);
     }
 
@@ -35,9 +26,8 @@ public class ItemBox {
         else if (item instanceof SecondaryGun) items.add(1, item);
         else if (item instanceof MeleeWeapon) items.add(2, item);
         else if (item instanceof InstantWeapon) {
-            if (instantWeapons.size() > MAX_INSTANT_WEAPONS) return;
-
-            instantWeapons.add((InstantWeapon) item);
+            if (instantWeaponsCount > MAX_INSTANT_WEAPONS) return;
+            items.add(instantWeaponsCount + 3, item);
         }
     }
 

@@ -24,6 +24,8 @@ public abstract class Projectile extends Entity {
 
         this.projectileType = builder.getProjectileType();
 
+        if (remoteClient == null) return;
+
         float playerX = remoteClient.getPlayer().getBoxBody().getPosition().x;
         float playerY = remoteClient.getPlayer().getBoxBody().getPosition().y;
 
@@ -82,6 +84,7 @@ public abstract class Projectile extends Entity {
         this.projectileType = projectileType;
     }
 
+
     @Override
     public void update(float delta) {
         super.update(delta);
@@ -90,7 +93,6 @@ public abstract class Projectile extends Entity {
         if (expiration <= 0) {
             removeBody();
         }
-
     }
 
     public enum ProjectileType {

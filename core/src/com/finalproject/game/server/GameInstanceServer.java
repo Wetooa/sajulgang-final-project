@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryonet.Connection;
 import com.finalproject.game.server.builder.entity.LiveEntityBuilder;
 import com.finalproject.game.server.entity.live.enemy.Enemy;
-import com.finalproject.game.server.entity.live.player.Fria;
+import com.finalproject.game.server.entity.live.player.Joshua;
 import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.server.entity.projectile.Projectile;
 
@@ -24,7 +24,7 @@ public class GameInstanceServer extends Game {
 
     // TODO: add current state of game, maybe paused or some thing
 
-    protected static final float PPM = 10f;
+    public static final float PPM = 10f;
     protected static HashMap<GameWorld, String> gameWorldStringHashMap = new HashMap<>();
     protected final int GAME_ID;
 
@@ -80,7 +80,7 @@ public class GameInstanceServer extends Game {
     }
 
     public void spawnPlayer(RemoteClient remoteClient) {
-        Fria p = new Fria((LiveEntityBuilder) new LiveEntityBuilder().setGameInstanceServer(this).setRemoteClient(remoteClient).setCurrentWorld(world));
+        Player p = new Joshua((LiveEntityBuilder) new LiveEntityBuilder().setGameInstanceServer(this).setRemoteClient(remoteClient).setCurrentWorld(world));
         remoteClient.setPlayer(p);
         players.add(p);
     }

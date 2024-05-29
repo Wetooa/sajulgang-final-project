@@ -45,8 +45,15 @@ public class Assets {
             HashMap<Player.PlayerState, HashMap<LiveEntity.FacingDirection, Animation<TextureRegion>>> playerTypeMap = new HashMap<>();
             for (Player.PlayerState playerState : Player.PlayerState.values()) {
                 HashMap<LiveEntity.FacingDirection, Animation<TextureRegion>> playerStateMap = new HashMap<>();
-                for (LiveEntity.FacingDirection facingDirection : LiveEntity.FacingDirection.values()) {
-                    playerStateMap.put(facingDirection, loadSpritesheet("ooptilesets/characters/" + playerTypeToString.get(playerType) + playerStateToString.get(playerState) + facingDirectionToString.get(facingDirection) + ".png", 6));
+                if (playerState == Player.PlayerState.DEAD) {
+                    playerStateMap.put(LiveEntity.FacingDirection.DOWN, loadSpritesheet("ooptilesets/characters/" + playerTypeToString.get(playerType) + playerStateToString.get(Player.PlayerState.DEAD) + ".png", 6));
+                    playerStateMap.put(LiveEntity.FacingDirection.UP, loadSpritesheet("ooptilesets/characters/" + playerTypeToString.get(playerType) + playerStateToString.get(Player.PlayerState.DEAD) + ".png", 6));
+                    playerStateMap.put(LiveEntity.FacingDirection.LEFT, loadSpritesheet("ooptilesets/characters/" + playerTypeToString.get(playerType) + playerStateToString.get(Player.PlayerState.DEAD) + ".png", 6));
+                    playerStateMap.put(LiveEntity.FacingDirection.RIGHT, loadSpritesheet("ooptilesets/characters/" + playerTypeToString.get(playerType) + playerStateToString.get(Player.PlayerState.DEAD) + ".png", 6));
+                } else {
+                    for (LiveEntity.FacingDirection facingDirection : LiveEntity.FacingDirection.values()) {
+                        playerStateMap.put(facingDirection, loadSpritesheet("ooptilesets/characters/" + playerTypeToString.get(playerType) + playerStateToString.get(playerState) + facingDirectionToString.get(facingDirection) + ".png", playerState != Player.PlayerState.HURT ? 6 : 3));
+                    }
                 }
                 playerTypeMap.put(playerState, playerStateMap);
             }
@@ -61,10 +68,10 @@ public class Assets {
         weaponAssets.put(Item.ItemType.DESERT_EAGLE, loadSpritesheet(weaponFilePath + "desert_eagle.png", 1));
         weaponAssets.put(Item.ItemType.TWIN_PISTOLS, loadSpritesheet(weaponFilePath + "twin_pistols.png", 1));
 
-        weaponAssets.put(Item.ItemType.LASER_GUN, loadSpritesheet(weaponFilePath + "lasergun.png", 1));
+        weaponAssets.put(Item.ItemType.LASER_GUN, loadSpritesheet(weaponFilePath + "laser_gun.png", 1));
         weaponAssets.put(Item.ItemType.CROSSBOW, loadSpritesheet(weaponFilePath + "crossbow.png", 1));
-        weaponAssets.put(Item.ItemType.MACHINE_GUN, loadSpritesheet(weaponFilePath + "machinegun.png", 1));
-        weaponAssets.put(Item.ItemType.SUBMACHINE_GUN, loadSpritesheet(weaponFilePath + "submachinegun.png", 1));
+        weaponAssets.put(Item.ItemType.MACHINE_GUN, loadSpritesheet(weaponFilePath + "machine_gun.png", 1));
+        weaponAssets.put(Item.ItemType.SUBMACHINE_GUN, loadSpritesheet(weaponFilePath + "submachine_gun.png", 1));
         weaponAssets.put(Item.ItemType.AK69, loadSpritesheet(weaponFilePath + "ak69gun.png", 1));
         weaponAssets.put(Item.ItemType.SHOTGUN, loadSpritesheet(weaponFilePath + "shotgun.png", 1));
 
@@ -75,8 +82,6 @@ public class Assets {
         projectileAssets.put(Projectile.ProjectileType.SHELL, loadSpritesheet(projectileFilePath + "shell.png", 6));
         projectileAssets.put(Projectile.ProjectileType.BOLT, loadSpritesheet(projectileFilePath + "bolt.png", 4));
 
-
-        dispose();
     }
 
     private static Animation<TextureRegion> loadSpritesheet(String fileName, int frameCount) {

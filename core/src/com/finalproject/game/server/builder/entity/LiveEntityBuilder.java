@@ -4,15 +4,26 @@ import com.finalproject.game.server.entity.live.player.Player;
 
 public class LiveEntityBuilder extends EntityBuilder {
 
-    int maxHealth = 100;
-    int currentHealth = 100;
+    float maxHealth = 100;
+    float currentHealth = 100;
 
     float runningMultiplier = 1.5f;
-    int currentStamina = 100;
-    int maxStamina = 100;
+    float currentStamina = 100;
+    float maxStamina = 100;
 
     Player.PlayerType playerType = Player.PlayerType.FRIA;
+
     float specialSkillTimer = 2;
+    float specialSkillStaminaCost = 30;
+
+    public float getSpecialSkillStaminaCost() {
+        return specialSkillStaminaCost;
+    }
+
+    public LiveEntityBuilder setSpecialSkillStaminaCost(float specialSkillStaminaCost) {
+        this.specialSkillStaminaCost = specialSkillStaminaCost;
+        return this;
+    }
 
     public float getSpecialSkillTimer() {
         return specialSkillTimer;
@@ -32,9 +43,13 @@ public class LiveEntityBuilder extends EntityBuilder {
         return this;
     }
 
-
     public float getRunningMultiplier() {
         return runningMultiplier;
+    }
+
+    public LiveEntityBuilder setRunningMultiplier(float runningMultiplier) {
+        this.runningMultiplier = runningMultiplier;
+        return this;
     }
 
     public LiveEntityBuilder setRunningMultiplier(int runningMultiplier) {
@@ -42,25 +57,25 @@ public class LiveEntityBuilder extends EntityBuilder {
         return this;
     }
 
-    public int getMaxStamina() {
+    public float getMaxStamina() {
         return maxStamina;
     }
 
-    public LiveEntityBuilder setMaxStamina(int maxStamina) {
+    public LiveEntityBuilder setMaxStamina(float maxStamina) {
         this.maxStamina = maxStamina;
         return this;
     }
 
-    public int getCurrentStamina() {
+    public float getCurrentStamina() {
         return currentStamina;
     }
 
-    public LiveEntityBuilder setCurrentStamina(int currentStamina) {
+    public LiveEntityBuilder setCurrentStamina(float currentStamina) {
         this.currentStamina = currentStamina;
         return this;
     }
 
-    public int getMaxHealth() {
+    public float getMaxHealth() {
         return maxHealth;
     }
 
@@ -69,7 +84,7 @@ public class LiveEntityBuilder extends EntityBuilder {
         return this;
     }
 
-    public int getCurrentHealth() {
+    public float getCurrentHealth() {
         return currentHealth;
     }
 

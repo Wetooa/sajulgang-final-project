@@ -21,6 +21,11 @@ public class GameInstanceSnapshot {
     public GameInstanceSnapshot(GameInstanceServer gameInstance, RemoteClient remoteClient) {
         this.players = gameInstance.players;
         this.projectiles = gameInstance.projectiles;
+
+        if (players.size() > 0) {
+            System.out.println(players.get(0).getFacingDirection());
+        }
+
         this.remoteClient = remoteClient;
     }
 

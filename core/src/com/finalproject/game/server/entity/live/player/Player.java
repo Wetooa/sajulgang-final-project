@@ -1,7 +1,6 @@
 package com.finalproject.game.server.entity.live.player;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.finalproject.game.server.RemoteClient;
 import com.finalproject.game.server.builder.entity.LiveEntityBuilder;
@@ -10,21 +9,23 @@ import com.finalproject.game.server.entity.live.LiveEntity;
 import com.finalproject.game.server.items.Item;
 import com.finalproject.game.server.items.ItemBox;
 import com.finalproject.game.server.items.weapons.range.primary.LaserGun;
+import com.finalproject.game.server.items.weapons.range.secondary.Anaconda;
 
 public abstract class Player extends LiveEntity {
 
     protected static final float MOVING_THRESHOLD = 0.1f;
     private static final float HURT_TIMER = 0.5f;
     protected final float SPECIAL_SKILL_COOLDOWN_TIMER;
+    protected final float SPECIAL_SKILL_STAMINA_COST;
     protected boolean isRunning = false;
     protected float runningMultiplier;
-    protected int currentStamina;
-    protected int maxStamina;
+    protected float currentStamina;
+    protected float maxStamina;
     protected PlayerState playerState = PlayerState.IDLE;
     protected ItemBox itemBox = new ItemBox();
     protected PlayerType playerType = PlayerType.FRIA;
+    protected float specialSkillCooldownTimer = 0;
     private float hurtTimer = 0;
-    private float specialSkillCooldownTimer = 0;
 
     public Player() {
         this(new LiveEntityBuilder());
@@ -38,12 +39,28 @@ public abstract class Player extends LiveEntity {
         this.maxStamina = builder.getMaxStamina();
         this.playerType = builder.getPlayerType();
         this.SPECIAL_SKILL_COOLDOWN_TIMER = builder.getSpecialSkillTimer();
+        this.SPECIAL_SKILL_STAMINA_COST = builder.getSpecialSkillStaminaCost();
 
         Item startingGun = new LaserGun((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient).setCurrentWorld(currentWorld));
+        Item startingGun2 = new Anaconda((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient).setCurrentWorld(currentWorld));
+
         itemBox.addItem(startingGun);
+        itemBox.addItem(startingGun2);
     }
 
-    public int getCurrentStamina() {
+    public float getSPECIAL_SKILL_STAMINA_COST() {
+        return SPECIAL_SKILL_STAMINA_COST;
+    }
+
+    public float getSpecialSkillCooldownTimer() {
+        return specialSkillCooldownTimer;
+    }
+
+    public void setSpecialSkillCooldownTimer(float specialSkillCooldownTimer) {
+        this.specialSkillCooldownTimer = specialSkillCooldownTimer;
+    }
+
+    public float getCurrentStamina() {
         return currentStamina;
     }
 
@@ -51,7 +68,7 @@ public abstract class Player extends LiveEntity {
         this.currentStamina = currentStamina;
     }
 
-    public int getMaxStamina() {
+    public float getMaxStamina() {
         return maxStamina;
     }
 
@@ -86,8 +103,8 @@ public abstract class Player extends LiveEntity {
         if (!this.getRemoteClient().getClientGameState().equals(RemoteClient.ClientGameState.ALIVE)) return;
 
         this.setRunning(remoteClient.getInputStates().contains(Input.Keys.SHIFT_LEFT));
-        if (isRunning) currentStamina = Math.max(0, currentStamina - 1);
-        else currentStamina = Math.min(maxStamina, currentStamina + 1);
+        if (isRunning) currentStamina = Math.max(0, currentStamina - delta);
+        else currentStamina = Math.min(maxStamina, currentStamina + delta / 2);
 
         this.specialSkillCooldownTimer -= delta;
 
@@ -103,13 +120,16 @@ public abstract class Player extends LiveEntity {
             this.setPlayerState(PlayerState.IDLE);
         }
 
+        if (remoteClient.getInputStates().contains(Input.Keys.SPACE)) useSpecialSkill();
         remoteClient.getInputStates().forEach(keycode -> this.updateMovement(delta, keycode));
         remoteClient.getMouseButtonStates().forEach(button -> this.updateMouseAction(delta, button));
     }
 
     public void useSpecialSkill() {
-        if (specialSkillCooldownTimer > 0) return;
+        if (specialSkillCooldownTimer > 0 || currentStamina < SPECIAL_SKILL_STAMINA_COST) return;
+
         specialSkillCooldownTimer = SPECIAL_SKILL_COOLDOWN_TIMER;
+        currentStamina -= SPECIAL_SKILL_STAMINA_COST;
         castSpecialSkill();
     }
 
@@ -120,16 +140,6 @@ public abstract class Player extends LiveEntity {
             Item currentItem = itemBox.getHeldItem();
             currentItem.activate(delta);
         }
-    }
-
-    public float getAngle() {
-        float playerX = this.getBoxBody().getPosition().x;
-        float playerY = this.getBoxBody().getPosition().y;
-
-        float mouseX = remoteClient.getMouseX();
-        float mouseY = remoteClient.getMouseY();
-
-        return MathUtils.atan2(mouseY - playerY, mouseX - playerX);
     }
 
     public void updateMovement(float delta, int keycode) {
@@ -150,7 +160,7 @@ public abstract class Player extends LiveEntity {
     }
 
     @Override
-    public void takeDamage(int damage) {
+    public void takeDamage(float damage) {
         super.takeDamage(damage);
 
         setPlayerState(PlayerState.HURT);

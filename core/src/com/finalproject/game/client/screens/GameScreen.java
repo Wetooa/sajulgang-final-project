@@ -9,8 +9,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -18,6 +16,7 @@ import com.finalproject.game.client.ClientController;
 import com.finalproject.game.client.GameClient;
 import com.finalproject.game.client.packet.client.MouseMove;
 import com.finalproject.game.client.resources.Assets;
+import com.finalproject.game.server.GameInstanceServer;
 import com.finalproject.game.server.RemoteClient;
 import com.finalproject.game.server.entity.live.LiveEntity;
 import com.finalproject.game.server.entity.live.player.Player;
@@ -27,17 +26,19 @@ import static com.finalproject.game.client.GameClient.*;
 
 public class GameScreen implements Screen {
     private static final float UPDATE_INTERVAL = 0.1f;
-    protected TiledMap tiledMap;
-    protected Texture texture;
-    protected OrthogonalTiledMapRenderer tiledMapRenderer;
+    protected Texture layer0;
+    protected Texture layer1;
+    protected Texture layer2;
     private float timeSinceLastUpdate = 0;
     private BitmapFont font;
-
 
     @Override
     public void show() {
 
-        texture = new Texture("OOP/ADRIAN NAA DIRI TANAN/ooptilesets/imageadrian2oopmap.png");
+        layer0 = new Texture("ooptilesets/map_layers/overworld_layer_0.png");
+        layer1 = new Texture("ooptilesets/map_layers/overworld_layer_1.png");
+        layer2 = new Texture("ooptilesets/map_layers/overworld_layer_2.png");
+
         font = Assets.generateFont("font/roboto/Roboto-Medium.ttf", 12);
 
     }
@@ -61,14 +62,20 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         RemoteClient userClient = gameInstanceSnapshot.remoteClient;
+        if (userClient == null) return;
+
         Player player = userClient.getPlayer();
 
         Vector2 playerPos = player.getPos();
         Vector2 playerSize = player.getSize();
         float playerAngle = player.getAngle();
 
+        float frameWidth = layer0.getWidth() / GameInstanceServer.PPM;
+        float frameHeight = layer0.getHeight() / GameInstanceServer.PPM;
+
         batch.begin();
-        batch.draw(texture, 0, 0, 201, 211);
+        batch.draw(layer0, 0, 0, frameWidth, frameHeight);
+        batch.draw(layer1, 0, 0, frameWidth, frameHeight);
         batch.setProjectionMatrix(camera.combined);
 
         if (playerPos != null) {
@@ -88,17 +95,16 @@ public class GameScreen implements Screen {
             Vector2 pos = p.getPos();
             Vector2 size = p.getSize();
 
-            LiveEntity.FacingDirection facingDirection = player.getFacingDirection();
-            TextureRegion playerFrameTexture = Assets.getAssetFramePlayer(player.getPlayerType(), player.getPlayerState(), facingDirection, player.getStateTime());
+            LiveEntity.FacingDirection facingDirection = p.getFacingDirection();
+            TextureRegion playerFrameTexture = Assets.getAssetFramePlayer(p.getPlayerType(), p.getPlayerState(), facingDirection, p.getStateTime());
             batch.draw(playerFrameTexture, pos.x - size.x, pos.y - size.y, size.x * 2, size.y * 4);
 
             Item currentWeapon = p.getItemBox().getHeldItem();
-            float playerAngleDeg = (float) Math.toDegrees(player.getAngle());
+            float playerAngleDeg = (float) Math.toDegrees(p.getAngle());
 
             if (currentWeapon != null) {
 
                 TextureRegion weaponFrameTexture = new TextureRegion(Assets.getAssetFrameWeapon(currentWeapon.getItemType()));
-
 
                 float renderingAngle = playerAngleDeg;
 
@@ -110,6 +116,7 @@ public class GameScreen implements Screen {
                 float originX = size.x; // Half width of the texture when drawn
                 float originY = size.y; // Half height of the texture when drawn
 
+
                 batch.draw(weaponFrameTexture,
                         pos.x - size.x, pos.y - size.y, // Position where texture will be drawn
                         originX, originY, // Origin point for rotation (center of texture)
@@ -117,21 +124,23 @@ public class GameScreen implements Screen {
                         1f, 1f, // Scale, no scaling applied
                         renderingAngle); // Adjusted rendering angle
 
-
             }
         });
 
         GameClient.gameInstanceSnapshot.projectiles.forEach(projectile -> {
             Vector2 pos = projectile.getPos();
+            Vector2 size = projectile.getSize();
 
             TextureRegion playerFrameTexture = Assets.getAssetFrameProjectile(projectile.getProjectileType(), player.getStateTime());
-            batch.draw(playerFrameTexture, pos.x - playerSize.x, pos.y - playerSize.y, playerSize.x * 2, playerSize.y * 4);
+            batch.draw(playerFrameTexture, pos.x, pos.y, size.x * 2, size.y * 2);
         });
 
         if (playerPos != null) {
 //            renderDimmingOverlay(playerPos, playerAngle);
         }
 
+
+        batch.draw(layer2, 0, 0, frameWidth, frameHeight);
         drawHUD();
 
         shapeRenderer.end();
@@ -171,7 +180,7 @@ public class GameScreen implements Screen {
         font.setColor(Color.WHITE);
         font.getData().setScale(1.5f); // Adjust scale as needed
 
-
+        if (gameInstanceSnapshot.remoteClient == null) return;
         Player p = gameInstanceSnapshot.remoteClient.getPlayer();
 
         if (p == null) return;
@@ -212,8 +221,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        tiledMapRenderer.dispose();
-        tiledMap.dispose();
     }
 
 }

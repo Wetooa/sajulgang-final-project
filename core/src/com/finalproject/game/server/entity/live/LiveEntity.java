@@ -5,8 +5,8 @@ import com.finalproject.game.server.entity.Entity;
 
 public abstract class LiveEntity extends Entity {
 
-    protected int currentHealth;
-    protected int maxHealth;
+    protected float currentHealth;
+    protected float maxHealth;
     protected FacingDirection facingDirection = FacingDirection.DOWN;
 
     public LiveEntity() {
@@ -28,15 +28,15 @@ public abstract class LiveEntity extends Entity {
         this.facingDirection = facingDirection;
     }
 
-    public int getCurrentHealth() {
+    public float getCurrentHealth() {
         return currentHealth;
     }
 
-    public void setCurrentHealth(int currentHealth) {
+    public void setCurrentHealth(float currentHealth) {
         this.currentHealth = currentHealth;
     }
 
-    public int getMaxHealth() {
+    public float getMaxHealth() {
         return maxHealth;
     }
 
@@ -45,8 +45,26 @@ public abstract class LiveEntity extends Entity {
     }
 
 
-    public void takeDamage(int damage) {
+    public void increaseCurrentHealth(int increase) {
+        currentHealth = Math.max(maxHealth, currentHealth + increase);
+    }
+
+    public void takeDamage(float damage) {
         setCurrentHealth(getCurrentHealth() - damage);
+    }
+
+    private LiveEntity.FacingDirection calculateFacingDirection() {
+        float angle = getAngleFromMouse();
+
+        if (angle >= -Math.PI / 4 && angle <= Math.PI / 4) {
+            return LiveEntity.FacingDirection.RIGHT;
+        } else if (angle > Math.PI / 4 && angle < 3 * Math.PI / 4) {
+            return LiveEntity.FacingDirection.UP;
+        } else if (angle >= 3 * Math.PI / 4 || angle <= -3 * Math.PI / 4) {
+            return LiveEntity.FacingDirection.LEFT;
+        } else {
+            return LiveEntity.FacingDirection.DOWN;
+        }
     }
 
     @Override
@@ -54,6 +72,9 @@ public abstract class LiveEntity extends Entity {
         if (getCurrentHealth() <= 0) {
             removeBody();
         }
+
+        setFacingDirection(calculateFacingDirection());
+
         super.update(delta);
     }
 

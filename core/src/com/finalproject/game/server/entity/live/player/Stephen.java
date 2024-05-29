@@ -10,7 +10,7 @@ public class Stephen extends Player {
     }
 
     public Stephen(LiveEntityBuilder builder) {
-        super((LiveEntityBuilder) builder.setPlayerType(PlayerType.JOSHUA).setMaxSpeed(3f).setSize(new Vector2(1.5f, 1.5f)));
+        super((LiveEntityBuilder) builder.setPlayerType(PlayerType.STEPHEN).setMaxSpeed(2f).setSize(new Vector2(1.5f, 1.5f)));
     }
 
     @Override

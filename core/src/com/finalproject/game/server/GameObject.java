@@ -6,8 +6,9 @@ import com.finalproject.game.server.builder.Builder;
 public class GameObject {
 
     protected transient GameInstanceServer gameInstanceServer;
-    protected transient RemoteClient remoteClient;
     protected transient World currentWorld;
+
+    protected RemoteClient remoteClient;
 
     public GameObject(Builder builder) {
         this.gameInstanceServer = builder.getGameInstanceServer();

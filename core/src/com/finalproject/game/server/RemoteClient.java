@@ -9,12 +9,11 @@ import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
 import java.util.ArrayList;
 
 public class RemoteClient {
-
     protected final int RESPAWN_TIMER = 3;
 
     protected transient final Connection connection;
     protected transient GameInstanceServer gameInstanceServer;
-    protected transient Player player;
+    protected Player player;
 
     protected int currentGameID;
     protected String name;
@@ -30,6 +29,9 @@ public class RemoteClient {
     protected float mouseX = 0;
     protected float mouseY = 0;
 
+    public RemoteClient() {
+        connection = null;
+    }
 
     public RemoteClient(Connection c) {
         connection = c;
@@ -153,8 +155,6 @@ public class RemoteClient {
                 this.setClientGameState(ClientGameState.ALIVE);
             }
         }
-
-        this.player.setFacingDirection(getFacingDirection());
 
         sendDataToClient();
     }

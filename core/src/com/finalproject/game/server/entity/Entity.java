@@ -1,5 +1,6 @@
 package com.finalproject.game.server.entity;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -19,7 +20,6 @@ public abstract class Entity extends GameObject {
 
     protected Vector2 pos;
     protected Vector2 size;
-
     protected float angle;
     protected transient BodyDef bodyDef;
     protected transient Body boxBody;
@@ -39,6 +39,9 @@ public abstract class Entity extends GameObject {
         this.pos = builder.getPos();
         this.size = builder.getSize();
         this.damage = builder.getDamage();
+        this.angle = builder.getAngle();
+
+        if (currentWorld == null) return;
 
         bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -116,6 +119,13 @@ public abstract class Entity extends GameObject {
 
     public void setPos(Vector2 pos) {
         this.pos = pos;
+    }
+
+
+    public float getAngleFromMouse() {
+        float mouseX = remoteClient.getMouseX();
+        float mouseY = remoteClient.getMouseY();
+        return MathUtils.atan2(mouseY - pos.x, mouseX - pos.y);
     }
 
     public void update(float delta) {
