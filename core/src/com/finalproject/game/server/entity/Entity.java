@@ -125,7 +125,7 @@ public abstract class Entity extends GameObject {
     public float getAngleFromMouse() {
         float mouseX = remoteClient.getMouseX();
         float mouseY = remoteClient.getMouseY();
-        return MathUtils.atan2(mouseY - pos.x, mouseX - pos.y);
+        return MathUtils.atan2(mouseY - pos.y, mouseX - pos.x);
     }
 
     public void update(float delta) {
