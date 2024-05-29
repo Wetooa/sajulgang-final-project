@@ -7,7 +7,7 @@ public class LiveEntityBuilder extends EntityBuilder {
     float maxHealth = 100;
     float currentHealth = 100;
 
-    float runningMultiplier = 1.5f;
+    float runningMultiplier = 3f;
     float currentStamina = 100;
     float maxStamina = 100;
 

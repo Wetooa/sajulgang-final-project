@@ -41,7 +41,6 @@ public abstract class Player extends LiveEntity {
         this.SPECIAL_SKILL_COOLDOWN_TIMER = builder.getSpecialSkillTimer();
         this.SPECIAL_SKILL_STAMINA_COST = builder.getSpecialSkillStaminaCost();
 
-
         this.itemBox = new ItemBox(this.gameInstanceServer);
 
         Item startingGun = new MachineGun((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient).setCurrentWorld(currentWorld));
@@ -106,8 +105,8 @@ public abstract class Player extends LiveEntity {
         if (!this.getRemoteClient().getClientGameState().equals(RemoteClient.ClientGameState.ALIVE)) return;
 
         this.setRunning(remoteClient.getInputStates().contains(Input.Keys.SHIFT_LEFT));
-        if (isRunning) currentStamina = Math.max(0, currentStamina - delta);
-        else currentStamina = Math.min(maxStamina, currentStamina + delta / 2);
+        if (isRunning) currentStamina = Math.max(0, currentStamina - delta * 50);
+        else currentStamina = Math.min(maxStamina, currentStamina + delta * 30);
 
         this.specialSkillCooldownTimer -= delta;
 
