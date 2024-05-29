@@ -89,7 +89,7 @@ public class GameScreen implements Screen {
             Vector2 size = p.getSize();
 
             LiveEntity.FacingDirection facingDirection = player.getFacingDirection();
-            TextureRegion playerFrameTexture = Assets.getAssetFramePlayer(player.getPlayerState(), facingDirection, player.getStateTime());
+            TextureRegion playerFrameTexture = Assets.getAssetFramePlayer(player.getPlayerType(), player.getPlayerState(), facingDirection, player.getStateTime());
             batch.draw(playerFrameTexture, pos.x - size.x, pos.y - size.y, size.x * 2, size.y * 4);
 
             Item currentWeapon = p.getItemBox().getHeldItem();

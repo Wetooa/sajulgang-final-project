@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryonet.Connection;
 import com.finalproject.game.server.builder.entity.LiveEntityBuilder;
 import com.finalproject.game.server.entity.live.enemy.Enemy;
+import com.finalproject.game.server.entity.live.player.Fria;
 import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.server.entity.projectile.Projectile;
 
@@ -23,8 +24,10 @@ public class GameInstanceServer extends Game {
 
     // TODO: add current state of game, maybe paused or some thing
 
-    private static final float PPM = 10f;
-    private final int GAME_ID;
+    protected static final float PPM = 10f;
+    protected static HashMap<GameWorld, String> gameWorldStringHashMap = new HashMap<>();
+    protected final int GAME_ID;
+
     public GameInstanceStatus gameInstanceStatus = GameInstanceStatus.LOADING;
     public HashMap<Connection, RemoteClient> remoteClientsInServer = new HashMap<>();
     public World world;
@@ -33,17 +36,21 @@ public class GameInstanceServer extends Game {
     public List<Projectile> projectiles = new ArrayList<>();
     public List<Enemy> enemies = new ArrayList<>();
     public List<Body> bodiesToRemove = new ArrayList<>();
-    protected TiledMap map;
+    public TiledMap map;
+
 
     public GameInstanceServer(int GAME_ID, GameWorld gameWorld) {
         this(GAME_ID, gameWorld, new HashMap<>());
     }
 
-
     public GameInstanceServer(int GAME_ID, GameWorld gameWorld, HashMap<Connection, RemoteClient> remoteClients) {
         this.GAME_ID = GAME_ID;
         this.remoteClientsInServer = remoteClients;
         this.gameWorld = gameWorld;
+    }
+
+    public static void load() {
+        gameWorldStringHashMap.put(GameWorld.OVERWORLD, "ooptilesets/oopmap_backend.tmx");
     }
 
     public void removeObject(Body body) {
@@ -73,7 +80,7 @@ public class GameInstanceServer extends Game {
     }
 
     public void spawnPlayer(RemoteClient remoteClient) {
-        Player p = new Player((LiveEntityBuilder) new LiveEntityBuilder().setGameInstanceServer(this).setRemoteClient(remoteClient).setCurrentWorld(world));
+        Fria p = new Fria((LiveEntityBuilder) new LiveEntityBuilder().setGameInstanceServer(this).setRemoteClient(remoteClient).setCurrentWorld(world));
         remoteClient.setPlayer(p);
         players.add(p);
     }
@@ -118,7 +125,7 @@ public class GameInstanceServer extends Game {
         world = new World(new Vector2(0, 0), true);
 
         TmxMapLoader mapLoader = new TmxMapLoader();
-        map = mapLoader.load("OOP/ADRIAN NAA DIRI TANAN/ooptilesets/oopmap_backend.tmx");
+        map = mapLoader.load(gameWorldStringHashMap.get(gameWorld));
 
         // Load collision objects
         for (MapObject object : map.getLayers().get("collision layer").getObjects()) {
