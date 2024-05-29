@@ -34,6 +34,8 @@ public class GameServer {
         kryo.setRegistrationRequired(false);
         kryo.setReferences(true);
 
+        GameInstanceServer.load();
+
         createNewGameInstance();
 
         server.addListener(new Listener() {

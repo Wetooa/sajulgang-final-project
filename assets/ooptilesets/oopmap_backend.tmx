@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="63" height="66" tilewidth="32" tileheight="32" infinite="0" nextlayerid="54" nextobjectid="229">
- <tileset firstgid="1" source="Modern_Exteriors_Complete_Tileset_32x32.tsx"/>
- <tileset firstgid="55793" source="citbuildingstilesets.tsx"/>
- <tileset firstgid="59637" source="citbuildings.tsx"/>
- <tileset firstgid="63481" source="Interiors_32x32.tsx"/>
  <objectgroup id="50" name="collision layer">
   <object id="35" x="732" y="65" width="906" height="431"/>
   <object id="36" x="1010.5" y="492.5" width="352.5" height="16.5"/>

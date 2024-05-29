@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.finalproject.game.client.sound.Sound;
 import com.finalproject.game.server.entity.live.LiveEntity;
 import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.server.entity.projectile.Projectile;
@@ -18,6 +19,7 @@ public class Assets {
     public static HashMap<Player.PlayerType, HashMap<Player.PlayerState, HashMap<LiveEntity.FacingDirection, Animation<TextureRegion>>>> playerAssets = new HashMap<>();
     public static HashMap<Projectile.ProjectileType, Animation<TextureRegion>> projectileAssets = new HashMap<>();
     public static HashMap<Item.ItemType, Animation<TextureRegion>> weaponAssets = new HashMap<>();
+    public static HashMap<Sound.SoundType, Object> soundAssets = new HashMap();
 
     // Load assets during initialization
     public static void load() {
@@ -44,7 +46,7 @@ public class Assets {
             for (Player.PlayerState playerState : Player.PlayerState.values()) {
                 HashMap<LiveEntity.FacingDirection, Animation<TextureRegion>> playerStateMap = new HashMap<>();
                 for (LiveEntity.FacingDirection facingDirection : LiveEntity.FacingDirection.values()) {
-                    playerStateMap.put(facingDirection, loadSpritesheet(playerTypeToString.get(playerType) + playerStateToString.get(playerState) + facingDirectionToString.get(facingDirection) + ".png", 6));
+                    playerStateMap.put(facingDirection, loadSpritesheet("ooptilesets/characters/" + playerTypeToString.get(playerType) + playerStateToString.get(playerState) + facingDirectionToString.get(facingDirection) + ".png", 6));
                 }
                 playerTypeMap.put(playerState, playerStateMap);
             }
