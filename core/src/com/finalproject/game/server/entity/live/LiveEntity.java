@@ -44,6 +44,7 @@ public abstract class LiveEntity extends Entity {
         this.maxHealth = maxHealth;
     }
 
+
     public void takeDamage(int damage) {
         setCurrentHealth(getCurrentHealth() - damage);
     }

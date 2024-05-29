@@ -6,6 +6,6 @@ import com.finalproject.game.server.entity.projectile.Projectile;
 public class Bullet extends Projectile {
 
     public Bullet(ProjectileBuilder builder) {
-        super((ProjectileBuilder) builder.setMaxSpeed(10f));
+        super((ProjectileBuilder) builder.setProjectileType(ProjectileType.BULLET).setMaxSpeed(10f));
     }
 }

@@ -2,11 +2,10 @@ package com.finalproject.game.server.items.weapons.range.primary;
 
 import com.finalproject.game.server.builder.item.WeaponBuilder;
 import com.finalproject.game.server.entity.projectile.range.Shell;
-import com.finalproject.game.server.items.weapons.range.RangeWeapon;
 
 import java.util.stream.IntStream;
 
-public class ShotGun extends RangeWeapon {
+public class ShotGun extends PrimaryGun {
 
     public static final int SHELLS_PER_SHOT = 10;
 
@@ -15,7 +14,7 @@ public class ShotGun extends RangeWeapon {
     }
 
     public ShotGun(WeaponBuilder builder) {
-        super((WeaponBuilder) builder.setAccuracy(0.5f).setRange(50).setFireRate(0.3f).setName("Shotgun").setDescription("A shotgun"));
+        super((WeaponBuilder) builder.setAccuracy(0.7f).setRange(1f).setFireRate(1f).setName("Shotgun").setDescription("A shotgun").setItemType(ItemType.SHOTGUN));
     }
 
     @Override

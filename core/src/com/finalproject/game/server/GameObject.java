@@ -9,7 +9,6 @@ public class GameObject {
     protected transient RemoteClient remoteClient;
     protected transient World currentWorld;
 
-
     public GameObject(Builder builder) {
         this.gameInstanceServer = builder.getGameInstanceServer();
         this.remoteClient = builder.getRemoteClient();

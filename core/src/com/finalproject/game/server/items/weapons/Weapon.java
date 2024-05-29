@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public abstract class Weapon extends Item {
 
+
     protected final float accuracy;
     protected final float range;
 
@@ -22,6 +23,14 @@ public abstract class Weapon extends Item {
 
         this.accuracy = builder.getAccuracy();
         this.range = builder.getRange();
+    }
+
+    public float getAccuracy() {
+        return accuracy;
+    }
+
+    public float getRange() {
+        return range;
     }
 
     public <T extends Projectile> void shoot(Class<T> projectile) {

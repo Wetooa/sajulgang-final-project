@@ -10,7 +10,7 @@ public class Anaconda extends SecondaryGun {
     }
 
     public Anaconda(WeaponBuilder builder) {
-        super((WeaponBuilder) builder.setAccuracy(0.90f).setRange(100).setFireRate(0.7f).setName("Anaconda").setDescription("Slither'in"));
+        super((WeaponBuilder) builder.setAccuracy(0.95f).setRange(0.5f).setFireRate(0.7f).setName("Anaconda").setDescription("Slither'in"));
     }
 
 

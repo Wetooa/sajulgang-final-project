@@ -13,7 +13,7 @@ public class HandGun extends RangeWeapon {
     }
 
     public HandGun(WeaponBuilder builder) {
-        super((WeaponBuilder) builder.setFireRate(0.1f));
+        super((WeaponBuilder) builder.setItemType(ItemType.HANDGUN).setName("Handgun").setDescription("A basic handgun").setFireRate(0.1f));
     }
 
     @Override

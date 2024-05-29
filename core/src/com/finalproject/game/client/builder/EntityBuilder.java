@@ -8,9 +8,18 @@ public class EntityBuilder {
     protected Vector2 pos = new Vector2(0, 0);
     protected float sizeX = 0.5f;
     protected float sizeY = 0.5f;
-
+    protected float angle = 0;
     protected LiveEntity.FacingDirection facingDirection = LiveEntity.FacingDirection.UP;
     protected float stateTime = 0;
+
+    public float getAngle() {
+        return angle;
+    }
+
+    public EntityBuilder setAngle(float angle) {
+        this.angle = angle;
+        return this;
+    }
 
     public LiveEntity.FacingDirection getFacingDirection() {
         return facingDirection;

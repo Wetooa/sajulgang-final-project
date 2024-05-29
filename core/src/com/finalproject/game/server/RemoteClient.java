@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 public class RemoteClient {
 
-
     protected final int RESPAWN_TIMER = 3;
 
     protected transient final Connection connection;
@@ -141,7 +140,8 @@ public class RemoteClient {
         setIsScrollingUp(0);
 
         if (this.getClientGameState().equals(ClientGameState.DEAD)) {
-            respawnTimer -= RESPAWN_TIMER;
+            respawnTimer = RESPAWN_TIMER;
+            this.setClientGameState(ClientGameState.RESPAWNING);
         }
 
         if (this.getClientGameState().equals(ClientGameState.RESPAWNING)) {
@@ -150,6 +150,7 @@ public class RemoteClient {
             if (respawnTimer <= 0) {
                 respawnTimer = 0;
                 this.getGameInstanceServer().spawnPlayer(this);
+                this.setClientGameState(ClientGameState.ALIVE);
             }
         }
 

@@ -14,26 +14,29 @@ import com.finalproject.game.server.items.weapons.range.primary.LaserGun;
 
 public class Player extends LiveEntity {
 
+    private static final float HURT_TIMER = 0.5f;
     protected boolean isRunning = false;
     protected float runningMultiplier;
     protected int currentStamina;
     protected int maxStamina;
-
     protected ItemBox itemBox = new ItemBox();
     protected PlayerState playerState = PlayerState.IDLE;
+    private float hurtTimer = 0;
 
     public Player() {
         this(new LiveEntityBuilder());
     }
 
     public Player(LiveEntityBuilder builder) {
-        super(builder);
+        super((LiveEntityBuilder) builder.setMaxSpeed(3f).setSize(new Vector2(1.5f, 1.5f)));
 
         this.runningMultiplier = builder.getRunningMultiplier();
         this.currentStamina = builder.getCurrentStamina();
         this.maxStamina = builder.getMaxStamina();
 
-        itemBox.addItem(new LaserGun((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient).setCurrentWorld(currentWorld)));
+        Item startingGun = new LaserGun((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient).setCurrentWorld(currentWorld));
+        itemBox.addItem(startingGun);
+
     }
 
     public int getCurrentStamina() {
@@ -75,17 +78,19 @@ public class Player extends LiveEntity {
 
         this.setRunning(remoteClient.getInputStates().contains(Input.Keys.SHIFT_LEFT));
 
-        if (this.currentHealth <= 0) {
-            this.getRemoteClient().setClientGameState(RemoteClient.ClientGameState.DEAD);
-        }
-
         Body playerbody = this.getBoxBody();
         Vector2 velocity = playerbody.getLinearVelocity();
         float speed = velocity.len();
         float movementThreshold = 0.1f; // Adjust as needed
         boolean isMoving = speed > movementThreshold;
 
-        if (isMoving) {
+        if (this.currentHealth <= 0) {
+            this.getRemoteClient().setClientGameState(RemoteClient.ClientGameState.DEAD);
+            this.setPlayerState(PlayerState.DEAD);
+        } else if (hurtTimer > 0) {
+            hurtTimer -= delta;
+            this.setPlayerState(PlayerState.HURT);
+        } else if (isMoving) {
             this.setPlayerState(PlayerState.WALK);
         } else {
             this.setPlayerState(PlayerState.IDLE);
@@ -98,7 +103,8 @@ public class Player extends LiveEntity {
 
     public void updateMouseAction(float delta, int keycode) {
         if (keycode == Input.Buttons.LEFT) {
-            shoot(delta);
+            Item currentItem = itemBox.getHeldItem();
+            currentItem.activate(delta);
         }
     }
 
@@ -129,6 +135,14 @@ public class Player extends LiveEntity {
         }
     }
 
+    @Override
+    public void takeDamage(int damage) {
+        super.takeDamage(damage);
+
+        setPlayerState(PlayerState.HURT);
+        hurtTimer = HURT_TIMER;
+    }
+
     public void shoot(float delta) {
         Item heldItem = itemBox.getHeldItem();
         heldItem.activate(delta);
@@ -143,6 +157,6 @@ public class Player extends LiveEntity {
     }
 
     public enum PlayerState {
-        WALK, IDLE, HURT
+        WALK, IDLE, HURT, DEAD
     }
 }

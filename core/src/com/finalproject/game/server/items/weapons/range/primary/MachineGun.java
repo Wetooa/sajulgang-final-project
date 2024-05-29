@@ -10,7 +10,7 @@ public class MachineGun extends PrimaryGun {
     }
 
     public MachineGun(WeaponBuilder builder) {
-        super((WeaponBuilder) builder.setAccuracy(0.70f).setRange(30).setFireRate(0.1f).setName("Machine gun").setDescription("A machine gun"));
+        super((WeaponBuilder) builder.setAccuracy(0.60f).setRange(0.8f).setFireRate(0.05f).setName("Machine gun").setDescription("A machine gun").setItemType(ItemType.MACHINE_GUN));
     }
 
     @Override

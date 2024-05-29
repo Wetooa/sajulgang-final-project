@@ -23,7 +23,7 @@ public class GameInstanceServer extends Game {
 
     // TODO: add current state of game, maybe paused or some thing
 
-    private static final float PPM = 1.0f;
+    private static final float PPM = 10f;
     private final int GAME_ID;
     public GameInstanceStatus gameInstanceStatus = GameInstanceStatus.LOADING;
     public HashMap<Connection, RemoteClient> remoteClientsInServer = new HashMap<>();
@@ -141,6 +141,7 @@ public class GameInstanceServer extends Game {
                 fixtureDef.restitution = 0.0f;
 
                 body.createFixture(fixtureDef);
+                body.setUserData("Wall");
                 shape.dispose();
 
             }
@@ -173,6 +174,15 @@ public class GameInstanceServer extends Game {
                         p.removeBody();
                     }
                 }
+
+
+                if (a.equals("Wall") && b instanceof Projectile) {
+                    ((Projectile) b).removeBody();
+                }
+                if (a instanceof Projectile && b.equals("Wall")) {
+                    ((Projectile) a).removeBody();
+                }
+
 
             }
 

@@ -14,18 +14,17 @@ import java.util.ArrayList;
 public abstract class Entity extends GameObject {
 
     protected int damage;
-    protected float posX;
-    protected float posY;
-    protected float sizeX;
-    protected float sizeY;
     protected float maxSpeed;
     protected float stateTime;
 
+    protected Vector2 pos;
+    protected Vector2 size;
+
+    protected float angle;
     protected transient BodyDef bodyDef;
     protected transient Body boxBody;
     protected transient CircleShape dynamicBox;
     protected transient FixtureDef fixtureDef;
-
     private ArrayList<Status> statuses;
 
     public Entity() {
@@ -36,19 +35,18 @@ public abstract class Entity extends GameObject {
         super(builder);
 
         this.maxSpeed = builder.getMaxSpeed();
-        this.posX = builder.getPosX();
-        this.posY = builder.getPosY();
-        this.sizeX = builder.getSizeX();
-        this.sizeY = builder.getSizeY();
+
+        this.pos = builder.getPos();
+        this.size = builder.getSize();
         this.damage = builder.getDamage();
 
         bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(posX, posY);
+        bodyDef.position.set(this.pos);
         boxBody = currentWorld.createBody(bodyDef);
 
         dynamicBox = new CircleShape();
-        dynamicBox.setRadius(sizeX);
+        dynamicBox.setRadius(this.size.x);
 
         fixtureDef = new FixtureDef();
         fixtureDef.shape = dynamicBox;
@@ -63,20 +61,12 @@ public abstract class Entity extends GameObject {
         dynamicBox.dispose();
     }
 
-    public float getSizeX() {
-        return sizeX;
+    public float getAngle() {
+        return angle;
     }
 
-    public void setSizeX(float sizeX) {
-        this.sizeX = sizeX;
-    }
-
-    public float getSizeY() {
-        return sizeY;
-    }
-
-    public void setSizeY(float sizeY) {
-        this.sizeY = sizeY;
+    public void setAngle(float angle) {
+        this.angle = angle;
     }
 
     public BodyDef getBodyDef() {
@@ -119,33 +109,23 @@ public abstract class Entity extends GameObject {
         this.maxSpeed = maxSpeed;
     }
 
-    public float getPosX() {
-        return posX;
+
+    public Vector2 getPos() {
+        return pos;
     }
 
-    public void setPosX(float posX) {
-        this.posX = posX;
-    }
-
-    public float getPosY() {
-        return posY;
-    }
-
-    public void setPosY(float posY) {
-        this.posY = posY;
+    public void setPos(Vector2 pos) {
+        this.pos = pos;
     }
 
     public void update(float delta) {
         this.stateTime += delta;
+        this.pos = boxBody.getPosition();
+        this.angle = boxBody.getAngle();
     }
-
-    public Vector2 getPosition() {
-        return new Vector2(this.posX, this.posY);
-    }
-
 
     public Vector2 getSize() {
-        return new Vector2(this.sizeX, this.sizeY);
+        return size;
     }
 
     public void removeBody() {

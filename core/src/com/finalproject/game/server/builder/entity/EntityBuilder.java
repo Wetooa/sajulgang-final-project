@@ -1,39 +1,32 @@
 package com.finalproject.game.server.builder.entity;
 
+import com.badlogic.gdx.math.Vector2;
 import com.finalproject.game.server.builder.Builder;
 
 public class EntityBuilder extends Builder {
 
-    float maxSpeed = 10000;
-    int damage = 20;
+    protected float maxSpeed = 100;
+    protected int damage = 20;
 
-    float posX = 0;
-    float posY = 0;
+    protected Vector2 pos = new Vector2(0, 0);
+    protected Vector2 size = new Vector2(1f, 1f);
+    protected float angle = 0;
 
-    float sizeX = 20f;
-    float sizeY = 20f;
-
-    public float getSizeX() {
-        return sizeX;
+    public Vector2 getSize() {
+        return size;
     }
 
-    public EntityBuilder setSizeX(float sizeX) {
-        this.sizeX = sizeX;
+    public EntityBuilder setSize(Vector2 size) {
+        this.size = size;
         return this;
     }
 
-    public float getSizeY() {
-        return sizeY;
+    public float getAngle() {
+        return angle;
     }
 
-    public EntityBuilder setSizeY(float sizeY) {
-        this.sizeY = sizeY;
-        return this;
-    }
-
-    public EntityBuilder setSize(float size) {
-        this.sizeX = size;
-        this.sizeY = size;
+    public EntityBuilder setAngle(float angle) {
+        this.angle = angle;
         return this;
     }
 
@@ -46,24 +39,14 @@ public class EntityBuilder extends Builder {
         return this;
     }
 
-    public float getPosX() {
-        return posX;
+    public Vector2 getPos() {
+        return pos;
     }
 
-    public EntityBuilder setPosX(float posX) {
-        this.posX = posX;
+    public EntityBuilder setPos(Vector2 pos) {
+        this.pos = pos;
         return this;
     }
-
-    public float getPosY() {
-        return posY;
-    }
-
-    public EntityBuilder setPosY(float posY) {
-        this.posY = posY;
-        return this;
-    }
-
 
     public int getDamage() {
         return damage;

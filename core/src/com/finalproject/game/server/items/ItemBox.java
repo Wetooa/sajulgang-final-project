@@ -14,7 +14,6 @@ public class ItemBox {
     public static final int MAX_INSTANT_WEAPONS = 3;
     public static final int MAX_ITEMS = MAX_INSTANT_WEAPONS + 3;
 
-
     protected Integer currentItemHeld = 0;
     protected List<Item> items = new ArrayList<>();
 
@@ -28,6 +27,7 @@ public class ItemBox {
 
     public ItemBox() {
         items = new ArrayList<>();
+        for (int i = 0; i < MAX_ITEMS; i++) items.add(null);
     }
 
     public void addItem(Item item) {

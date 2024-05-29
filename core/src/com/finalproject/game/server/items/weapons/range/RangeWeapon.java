@@ -5,7 +5,6 @@ import com.finalproject.game.server.items.weapons.Weapon;
 
 public abstract class RangeWeapon extends Weapon {
 
-
     public RangeWeapon() {
         this(new WeaponBuilder());
     }

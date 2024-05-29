@@ -9,20 +9,28 @@ public class Entity {
     protected Vector2 pos;
     protected float sizeX;
     protected float sizeY;
-
+    protected float angle;
     protected LiveEntity.FacingDirection facingDirection = LiveEntity.FacingDirection.UP;
     protected float stateTime;
 
     public Entity() {
         this(new EntityBuilder());
     }
-
     public Entity(EntityBuilder builder) {
         this.pos = builder.getPos();
         this.sizeX = builder.getSizeX();
         this.sizeY = builder.getSizeY();
         this.facingDirection = builder.getFacingDirection();
         this.stateTime = builder.getStateTime();
+        this.angle = builder.getAngle();
+    }
+
+    public float getAngle() {
+        return angle;
+    }
+
+    public void setAngle(float angle) {
+        this.angle = angle;
     }
 
     public float getStateTime() {

@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.finalproject.game.client.resources.Assets;
-import com.finalproject.game.client.screens.OverworldScreen;
+import com.finalproject.game.client.screens.GameScreen;
 import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
 
@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameClient extends Game {
-    public static final int CAMERA_VIEW_X = 1000;
-    public static final int CAMERA_VIEW_Y = 1000;
+    public static final int CAMERA_VIEW_X = 80;
+    public static final int CAMERA_VIEW_Y = 80;
 
     public static float cameraX = 0;
     public static float cameraY = 0;
@@ -43,12 +43,12 @@ public class GameClient extends Game {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
-        camera = new OrthographicCamera(CAMERA_VIEW_X, CAMERA_VIEW_Y * (h / w));
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, CAMERA_VIEW_X, CAMERA_VIEW_Y);
         camera.update();
 
         shapeRenderer = new ShapeRenderer();
-        screen = new OverworldScreen();
+        screen = new GameScreen();
         shapeRenderer.setAutoShapeType(true);
 
         setScreen(screen);
