@@ -34,6 +34,7 @@ public class GameServer {
     private final Map<Connection, RemoteClient> remoteClients = new HashMap<>();
     private final ConcurrentHashMap<Integer, GameInstanceServer> activeGames = new ConcurrentHashMap<>();
 
+
 //    private double matchMakeTimer = 0.0;
 
     public GameServer() throws IOException {

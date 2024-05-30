@@ -11,6 +11,6 @@ public class Shell extends Projectile {
     }
 
     public Shell(ProjectileBuilder builder) {
-        super((ProjectileBuilder) builder.setProjectileType(ProjectileType.SHELL).setMaxSpeed(100).setSize(new Vector2(0.5f, 0.5f)));
+        super((ProjectileBuilder) builder.setProjectileType(ProjectileType.SHELL).setMaxSpeed(100).setSize(new Vector2(1f, 1f)));
     }
 }

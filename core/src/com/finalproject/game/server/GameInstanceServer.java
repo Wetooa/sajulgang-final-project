@@ -13,9 +13,13 @@ import com.esotericsoftware.kryonet.Connection;
 import com.finalproject.game.client.sound.SoundPlayer;
 import com.finalproject.game.server.builder.entity.LiveEntityBuilder;
 import com.finalproject.game.server.entity.live.enemy.Enemy;
-import com.finalproject.game.server.entity.live.player.Adrian;
-import com.finalproject.game.server.entity.live.player.Player;
+import com.finalproject.game.server.entity.live.player.*;
 import com.finalproject.game.server.entity.projectile.Projectile;
+import com.finalproject.game.server.items.weapons.range.primary.*;
+import com.finalproject.game.server.items.weapons.range.secondary.Anaconda;
+import com.finalproject.game.server.items.weapons.range.secondary.DesertEagle;
+import com.finalproject.game.server.items.weapons.range.secondary.HandGun;
+import com.finalproject.game.server.items.weapons.range.secondary.TwinPistols;
 import com.finalproject.game.server.packet.server.SoundPlay;
 
 import java.util.ArrayList;
@@ -28,9 +32,9 @@ public class GameInstanceServer extends Game {
 
     public static final float PPM = 10f;
     protected static HashMap<GameWorld, String> gameWorldStringHashMap = new HashMap<>();
-    public final int WIN_KILL_COUNT = 1;
+    public final int WIN_KILL_COUNT;
     protected final int GAME_ID;
-
+    public ArrayList<Class<?>> weaponsOrder = new ArrayList<>();
     public GameInstanceStatus gameInstanceStatus = GameInstanceStatus.LOADING;
     public HashMap<Connection, RemoteClient> remoteClientsInServer = new HashMap<>();
     public World world;
@@ -50,6 +54,18 @@ public class GameInstanceServer extends Game {
         this.GAME_ID = GAME_ID;
         this.remoteClientsInServer = remoteClients;
         this.gameWorld = gameWorld;
+
+        weaponsOrder.add(HandGun.class);
+        weaponsOrder.add(Anaconda.class);
+        weaponsOrder.add(DesertEagle.class);
+        weaponsOrder.add(TwinPistols.class);
+        weaponsOrder.add(ShotGun.class);
+        weaponsOrder.add(SubmachineGun.class);
+        weaponsOrder.add(CrossBow.class);
+        weaponsOrder.add(AK69.class);
+        weaponsOrder.add(LaserGun.class);
+
+        WIN_KILL_COUNT = weaponsOrder.size();
     }
 
     public static void load() {
@@ -90,7 +106,19 @@ public class GameInstanceServer extends Game {
 
     public void spawnPlayer(RemoteClient remoteClient) {
         Vector2 randomSpawnPoint = GameServer.spawnPoints.get((int) (Math.random() * GameServer.spawnPoints.size()));
-        Player p = new Adrian((LiveEntityBuilder) new LiveEntityBuilder().setPos(randomSpawnPoint).setGameInstanceServer(this).setRemoteClient(remoteClient).setCurrentWorld(world));
+        Player p = null;
+
+        int randomPlayer = (int) (Math.random() * 4);
+        if (randomPlayer == 0) {
+            p = new Adrian((LiveEntityBuilder) new LiveEntityBuilder().setPos(randomSpawnPoint).setGameInstanceServer(this).setRemoteClient(remoteClient).setCurrentWorld(world));
+        } else if (randomPlayer == 1) {
+            p = new Fria((LiveEntityBuilder) new LiveEntityBuilder().setPos(randomSpawnPoint).setGameInstanceServer(this).setRemoteClient(remoteClient).setCurrentWorld(world));
+        } else if (randomPlayer == 2) {
+            p = new Stephen((LiveEntityBuilder) new LiveEntityBuilder().setPos(randomSpawnPoint).setGameInstanceServer(this).setRemoteClient(remoteClient).setCurrentWorld(world));
+        } else {
+            p = new Joshua((LiveEntityBuilder) new LiveEntityBuilder().setPos(randomSpawnPoint).setGameInstanceServer(this).setRemoteClient(remoteClient).setCurrentWorld(world));
+        }
+
         remoteClient.setPlayer(p);
         players.add(p);
     }

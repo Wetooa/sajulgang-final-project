@@ -96,8 +96,8 @@ public class Assets {
         String projectileFilePath = "ooptilesets/projectile/";
         projectileAssets.put(Projectile.ProjectileType.BULLET, loadSpritesheet(projectileFilePath + "bullet.png", 6));
         projectileAssets.put(Projectile.ProjectileType.ENERGY, loadSpritesheet(projectileFilePath + "energy.png", 6));
-        projectileAssets.put(Projectile.ProjectileType.SHELL, loadSpritesheet(projectileFilePath + "shell.png", 6));
-        projectileAssets.put(Projectile.ProjectileType.BOLT, loadSpritesheet(projectileFilePath + "bolt.png", 4));
+        projectileAssets.put(Projectile.ProjectileType.SHELL, loadSpritesheet(projectileFilePath + "shell.png", 4));
+        projectileAssets.put(Projectile.ProjectileType.BOLT, loadSpritesheet(projectileFilePath + "bolt.png", 6));
 
         gunSoundAssets.put(Item.ItemType.LASER_GUN, loadSound("laserShoot"));
         gunSoundAssets.put(Item.ItemType.HANDGUN, loadSound("9mm"));
@@ -105,6 +105,7 @@ public class Assets {
         gunSoundAssets.put(Item.ItemType.MACHINE_GUN, loadSound("heavy_machine_gun"));
         gunSoundAssets.put(Item.ItemType.SUBMACHINE_GUN, loadSound("smg"));
         gunSoundAssets.put(Item.ItemType.CROSSBOW, loadSound("laserShoot"));
+        gunSoundAssets.put(Item.ItemType.SHOTGUN, loadSound("shotgun"));
         gunSoundAssets.put(Item.ItemType.TWIN_PISTOLS, loadSound("gun_shot"));
         gunSoundAssets.put(Item.ItemType.DESERT_EAGLE, loadSound("gun_shot"));
         gunSoundAssets.put(Item.ItemType.ANACONDA, loadSound("gun_shot"));

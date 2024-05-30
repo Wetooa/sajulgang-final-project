@@ -2,17 +2,21 @@ package com.finalproject.game.server;
 
 
 import com.esotericsoftware.kryonet.Connection;
+import com.finalproject.game.server.builder.item.WeaponBuilder;
 import com.finalproject.game.server.entity.live.LiveEntity;
 import com.finalproject.game.server.entity.live.player.Player;
+import com.finalproject.game.server.items.weapons.Weapon;
 import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
 import com.finalproject.game.server.packet.server.WinGame;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public class RemoteClient {
     protected final int RESPAWN_TIMER = 3;
     protected transient final Connection connection;
-    protected int killCount = 0;
+    protected int killCount = 3;
     protected transient GameInstanceServer gameInstanceServer;
     protected int currentGameID;
     protected Player player;
@@ -57,6 +61,19 @@ public class RemoteClient {
 
     public void increaseKillCount() {
         this.killCount++;
+
+
+        Weapon w = null;
+        try {
+            Constructor<?> constructor = gameInstanceServer.weaponsOrder.get(this.killCount).getConstructor(WeaponBuilder.class);
+            w = (Weapon) constructor.newInstance(new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(this).setCurrentWorld(gameInstanceServer.world));
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        player.getItemBox().addItem(w);
+
     }
 
     public GameInstanceServer getGameInstanceServer() {

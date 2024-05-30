@@ -47,7 +47,7 @@ public class GameScreen implements Screen {
         backgroundMusic.setLooping(true); //
         backgroundMusic.play();
 
-        font = Assets.generateFont("font/roboto/Roboto-Medium.ttf", 9);
+        font = Assets.generateFont("font/roboto/Roboto-Medium.ttf", 12);
     }
 
     public void sendMouseUpdates() {
@@ -81,22 +81,6 @@ public class GameScreen implements Screen {
         float frameHeight = layer0.getHeight() / GameInstanceServer.PPM;
 
         batch.begin();
-
-
-        if (isDone) {
-
-            if (isWinner) {
-                batch.draw(Assets.win, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            } else {
-                batch.draw(Assets.lose, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            }
-
-            batch.end();
-            return;
-        }
-
-        batch.draw(layer0, 0, 0, frameWidth, frameHeight);
-        batch.draw(layer1, 0, 0, frameWidth, frameHeight);
         batch.setProjectionMatrix(camera.combined);
 
         if (playerPos != null) {
@@ -106,6 +90,21 @@ public class GameScreen implements Screen {
             camera.position.set(cameraX, cameraY, 0);
             camera.update();
         }
+
+        if (isDone) {
+
+            if (isWinner) {
+                batch.draw(Assets.win, 0, 0, CAMERA_VIEW_X, CAMERA_VIEW_Y);
+            } else {
+                batch.draw(Assets.lose, 0, 0, CAMERA_VIEW_X, CAMERA_VIEW_Y);
+            }
+
+            batch.end();
+            return;
+        }
+
+        batch.draw(layer0, 0, 0, frameWidth, frameHeight);
+        batch.draw(layer1, 0, 0, frameWidth, frameHeight);
 
 
         shapeRenderer.begin();
@@ -200,7 +199,7 @@ public class GameScreen implements Screen {
     public void drawHUD() {
         // Set font color and scale
         font.setColor(Color.WHITE);
-        font.getData().setScale(1.5f); // Adjust scale as needed
+        font.getData().setScale(0.25f); // Adjust scale as needed
 
         if (gameInstanceSnapshot.remoteClient == null) return;
         Player p = gameInstanceSnapshot.remoteClient.getPlayer();
@@ -208,12 +207,16 @@ public class GameScreen implements Screen {
         if (p == null) return;
 
         // Example: Display player health
-        font.draw(batch, "H: " + p.getCurrentHealth(), cameraX - 35, cameraY + 40);
+        font.setColor(Color.BLUE);
+        font.draw(batch, "H: " + p.getCurrentHealth(), cameraX - 35, cameraY + 35);
 
         // Example: Display player stamina
+        font.setColor(Color.YELLOW);
         font.draw(batch, "S: " + p.getCurrentStamina(), cameraX - 35, cameraY + 30);
 
-        font.draw(batch, "K: " + gameInstanceSnapshot.remoteClient.getKillCount(), cameraX - 35, cameraY + 20);
+
+        font.setColor(Color.RED);
+        font.draw(batch, "K: " + gameInstanceSnapshot.remoteClient.getKillCount(), cameraX - 35, cameraY + 25);
 
         // Example: Display a message at the center of the screen
         String message = "Welcome to the Game!";
