@@ -223,7 +223,6 @@ public class GameInstanceServer extends Game {
                             playSound(SoundPlayer.SoundType.DEATH);
                         }
 
-                        System.out.println("Getting removed for no reason");
                         p.removeBody();
                     }
                 }
