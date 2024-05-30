@@ -97,6 +97,6 @@ public abstract class Projectile extends Entity {
     }
 
     public enum ProjectileType {
-        ENERGY, SHELL, BOLT, BULLET
+        ENERGY, SHELL, BOLT, BULLET, SLASH
     }
 }

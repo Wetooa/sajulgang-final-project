@@ -6,6 +6,6 @@ public class SoundPlayer {
     }
 
     public enum MusicType {
-        BACKGROUND_1,
+        BACKGROUND_1, WIN, LOSE
     }
 }

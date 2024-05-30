@@ -20,6 +20,7 @@ import com.finalproject.game.server.packet.server.jdbc.LoginSuccessPacket;
 import java.io.IOException;
 import java.nio.channels.ClosedSelectorException;
 
+import static com.finalproject.game.client.GameClient.isWinner;
 import static com.finalproject.game.client.GameClient.screenShake;
 
 
@@ -72,6 +73,10 @@ public class ClientController {
                 if (object instanceof WinGame) {
                     GameClient.isDone = true;
                     GameClient.isWinner = ((WinGame) object).isWinner;
+
+
+                    if (isWinner) Assets.musicAssets.get(SoundPlayer.MusicType.WIN).play();
+                    else Assets.musicAssets.get(SoundPlayer.MusicType.LOSE).play();
                 }
 
             }

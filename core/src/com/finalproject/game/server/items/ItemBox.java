@@ -13,7 +13,10 @@ import java.util.List;
 public class ItemBox {
 
     public static final int MAX_INSTANT_WEAPONS = 3;
-    public static final int MAX_ITEMS = MAX_INSTANT_WEAPONS + 3;
+
+
+    // TODO: temp for now
+    public static final int MAX_ITEMS = 3;
 
     protected transient GameInstanceServer gameInstanceServer;
     protected Integer currentItemHeld = 0;

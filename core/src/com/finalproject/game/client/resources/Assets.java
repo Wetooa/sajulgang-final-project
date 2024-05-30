@@ -92,7 +92,7 @@ public class Assets {
         weaponAssets.put(Item.ItemType.AK69, loadSpritesheet(weaponFilePath + "ak69gun.png", 1));
         weaponAssets.put(Item.ItemType.SHOTGUN, loadSpritesheet(weaponFilePath + "shotgun.png", 1));
 
-        weaponAssets.put(Item.ItemType.KATANA, loadSpritesheet(weaponFilePath + "shotgun.png", 1));
+        weaponAssets.put(Item.ItemType.KATANA, loadSpritesheet(weaponFilePath + "crossbow.png", 1));
 
 
         // Initialize and load projectile assets if needed (example given below)
@@ -101,6 +101,7 @@ public class Assets {
         projectileAssets.put(Projectile.ProjectileType.ENERGY, loadSpritesheet(projectileFilePath + "energy.png", 6));
         projectileAssets.put(Projectile.ProjectileType.SHELL, loadSpritesheet(projectileFilePath + "shell2.png", 4));
         projectileAssets.put(Projectile.ProjectileType.BOLT, loadSpritesheet(projectileFilePath + "bolt.png", 6));
+        projectileAssets.put(Projectile.ProjectileType.SLASH, loadSpritesheet(projectileFilePath + "slash.png", 4));
 
         gunSoundAssets.put(Item.ItemType.LASER_GUN, loadSound("laserShoot"));
         gunSoundAssets.put(Item.ItemType.HANDGUN, loadSound("9mm"));
@@ -112,6 +113,7 @@ public class Assets {
         gunSoundAssets.put(Item.ItemType.TWIN_PISTOLS, loadSound("gun_shot"));
         gunSoundAssets.put(Item.ItemType.DESERT_EAGLE, loadSound("gun_shot"));
         gunSoundAssets.put(Item.ItemType.ANACONDA, loadSound("gun_shot"));
+        gunSoundAssets.put(Item.ItemType.KATANA, loadSound("laserShoot"));
 
         soundAssets.put(SoundPlayer.SoundType.PLAYER_HIT, loadSound("player_hit"));
         soundAssets.put(SoundPlayer.SoundType.RUN, loadSound("step"));
@@ -123,6 +125,8 @@ public class Assets {
         soundAssets.put(SoundPlayer.SoundType.SKILL, loadSound("skill"));
 
         musicAssets.put(SoundPlayer.MusicType.BACKGROUND_1, loadMusic("background1"));
+        musicAssets.put(SoundPlayer.MusicType.WIN, loadMusic("win"));
+        musicAssets.put(SoundPlayer.MusicType.LOSE, loadMusic("lose"));
     }
 
     private static Animation<TextureRegion> loadSpritesheet(String fileName, int frameCount) {

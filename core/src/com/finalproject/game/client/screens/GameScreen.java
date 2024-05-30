@@ -208,11 +208,11 @@ public class GameScreen implements Screen {
 
         // Example: Display player health
         font.setColor(Color.BLUE);
-        font.draw(batch, "H: " + p.getCurrentHealth(), cameraX - 35, cameraY + 35);
+        font.draw(batch, "H: " + (int) p.getCurrentHealth(), cameraX - 35, cameraY + 35);
 
         // Example: Display player stamina
         font.setColor(Color.YELLOW);
-        font.draw(batch, "S: " + p.getCurrentStamina(), cameraX - 35, cameraY + 30);
+        font.draw(batch, "S: " + (int) p.getCurrentStamina(), cameraX - 35, cameraY + 30);
 
 
         font.setColor(Color.RED);

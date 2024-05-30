@@ -10,6 +10,6 @@ public class Slash extends Projectile {
     }
 
     public Slash(ProjectileBuilder builder) {
-        super((ProjectileBuilder) builder.setRange(0.2f).setSize(new Vector2(2f, 2f)).setMaxSpeed(10).setDamage(100));
+        super((ProjectileBuilder) builder.setProjectileType(ProjectileType.SLASH).setRange(0.2f).setSize(new Vector2(3f, 3f)).setMaxSpeed(10f).setDamage(50));
     }
 }
