@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.finalproject.game.client.resources.Assets;
 import com.finalproject.game.client.resources.ScreenShake;
 import com.finalproject.game.client.screens.GameScreen;
+import com.finalproject.game.client.screens.MainMenu2;
 import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
 
@@ -39,8 +40,8 @@ public class GameClient extends Game {
         batch = new SpriteBatch();
         gameClient = this;
 
-        Gdx.app.log("Client: ", "Initializing client");
-        Gdx.app.postRunnable(this::connectToServer);
+//        Gdx.app.log("Client: ", "Initializing client");
+//        Gdx.app.postRunnable(this::connectToServer);
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
@@ -50,7 +51,7 @@ public class GameClient extends Game {
         camera.update();
 
         shapeRenderer = new ShapeRenderer();
-        screen = new GameScreen();
+        screen = new MainMenu2();
         shapeRenderer.setAutoShapeType(true);
         screenShake = new ScreenShake();
 
@@ -74,10 +75,9 @@ public class GameClient extends Game {
     }
 
 
-    public void connectToServer() {
+    public static void connectToServer() {
         String ip = "192.168.1.22";
-        ip = "127.0.0.1";
-        ip = "172.20.10.8";
+        ip = "192.168.110.74";
 
         try {
             clientController = new ClientController(ip);
