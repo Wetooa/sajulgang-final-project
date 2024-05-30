@@ -107,9 +107,9 @@ public abstract class Player extends LiveEntity {
 
         this.setRunning(remoteClient.getInputStates().contains(Input.Keys.SHIFT_LEFT));
         if (isRunning) {
-            currentStamina = Math.max(0, currentStamina - delta * 50);
+            currentStamina = Math.max(0, currentStamina - delta * 100);
             gameInstanceServer.playSound(SoundPlayer.SoundType.RUN);
-        } else currentStamina = Math.min(maxStamina, currentStamina + delta * 100);
+        } else currentStamina = Math.min(maxStamina, currentStamina + delta * 150);
 
         this.specialSkillCooldownTimer -= delta;
 

@@ -38,13 +38,14 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
 
-        layer0 = new Texture("ooptilesets/map_layers/overworld_layer_0.png");
-        layer1 = new Texture("ooptilesets/map_layers/overworld_layer_1.png");
-        layer2 = new Texture("ooptilesets/map_layers/overworld_layer_2.png");
+        this.layer0 = Assets.layer0;
+        this.layer1 = Assets.layer1;
+        this.layer2 = Assets.layer2;
 
         backgroundMusic = Assets.musicAssets.get(SoundPlayer.MusicType.BACKGROUND_1);
         backgroundMusic.setLooping(true); //
         backgroundMusic.play();
+
         font = Assets.generateFont("font/roboto/Roboto-Medium.ttf", 10);
     }
 

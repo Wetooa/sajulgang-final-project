@@ -13,9 +13,8 @@ public class RemoteClient {
     protected transient final Connection connection;
     protected int killCount = 0;
     protected transient GameInstanceServer gameInstanceServer;
-    protected Player player;
     protected int currentGameID;
-    protected String name;
+    protected Player player;
     protected ClientState clientState = ClientState.INGAME;
     protected ClientGameState clientGameState = ClientGameState.ALIVE;
     protected float respawnTimer = 0;
@@ -24,6 +23,11 @@ public class RemoteClient {
     protected int isScrollingUp = 0;
     protected float mouseX = 0;
     protected float mouseY = 0;
+
+    protected boolean isLoggedIn = false;
+    protected String id;
+    protected String username;
+
 
     public RemoteClient() {
         connection = null;
@@ -34,7 +38,12 @@ public class RemoteClient {
         clientState = ClientState.IDLE;
         currentGameID = -1;
 
-        name = "Player " + c.getID();
+        username = "Player " + c.getID();
+    }
+
+    public void loginUser(String id, String username) {
+        this.id = id;
+        this.username = username;
     }
 
     public int getKillCount() {
@@ -104,12 +113,12 @@ public class RemoteClient {
         this.currentGameID = currentGameID;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public ClientState getClientState() {
@@ -185,7 +194,7 @@ public class RemoteClient {
     public String toString() {
         return "RemoteClient{" +
                 "connection=" + connection +
-                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
                 ", clientState=" + clientState +
                 ", currentGameID=" + currentGameID +
                 '}';
