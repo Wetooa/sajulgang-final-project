@@ -94,9 +94,9 @@ public class GameScreen implements Screen {
         if (isDone) {
 
             if (isWinner) {
-                batch.draw(Assets.win, cameraX, cameraY, CAMERA_VIEW_X, CAMERA_VIEW_Y);
+                batch.draw(Assets.win, cameraX - CAMERA_VIEW_X / 2, cameraY - CAMERA_VIEW_Y / 2, CAMERA_VIEW_X, CAMERA_VIEW_Y);
             } else {
-                batch.draw(Assets.lose, cameraX, cameraY, CAMERA_VIEW_X, CAMERA_VIEW_Y);
+                batch.draw(Assets.lose, cameraX - CAMERA_VIEW_X / 2, cameraY - CAMERA_VIEW_Y / 2, CAMERA_VIEW_X, CAMERA_VIEW_Y);
             }
 
             batch.end();

@@ -59,10 +59,7 @@ public class RemoteClient {
         this.killCount = killCount;
     }
 
-    public void increaseKillCount() {
-        this.killCount++;
-
-
+    public Weapon getWeaponBasedOnKill() {
         Weapon w = null;
         try {
             Constructor<?> constructor = gameInstanceServer.weaponsOrder.get(this.killCount).getConstructor(WeaponBuilder.class);
@@ -71,8 +68,12 @@ public class RemoteClient {
                  InvocationTargetException e) {
             e.printStackTrace();
         }
+        return w;
+    }
 
-        player.getItemBox().addItem(w);
+    public void increaseKillCount() {
+        this.killCount++;
+        player.getItemBox().addItem(getWeaponBasedOnKill());
 
     }
 
