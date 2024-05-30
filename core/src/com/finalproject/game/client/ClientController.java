@@ -14,6 +14,8 @@ import com.finalproject.game.client.sound.SoundPlayer;
 import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
 import com.finalproject.game.server.packet.server.ItemSoundPlay;
 import com.finalproject.game.server.packet.server.SoundPlay;
+import com.finalproject.game.server.packet.server.WinGame;
+import com.finalproject.game.server.packet.server.jdbc.LoginSuccessPacket;
 
 import java.io.IOException;
 import java.nio.channels.ClosedSelectorException;
@@ -26,7 +28,6 @@ public class ClientController {
     private final static int BUFFER_SIZE = 1024 * 1024;
     public static Client client;
 
-
     public ClientController(String ip) throws IOException {
         client = new Client(BUFFER_SIZE, BUFFER_SIZE);
         client.start();
@@ -36,11 +37,49 @@ public class ClientController {
         kryo.setReferences(true);
 
         client.connect(5000, ip, 54555, 54777);
-        setupController();
+
+
+        client.addListener(new Listener() {
+            @Override
+            public void received(Connection connection, Object object) {
+                Gdx.app.log("Client", "Received " + object + " from " + connection);
+
+                // TODO: lol they look the same but trust me they *might differ lololkasdjfiosdni
+
+                if (object instanceof GameInstanceSnapshot) {
+                    GameClient.gameInstanceSnapshot = (GameInstanceSnapshot) object;
+                }
+
+                if (object instanceof ItemSoundPlay) {
+                    Assets.gunSoundAssets.get(((ItemSoundPlay) (object)).itemType).play();
+                    screenShake.shake(0.25f, 0.5f); // Shake with power 10 for 0.5 seconds
+                }
+
+                if (object instanceof SoundPlay) {
+                    SoundPlayer.SoundType sp = ((SoundPlay) object).soundType;
+                    Assets.soundAssets.get(((SoundPlay) (object)).soundType).play();
+
+                    if (sp.equals(SoundPlayer.SoundType.RUN)) {
+                        screenShake.shake(0.1f, 0.25f); // Shake with power 10 for 0.5 seconds
+                    }
+                }
+
+                if (object instanceof LoginSuccessPacket) {
+                    setupGameControllers();
+                }
+
+
+                if (object instanceof WinGame) {
+                    GameClient.isDone = true;
+                    GameClient.isWinner = ((WinGame) object).isWinner;
+                }
+
+            }
+        });
     }
 
 
-    public void setupController() {
+    public static void setupGameControllers() {
         Gdx.app.log("Controller", "Setting up controllers...");
 
 
@@ -101,32 +140,6 @@ public class ClientController {
             }
         });
 
-        client.addListener(new Listener() {
-            @Override
-            public void received(Connection connection, Object object) {
-                Gdx.app.log("Client", "Received " + object + " from " + connection);
-
-                // TODO: lol they look the same but trust me they *might differ lololkasdjfiosdni
-
-                if (object instanceof GameInstanceSnapshot) {
-                    GameClient.gameInstanceSnapshot = (GameInstanceSnapshot) object;
-                }
-
-                if (object instanceof ItemSoundPlay) {
-                    Assets.gunSoundAssets.get(((ItemSoundPlay) (object)).itemType).play();
-                    screenShake.shake(0.25f, 0.5f); // Shake with power 10 for 0.5 seconds
-                }
-
-                if (object instanceof SoundPlay) {
-                    SoundPlayer.SoundType sp = ((SoundPlay) object).soundType;
-                    Assets.soundAssets.get(((SoundPlay) (object)).soundType).play();
-
-                    if (sp.equals(SoundPlayer.SoundType.RUN)) {
-                        screenShake.shake(0.1f, 0.25f); // Shake with power 10 for 0.5 seconds
-                    }
-                }
-            }
-        });
     }
 
 

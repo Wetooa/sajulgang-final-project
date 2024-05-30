@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.finalproject.game.client.resources.Assets;
 import com.finalproject.game.client.resources.ScreenShake;
-import com.finalproject.game.client.screens.GameScreen;
 import com.finalproject.game.client.screens.MainMenu2;
 import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
@@ -33,6 +32,9 @@ public class GameClient extends Game {
     public static SpriteBatch batch;
     public static ScreenShake screenShake;
 
+    public static boolean isDone = false;
+    public static boolean isWinner = false;
+
     @Override
     public void create() {
         Assets.load();
@@ -40,8 +42,8 @@ public class GameClient extends Game {
         batch = new SpriteBatch();
         gameClient = this;
 
-//        Gdx.app.log("Client: ", "Initializing client");
-//        Gdx.app.postRunnable(this::connectToServer);
+        Gdx.app.log("Client: ", "Initializing client");
+        Gdx.app.postRunnable(this::connectToServer);
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
@@ -55,13 +57,14 @@ public class GameClient extends Game {
         shapeRenderer.setAutoShapeType(true);
         screenShake = new ScreenShake();
 
-        setScreen(screen);
+        this.setScreen(screen);
     }
-
 
     @Override
     public void render() {
         super.render();
+
+
     }
 
     @Override
@@ -75,9 +78,9 @@ public class GameClient extends Game {
     }
 
 
-    public static void connectToServer() {
+    public void connectToServer() {
         String ip = "192.168.1.22";
-        ip = "192.168.110.74";
+        ip = "127.0.0.1";
 
         try {
             clientController = new ClientController(ip);

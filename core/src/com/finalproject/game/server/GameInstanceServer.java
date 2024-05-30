@@ -26,9 +26,9 @@ public class GameInstanceServer extends Game {
 
     // TODO: add current state of game, maybe paused or some thing
 
-    public static final int WIN_KILL_COUNT = 2;
     public static final float PPM = 10f;
     protected static HashMap<GameWorld, String> gameWorldStringHashMap = new HashMap<>();
+    public final int WIN_KILL_COUNT = 1;
     protected final int GAME_ID;
 
     public GameInstanceStatus gameInstanceStatus = GameInstanceStatus.LOADING;
@@ -89,7 +89,8 @@ public class GameInstanceServer extends Game {
     }
 
     public void spawnPlayer(RemoteClient remoteClient) {
-        Player p = new Adrian((LiveEntityBuilder) new LiveEntityBuilder().setGameInstanceServer(this).setRemoteClient(remoteClient).setCurrentWorld(world));
+        Vector2 randomSpawnPoint = GameServer.spawnPoints.get((int) (Math.random() * GameServer.spawnPoints.size()));
+        Player p = new Adrian((LiveEntityBuilder) new LiveEntityBuilder().setPos(randomSpawnPoint).setGameInstanceServer(this).setRemoteClient(remoteClient).setCurrentWorld(world));
         remoteClient.setPlayer(p);
         players.add(p);
     }
@@ -194,16 +195,21 @@ public class GameInstanceServer extends Game {
                             playSound(SoundPlayer.SoundType.DEATH);
                         }
 
+                        System.out.println("Getting removed for no reason");
                         p.removeBody();
                     }
                 }
 
 
                 if (a.equals("Wall") && b instanceof Projectile) {
+                    System.out.println("Hitting wall a");
                     ((Projectile) b).removeBody();
+                    playSound(SoundPlayer.SoundType.BULLET_HIT_WALL);
                 }
                 if (a instanceof Projectile && b.equals("Wall")) {
+                    System.out.println("Hitting wall b");
                     ((Projectile) a).removeBody();
+                    playSound(SoundPlayer.SoundType.BULLET_HIT_WALL);
                 }
 
 

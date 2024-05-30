@@ -91,6 +91,7 @@ public abstract class Projectile extends Entity {
 
         expiration -= delta;
         if (expiration <= 0) {
+            System.out.println("Expored");
             removeBody();
         }
     }

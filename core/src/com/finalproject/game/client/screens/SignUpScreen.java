@@ -11,15 +11,17 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.finalproject.game.client.ClientController;
 import com.finalproject.game.client.GameClient;
-import com.finalproject.game.server.JDBC.InsertData;
+import com.finalproject.game.client.packet.client.jdbc.RegisterPacket;
 
 public class SignUpScreen implements Screen {
-    private Stage stage;
-    private Skin skin;
-    private OrthographicCamera camera;
-    private TextureAtlas atlas;
+    private final Stage stage;
+    private final Skin skin;
+    private final OrthographicCamera camera;
+    private final TextureAtlas atlas;
 
     public SignUpScreen() {
         this.stage = new Stage(new ScreenViewport());
@@ -51,10 +53,12 @@ public class SignUpScreen implements Screen {
         skin.get(Label.LabelStyle.class).font = font;
         skin.get(TextField.TextFieldStyle.class).font = font;
 
-        Label usernameLabel = new Label("Enter your name: ", skin);
+        Label usernameLabel = new Label("Enter your username: ", skin);
         TextField username = new TextField("", skin);
+        username.setAlignment(Align.center);
         Label passwordLabel = new Label("Enter your password: ", skin);
         TextField password = new TextField("", skin);
+        password.setAlignment(Align.center);
         password.setPasswordMode(true); // Enable password mode
         password.setPasswordCharacter('*');
 
@@ -71,17 +75,16 @@ public class SignUpScreen implements Screen {
         table.row();
         table.add(registerButton).colspan(2);
 
-        registerButton.addListener(new ClickListener(){
+        registerButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println(password.getText());
-                InsertData.signup(username.getText(), password.getText());
+                ClientController.client.sendUDP(new RegisterPacket(username.getText(), password.getText()));
                 GameClient.gameClient.setScreen(new MainMenu2()); // Assuming you have a GameScreen class
                 dispose();
             }
         });
 
-        backButton.addListener(new ClickListener(){
+        backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 GameClient.gameClient.setScreen(new MainMenu2()); // Assuming you have a GameScreen class
@@ -101,7 +104,7 @@ public class SignUpScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
-        GameClient.gameClient.batch.setProjectionMatrix(camera.combined);
+        GameClient.batch.setProjectionMatrix(camera.combined);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }

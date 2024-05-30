@@ -35,17 +35,19 @@ public class GameScreen implements Screen {
     private BitmapFont font;
     private Music backgroundMusic;
 
+
     @Override
     public void show() {
 
-        layer0 = new Texture("ooptilesets/map_layers/overworld_layer_0.png");
-        layer1 = new Texture("ooptilesets/map_layers/overworld_layer_1.png");
-        layer2 = new Texture("ooptilesets/map_layers/overworld_layer_2.png");
+        this.layer0 = Assets.layer0;
+        this.layer1 = Assets.layer1;
+        this.layer2 = Assets.layer2;
 
         backgroundMusic = Assets.musicAssets.get(SoundPlayer.MusicType.BACKGROUND_1);
         backgroundMusic.setLooping(true); //
         backgroundMusic.play();
-        font = Assets.generateFont("font/roboto/Roboto-Medium.ttf", 10);
+
+        font = Assets.generateFont("font/roboto/Roboto-Medium.ttf", 9);
     }
 
     public void sendMouseUpdates() {
@@ -79,6 +81,20 @@ public class GameScreen implements Screen {
         float frameHeight = layer0.getHeight() / GameInstanceServer.PPM;
 
         batch.begin();
+
+
+        if (isDone) {
+
+            if (isWinner) {
+                batch.draw(Assets.win, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            } else {
+                batch.draw(Assets.lose, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            }
+
+            batch.end();
+            return;
+        }
+
         batch.draw(layer0, 0, 0, frameWidth, frameHeight);
         batch.draw(layer1, 0, 0, frameWidth, frameHeight);
         batch.setProjectionMatrix(camera.combined);
@@ -90,6 +106,7 @@ public class GameScreen implements Screen {
             camera.position.set(cameraX, cameraY, 0);
             camera.update();
         }
+
 
         shapeRenderer.begin();
         shapeRenderer.setColor(Color.WHITE);
@@ -194,7 +211,9 @@ public class GameScreen implements Screen {
         font.draw(batch, "H: " + p.getCurrentHealth(), cameraX - 35, cameraY + 40);
 
         // Example: Display player stamina
-        font.draw(batch, "S: " + p.getCurrentStamina(), cameraX - 35, cameraY + 20);
+        font.draw(batch, "S: " + p.getCurrentStamina(), cameraX - 35, cameraY + 30);
+
+        font.draw(batch, "K: " + gameInstanceSnapshot.remoteClient.getKillCount(), cameraX - 35, cameraY + 20);
 
         // Example: Display a message at the center of the screen
         String message = "Welcome to the Game!";
