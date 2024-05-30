@@ -5,14 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class InsertData {
-    public static void main(String[] args) {
+    public static void signup(String username, String password) {
         try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "INSERT INTO tbluseraccount (username, password) VALUES (?, ?)"
              )) {
-            String username = "test";
-            String password = "test";
-
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
 

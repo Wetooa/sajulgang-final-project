@@ -14,6 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.finalproject.game.client.GameClient;
+import com.finalproject.game.server.JDBC.ReadData;
+
+import javax.swing.*;
 
 public class LogInScreen implements Screen {
     private Stage stage;
@@ -76,6 +79,11 @@ public class LogInScreen implements Screen {
         loginButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                if (ReadData.login(username.getText(), password.getText())) {
+                    System.out.println("Login successful");
+                } else {
+                    System.out.println("User does not exist");
+                }
                 GameClient.gameClient.setScreen(new GameScreen()); // Assuming you have a GameScreen class
                 dispose();
             }

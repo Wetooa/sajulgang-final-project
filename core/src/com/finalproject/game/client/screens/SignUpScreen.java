@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.finalproject.game.client.GameClient;
+import com.finalproject.game.server.JDBC.InsertData;
 
 public class SignUpScreen implements Screen {
     private Stage stage;
@@ -73,7 +74,9 @@ public class SignUpScreen implements Screen {
         registerButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                GameClient.gameClient.setScreen(new GameScreen()); // Assuming you have a GameScreen class
+                System.out.println(password.getText());
+                InsertData.signup(username.getText(), password.getText());
+                GameClient.gameClient.setScreen(new MainMenu2()); // Assuming you have a GameScreen class
                 dispose();
             }
         });
