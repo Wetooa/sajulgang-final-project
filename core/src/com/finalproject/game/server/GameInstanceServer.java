@@ -26,9 +26,9 @@ public class GameInstanceServer extends Game {
 
     // TODO: add current state of game, maybe paused or some thing
 
-    public static final int WIN_KILL_COUNT = 2;
     public static final float PPM = 10f;
     protected static HashMap<GameWorld, String> gameWorldStringHashMap = new HashMap<>();
+    public final int WIN_KILL_COUNT = 1;
     protected final int GAME_ID;
 
     public GameInstanceStatus gameInstanceStatus = GameInstanceStatus.LOADING;

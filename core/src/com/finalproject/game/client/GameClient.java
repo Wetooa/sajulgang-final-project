@@ -32,6 +32,9 @@ public class GameClient extends Game {
     public static SpriteBatch batch;
     public static ScreenShake screenShake;
 
+    public static boolean isDone = false;
+    public static boolean isWinner = false;
+
     @Override
     public void create() {
         Assets.load();

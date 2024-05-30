@@ -5,6 +5,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.finalproject.game.server.entity.live.LiveEntity;
 import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
+import com.finalproject.game.server.packet.server.WinGame;
 
 import java.util.ArrayList;
 
@@ -171,6 +172,11 @@ public class RemoteClient {
                 this.getGameInstanceServer().spawnPlayer(this);
                 this.setClientGameState(ClientGameState.ALIVE);
             }
+        }
+
+
+        if (killCount == gameInstanceServer.WIN_KILL_COUNT) {
+            gameInstanceServer.remoteClientsInServer.keySet().forEach(connection1 -> connection1.sendUDP(new WinGame(connection1.equals(this.connection))));
         }
 
         sendDataToClient();

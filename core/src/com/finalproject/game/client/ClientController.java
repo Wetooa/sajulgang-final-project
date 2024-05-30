@@ -14,6 +14,7 @@ import com.finalproject.game.client.sound.SoundPlayer;
 import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
 import com.finalproject.game.server.packet.server.ItemSoundPlay;
 import com.finalproject.game.server.packet.server.SoundPlay;
+import com.finalproject.game.server.packet.server.WinGame;
 import com.finalproject.game.server.packet.server.jdbc.LoginSuccessPacket;
 
 import java.io.IOException;
@@ -65,6 +66,12 @@ public class ClientController {
 
                 if (object instanceof LoginSuccessPacket) {
                     setupGameControllers();
+                }
+
+
+                if (object instanceof WinGame) {
+                    GameClient.isDone = true;
+                    GameClient.isWinner = ((WinGame) object).isWinner;
                 }
 
             }

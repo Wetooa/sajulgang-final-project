@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.finalproject.game.client.ClientController;
 import com.finalproject.game.client.GameClient;
@@ -54,8 +55,10 @@ public class LogInScreen implements Screen {
 
         Label usernameLabel = new Label("Enter your username: ", skin);
         TextField username = new TextField("", skin);
+        username.setAlignment(Align.center);
         Label passwordLabel = new Label("Enter your password: ", skin);
         TextField password = new TextField("", skin);
+        password.setAlignment(Align.center);
         password.setPasswordMode(true); // Enable password mode
         password.setPasswordCharacter('*');
 

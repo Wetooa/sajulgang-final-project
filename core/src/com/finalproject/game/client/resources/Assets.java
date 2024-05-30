@@ -28,7 +28,7 @@ public class Assets {
 
     public static HashMap<SoundPlayer.MusicType, Music> musicAssets = new HashMap<>();
 
-    public static Texture layer0, layer1, layer2;
+    public static Texture layer0, layer1, layer2, win, lose;
 
     // Load assets during initialization
     public static void load() {
@@ -36,6 +36,9 @@ public class Assets {
         layer0 = new Texture("ooptilesets/map_layers/overworld_layer_0.png");
         layer1 = new Texture("ooptilesets/map_layers/overworld_layer_1.png");
         layer2 = new Texture("ooptilesets/map_layers/overworld_layer_2.png");
+
+        win = new Texture("ooptilesets/win.png");
+        lose = new Texture("ooptilesets/lose.png");
 
         HashMap<Player.PlayerType, String> playerTypeToString = new HashMap<>();
         playerTypeToString.put(Player.PlayerType.FRIA, "1");
