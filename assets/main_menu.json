@@ -1,0 +1,27 @@
+{
+  "TextButtonStyle": {
+    "default": {
+      "up": "btn",
+      "down": "btn"
+    }
+  },
+  "TextFieldStyle": {
+    "default": {
+      "background": "btn",
+      "fontColor": { //white
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    }
+  },
+  "LabelStyle": {
+    "default": {
+
+    }
+  },
+  "Color": {
+    "white": {"r": 1, "g": 1, "b": 1, "a": 1}
+  }
+}
