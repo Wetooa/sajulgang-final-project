@@ -32,12 +32,12 @@ public class ItemBox {
     }
 
     public void addItem(Item item) {
-        if (item instanceof PrimaryGun) items.add(0, item);
-        else if (item instanceof SecondaryGun) items.add(1, item);
-        else if (item instanceof MeleeWeapon) items.add(2, item);
+        if (item instanceof PrimaryGun) items.set(0, item);
+        else if (item instanceof SecondaryGun) items.set(1, item);
+        else if (item instanceof MeleeWeapon) items.set(2, item);
         else if (item instanceof InstantWeapon) {
             if (instantWeaponsCount > MAX_INSTANT_WEAPONS) return;
-            items.add(instantWeaponsCount + 3, item);
+            items.set(instantWeaponsCount + 3, item);
         }
     }
 
