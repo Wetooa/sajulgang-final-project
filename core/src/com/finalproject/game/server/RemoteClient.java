@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class RemoteClient {
     protected final int RESPAWN_TIMER = 3;
     protected transient final Connection connection;
-    protected int killCount = 3;
+    protected int killCount = 0;
     protected transient GameInstanceServer gameInstanceServer;
     protected int currentGameID;
     protected Player player;
