@@ -13,7 +13,7 @@ public class DesktopLauncher {
         // FIX: set fullscreen later
 //		config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
 
-        config.setTitle("Lost in CIT (tentative name)");
+        config.setTitle("Tekno Blasterz");
         new Lwjgl3Application(new GameClient(), config);
     }
 }

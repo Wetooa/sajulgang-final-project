@@ -57,6 +57,8 @@ project(":core") {
         // Add these lines for Kryo and KryoNet
         implementation "com.esotericsoftware:kryo:5.2.0" // Check for the latest version
         implementation "com.esotericsoftware:kryonet:2.22.0-RC1" // Check for the latest version
+
+        implementation "mysql:mysql-connector-java:8.0.32"
     }
 }
 
