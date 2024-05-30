@@ -96,7 +96,7 @@ public class Assets {
         String projectileFilePath = "ooptilesets/projectile/";
         projectileAssets.put(Projectile.ProjectileType.BULLET, loadSpritesheet(projectileFilePath + "bullet.png", 6));
         projectileAssets.put(Projectile.ProjectileType.ENERGY, loadSpritesheet(projectileFilePath + "energy.png", 6));
-        projectileAssets.put(Projectile.ProjectileType.SHELL, loadSpritesheet(projectileFilePath + "shell.png", 4));
+        projectileAssets.put(Projectile.ProjectileType.SHELL, loadSpritesheet(projectileFilePath + "shell2.png", 4));
         projectileAssets.put(Projectile.ProjectileType.BOLT, loadSpritesheet(projectileFilePath + "bolt.png", 6));
 
         gunSoundAssets.put(Item.ItemType.LASER_GUN, loadSound("laserShoot"));
