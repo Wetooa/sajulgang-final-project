@@ -13,14 +13,12 @@ public class Adrian extends Player {
     }
 
     public Adrian(LiveEntityBuilder builder) {
-        super((LiveEntityBuilder) builder.setPlayerType(PlayerType.ADRIAN).setSpecialSkillTimer(5f).setMaxHealth(150).setMaxStamina(200).setMaxSpeed(1.5f).setSize(new Vector2(1.5f, 1.5f)));
+        super((LiveEntityBuilder) builder.setPlayerType(PlayerType.ADRIAN).setSpecialSkillTimer(1f).setSpecialSkillStaminaCost(10f).setMaxHealth(150).setMaxStamina(200).setMaxSpeed(1.5f).setSize(new Vector2(1.5f, 1.5f)));
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
-
-
     }
 
     @Override

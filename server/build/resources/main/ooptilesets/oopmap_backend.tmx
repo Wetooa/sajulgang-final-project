@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="63" height="66" tilewidth="32" tileheight="32" infinite="0" nextlayerid="54" nextobjectid="229">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="63" height="66" tilewidth="32" tileheight="32" infinite="0" nextlayerid="54" nextobjectid="237">
  <objectgroup id="50" name="collision layer">
   <object id="35" x="732" y="65" width="906" height="431"/>
   <object id="36" x="1010.5" y="492.5" width="352.5" height="16.5"/>
@@ -103,10 +103,14 @@
   <object id="219" x="268" y="-1" width="548" height="27"/>
   <object id="220" x="0" y="0.666667" width="290.667" height="26"/>
   <object id="221" x="0" y="-1.33333" width="18.6667" height="1760.67"/>
-  <object id="223" x="-293.939" y="-36.3636" width="3.0303"/>
   <object id="224" x="1256.25" y="1979.75" width="12.5" height="8.5"/>
   <object id="225" x="802.333" y="1638.67" width="58.6667" height="28.3333"/>
   <object id="227" x="1997.09" y="1754.18" width="18.9091" height="23.4545"/>
   <object id="228" x="-1.09091" y="1752" width="20.3636" height="21.4545"/>
+  <object id="230" x="1994.67" y="1910" width="22" height="202"/>
+  <object id="231" x="-1" y="1900" width="21" height="211"/>
+  <object id="232" x="21" y="2081" width="677" height="30"/>
+  <object id="233" x="695" y="2077" width="615" height="35"/>
+  <object id="234" x="1310" y="2079" width="701" height="32"/>
  </objectgroup>
 </map>

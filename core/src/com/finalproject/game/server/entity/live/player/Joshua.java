@@ -5,6 +5,7 @@ import com.finalproject.game.server.builder.entity.LiveEntityBuilder;
 
 public class Joshua extends Player {
 
+
     public Joshua() {
         this(new LiveEntityBuilder());
     }
@@ -15,6 +16,7 @@ public class Joshua extends Player {
 
     @Override
     public void castSpecialSkill() {
+
     }
 
 }

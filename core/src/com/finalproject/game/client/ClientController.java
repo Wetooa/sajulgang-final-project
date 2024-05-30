@@ -10,11 +10,15 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.finalproject.game.client.packet.client.*;
 import com.finalproject.game.client.resources.Assets;
+import com.finalproject.game.client.sound.SoundPlayer;
 import com.finalproject.game.server.packet.server.GameInstanceSnapshot;
+import com.finalproject.game.server.packet.server.ItemSoundPlay;
 import com.finalproject.game.server.packet.server.SoundPlay;
 
 import java.io.IOException;
 import java.nio.channels.ClosedSelectorException;
+
+import static com.finalproject.game.client.GameClient.screenShake;
 
 
 public class ClientController {
@@ -92,7 +96,7 @@ public class ClientController {
             @Override
             public boolean scrolled(float amountX, float amountY) {
                 Gdx.app.log("Player", "Moved scrolled " + amountX + " " + amountY);
-                ClientController.client.sendUDP(new MouseScroll(amountX > 0));
+                ClientController.client.sendUDP(new MouseScroll(amountY < 0));
                 return super.scrolled(amountX, amountY);
             }
         });
@@ -108,8 +112,18 @@ public class ClientController {
                     GameClient.gameInstanceSnapshot = (GameInstanceSnapshot) object;
                 }
 
+                if (object instanceof ItemSoundPlay) {
+                    Assets.gunSoundAssets.get(((ItemSoundPlay) (object)).itemType).play();
+                    screenShake.shake(0.25f, 0.5f); // Shake with power 10 for 0.5 seconds
+                }
+
                 if (object instanceof SoundPlay) {
+                    SoundPlayer.SoundType sp = ((SoundPlay) object).soundType;
                     Assets.soundAssets.get(((SoundPlay) (object)).soundType).play();
+
+                    if (sp.equals(SoundPlayer.SoundType.RUN)) {
+                        screenShake.shake(0.1f, 0.25f); // Shake with power 10 for 0.5 seconds
+                    }
                 }
             }
         });

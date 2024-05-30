@@ -45,8 +45,7 @@ public class GameScreen implements Screen {
         backgroundMusic = Assets.musicAssets.get(SoundPlayer.MusicType.BACKGROUND_1);
         backgroundMusic.setLooping(true); //
         backgroundMusic.play();
-
-        font = Assets.generateFont("font/roboto/Roboto-Medium.ttf", 12);
+        font = Assets.generateFont("font/roboto/Roboto-Medium.ttf", 10);
     }
 
     public void sendMouseUpdates() {
@@ -61,7 +60,7 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void render(float v) {
+    public void render(float delta) {
         sendMouseUpdates();
 
         Gdx.gl.glClearColor(0.0f, 0, 0.0f, 1f);
@@ -88,7 +87,7 @@ public class GameScreen implements Screen {
             GameClient.cameraX = playerPos.x;
             GameClient.cameraY = playerPos.y;
 
-            camera.position.set(playerPos.x, playerPos.y, 0);
+            camera.position.set(cameraX, cameraY, 0);
             camera.update();
         }
 
@@ -145,7 +144,7 @@ public class GameScreen implements Screen {
 //            renderDimmingOverlay(playerPos, playerAngle);
         }
 
-
+        screenShake.update(delta);
         batch.draw(layer2, 0, 0, frameWidth, frameHeight);
         drawHUD();
 
@@ -192,10 +191,10 @@ public class GameScreen implements Screen {
         if (p == null) return;
 
         // Example: Display player health
-        font.draw(batch, "Health: " + p.getCurrentHealth(), cameraX - 100, cameraY + Gdx.graphics.getHeight() - 100);
+        font.draw(batch, "H: " + p.getCurrentHealth(), cameraX - 35, cameraY + 40);
 
         // Example: Display player stamina
-        font.draw(batch, "Stamina: " + p.getCurrentStamina(), cameraX - 100, cameraY + Gdx.graphics.getHeight() - 200);
+        font.draw(batch, "S: " + p.getCurrentStamina(), cameraX - 35, cameraY + 20);
 
         // Example: Display a message at the center of the screen
         String message = "Welcome to the Game!";

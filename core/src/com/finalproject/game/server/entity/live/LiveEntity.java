@@ -1,5 +1,6 @@
 package com.finalproject.game.server.entity.live;
 
+import com.finalproject.game.client.sound.SoundPlayer;
 import com.finalproject.game.server.builder.entity.LiveEntityBuilder;
 import com.finalproject.game.server.entity.Entity;
 
@@ -51,6 +52,8 @@ public abstract class LiveEntity extends Entity {
 
     public void takeDamage(float damage) {
         setCurrentHealth(getCurrentHealth() - damage);
+
+        gameInstanceServer.playSound(SoundPlayer.SoundType.PLAYER_HIT);
     }
 
     public boolean isDead() {

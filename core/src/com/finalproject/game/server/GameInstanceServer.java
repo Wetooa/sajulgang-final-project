@@ -13,7 +13,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.finalproject.game.client.sound.SoundPlayer;
 import com.finalproject.game.server.builder.entity.LiveEntityBuilder;
 import com.finalproject.game.server.entity.live.enemy.Enemy;
-import com.finalproject.game.server.entity.live.player.Joshua;
+import com.finalproject.game.server.entity.live.player.Adrian;
 import com.finalproject.game.server.entity.live.player.Player;
 import com.finalproject.game.server.entity.projectile.Projectile;
 import com.finalproject.game.server.packet.server.SoundPlay;
@@ -76,6 +76,7 @@ public class GameInstanceServer extends Game {
         remoteClientsInServer.keySet().forEach(connection -> connection.sendTCP(new SoundPlay(soundType)));
     }
 
+
     public void addRemoteClient(Connection connection, RemoteClient remoteClient) {
         // TODO: logic where player spawns on location with less playersr
 
@@ -88,7 +89,7 @@ public class GameInstanceServer extends Game {
     }
 
     public void spawnPlayer(RemoteClient remoteClient) {
-        Player p = new Joshua((LiveEntityBuilder) new LiveEntityBuilder().setGameInstanceServer(this).setRemoteClient(remoteClient).setCurrentWorld(world));
+        Player p = new Adrian((LiveEntityBuilder) new LiveEntityBuilder().setGameInstanceServer(this).setRemoteClient(remoteClient).setCurrentWorld(world));
         remoteClient.setPlayer(p);
         players.add(p);
     }
@@ -190,6 +191,7 @@ public class GameInstanceServer extends Game {
                         if (pl.isDead()) {
                             RemoteClient killer = p.getRemoteClient();
                             killer.increaseKillCount();
+                            playSound(SoundPlayer.SoundType.DEATH);
                         }
 
                         p.removeBody();

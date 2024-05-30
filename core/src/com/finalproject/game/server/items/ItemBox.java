@@ -1,5 +1,7 @@
 package com.finalproject.game.server.items;
 
+import com.finalproject.game.client.sound.SoundPlayer;
+import com.finalproject.game.server.GameInstanceServer;
 import com.finalproject.game.server.items.weapons.instant.InstantWeapon;
 import com.finalproject.game.server.items.weapons.melee.MeleeWeapon;
 import com.finalproject.game.server.items.weapons.range.primary.PrimaryGun;
@@ -13,11 +15,16 @@ public class ItemBox {
     public static final int MAX_INSTANT_WEAPONS = 3;
     public static final int MAX_ITEMS = MAX_INSTANT_WEAPONS + 3;
 
+    protected transient GameInstanceServer gameInstanceServer;
     protected Integer currentItemHeld = 0;
     protected List<Item> items = new ArrayList<>();
     protected int instantWeaponsCount = 0;
 
     public ItemBox() {
+    }
+
+    public ItemBox(GameInstanceServer gameInstanceServer) {
+        this.gameInstanceServer = gameInstanceServer;
         for (int i = 0; i < MAX_ITEMS; i++) items.add(null);
     }
 
@@ -41,10 +48,12 @@ public class ItemBox {
 
     public void scrollItemUp() {
         currentItemHeld = (currentItemHeld + 1) % MAX_ITEMS;
+        this.gameInstanceServer.playSound(SoundPlayer.SoundType.ITEM_UP);
     }
 
     public void scrollItemDown() {
         currentItemHeld = (currentItemHeld - 1) == -1 ? MAX_ITEMS - 1 : currentItemHeld - 1;
+        this.gameInstanceServer.playSound(SoundPlayer.SoundType.ITEM_DOWN);
     }
 
     public Item getHeldItem() {
