@@ -92,6 +92,9 @@ public class Assets {
         weaponAssets.put(Item.ItemType.AK69, loadSpritesheet(weaponFilePath + "ak69gun.png", 1));
         weaponAssets.put(Item.ItemType.SHOTGUN, loadSpritesheet(weaponFilePath + "shotgun.png", 1));
 
+        weaponAssets.put(Item.ItemType.KATANA, loadSpritesheet(weaponFilePath + "shotgun.png", 1));
+
+
         // Initialize and load projectile assets if needed (example given below)
         String projectileFilePath = "ooptilesets/projectile/";
         projectileAssets.put(Projectile.ProjectileType.BULLET, loadSpritesheet(projectileFilePath + "bullet.png", 6));

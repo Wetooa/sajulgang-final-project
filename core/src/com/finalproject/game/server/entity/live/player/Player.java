@@ -9,6 +9,7 @@ import com.finalproject.game.server.builder.item.WeaponBuilder;
 import com.finalproject.game.server.entity.live.LiveEntity;
 import com.finalproject.game.server.items.Item;
 import com.finalproject.game.server.items.ItemBox;
+import com.finalproject.game.server.items.weapons.melee.Katana;
 import com.finalproject.game.server.items.weapons.range.secondary.HandGun;
 
 public abstract class Player extends LiveEntity {
@@ -44,10 +45,11 @@ public abstract class Player extends LiveEntity {
         this.itemBox = new ItemBox(this.gameInstanceServer);
 
         Item startingGun = new HandGun((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient).setCurrentWorld(currentWorld));
+        Item meleeWeapon = new Katana((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient).setCurrentWorld(currentWorld));
 //        Item startingGun2 = new TwinPistols((WeaponBuilder) new WeaponBuilder().setGameInstanceServer(gameInstanceServer).setRemoteClient(remoteClient).setCurrentWorld(currentWorld));
 
         itemBox.addItem(startingGun);
-//        itemBox.addItem(startingGun2);
+        itemBox.addItem(meleeWeapon);
     }
 
     public float getSPECIAL_SKILL_STAMINA_COST() {
